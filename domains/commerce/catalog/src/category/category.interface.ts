@@ -1,22 +1,8 @@
 import type { Types } from "mongoose";
+import type { ICategory as IBaseCategory } from "@manoxen/shared-types";
 
-export interface ICategories {
+export interface ICategory extends IBaseCategory {
   organization: Types.ObjectId;
   businessUnit: Types.ObjectId;
-  domain: string;
-  name: string;
-  description?: string;
-  code?: string;
-  slug?: string;
-  image?: string;
-  availableModules?: ('pos' | 'erp' | 'hrm' | 'ecommerce' | 'crm' | 'logistics' | 'system')[];
-  isActive?: boolean;
   parentId?: Types.ObjectId | null;
-  level?: number;
-  path?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-
-  isDeleted?: boolean;
-  deletedAt?: Date;
 }

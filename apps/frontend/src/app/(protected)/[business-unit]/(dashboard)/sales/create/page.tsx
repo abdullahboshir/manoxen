@@ -1,6 +1,6 @@
 "use client";
 
-import CreateOrder from "@/components/modules/sales/CreateOrder";
+import CreateOrder from "@/features/sales/components/CreateOrder";
 
 export default function CreateOrderPage() {
     return <CreateOrder />;

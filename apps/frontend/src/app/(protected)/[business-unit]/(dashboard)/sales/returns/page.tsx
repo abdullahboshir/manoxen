@@ -1,4 +1,4 @@
-import ReturnList from "@/components/modules/sales/ReturnList"
+import ReturnList from "@/features/sales/components/ReturnList"
 
 export default function ReturnsPage() {
     return <ReturnList />

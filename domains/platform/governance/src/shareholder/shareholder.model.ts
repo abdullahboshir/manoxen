@@ -51,12 +51,12 @@ shareholderSchema.index({ user: 1, businessUnit: 1 }, { unique: true, sparse: tr
 shareholderSchema.index({ user: 1, organization: 1 }, { unique: true, sparse: true });
 shareholderSchema.index({ user: 1, outlet: 1 }, { unique: true, sparse: true });
 
-export const Shareholder = model<IShareholder>('Shareholder', shareholderSchema);
-
 // Apply Context-Aware Data Isolation
 shareholderSchema.plugin(contextScopePlugin, {
     organizationField: 'organization',
     businessUnitField: 'businessUnit',
     outletField: 'outlet'
 });
+
+export const Shareholder = model<IShareholder>('Shareholder', shareholderSchema);
 

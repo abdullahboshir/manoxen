@@ -1,7 +1,7 @@
 ﻿import { Outlet } from "./outlet.model";
 import { Types, model, startSession } from "mongoose";
 import { OutletSettings } from "./settings/settings.model";
-import BusinessUnit from "..//business-unit/core/business-unit.model";
+import BusinessUnit from "../business-unit/core/business-unit.model";
 import { resolveBusinessUnitId } from "@manoxen/core-util";
 import { AppError, QueryBuilder } from "@manoxen/core-util";
 

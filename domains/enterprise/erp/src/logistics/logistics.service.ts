@@ -2,7 +2,7 @@
 import { AppError, QueryBuilder } from "@manoxen/core-util";
 
 import { resolveBusinessUnitId } from "@manoxen/core-util";
-import { AppError } from "@manoxen/core-util";
+
 import httpStatus from "http-status";
 import { resolveBusinessUnitQuery } from "@manoxen/core-util";
 // import axios from "axios"; // Will use for actual integration

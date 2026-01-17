@@ -1,4 +1,4 @@
-import WarehouseList from "@/components/modules/inventory/WarehouseList"
+import WarehouseList from "@/features/inventory/components/WarehouseList"
 
 export default function WarehousesPage() {
     return <WarehouseList />

@@ -12,7 +12,7 @@ import {
 } from "./role.controller";
 import { createRoleValidation, updateRoleValidation } from '@manoxen/iam-core';
 import type { AnyZodObject } from 'zod/v3';
-import auth from "#core/middleware/auth";
+import { authMiddleware as auth } from "#core/middleware/auth";
 import { authorize } from "#core/middleware/authorize";
 import { validateRequest } from "#core/middleware/validateRequest";
 

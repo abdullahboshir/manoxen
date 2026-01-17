@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useCreateUserMutation } from "@/redux/api/iam/userApi"
 import { toast } from "sonner"
-import { UserForm } from "@/components/modules/user-management/UserForm"
+import { UserForm } from "@/features/iam/components/UserForm"
 
 export default function AddBusinessUserPage() {
     const router = useRouter()

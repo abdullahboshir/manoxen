@@ -1,4 +1,4 @@
-import { Shareholder, IShareholder } from "./shareholder.model";
+import { Shareholder, type IShareholder } from "./shareholder.model";
 import { Types } from "mongoose";
 
 export class ShareholderService {

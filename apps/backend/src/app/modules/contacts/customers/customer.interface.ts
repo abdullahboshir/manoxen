@@ -1,1 +1,2 @@
-﻿export * from "@manoxen/sales";
+﻿import type { ICustomer } from "@manoxen/sales";
+export type { ICustomer };

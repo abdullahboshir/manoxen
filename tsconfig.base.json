@@ -41,11 +41,17 @@
       "#core/*": ["apps/backend/src/core/*"],
       "#app/*": ["apps/backend/src/app/*"],
       "#shared/*": ["apps/backend/src/shared/*"],
+      "#domain/catalog": ["domains/commerce/catalog/src/index"],
       "#domain/catalog/*": ["domains/commerce/catalog/src/*"],
+      "#domain/sales": ["domains/commerce/sales/src/index"],
       "#domain/sales/*": ["domains/commerce/sales/src/*"],
+      "#domain/pos": ["domains/commerce/pos/src/index"],
       "#domain/pos/*": ["domains/commerce/pos/src/*"],
+      "#domain/erp": ["domains/enterprise/erp/src/index"],
       "#domain/erp/*": ["domains/enterprise/erp/src/*"],
+      "#domain/hrm": ["domains/enterprise/hrm/src/index"],
       "#domain/hrm/*": ["domains/enterprise/hrm/src/*"],
+      "#domain/governance": ["domains/platform/governance/src/index"],
       "#domain/governance/*": ["domains/platform/governance/src/*"]
     }
   },

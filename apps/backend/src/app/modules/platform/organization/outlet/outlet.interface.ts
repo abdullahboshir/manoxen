@@ -1,1 +1,2 @@
-﻿export * from "@manoxen/governance";
+﻿import type { IOutlet } from "@manoxen/governance";
+export type { IOutlet };

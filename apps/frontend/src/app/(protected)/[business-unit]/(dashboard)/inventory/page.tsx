@@ -1,6 +1,8 @@
 "use client";
 
-import { InventoryList } from "@/components/modules/inventory/InventoryList";
+import { InventoryList } from "@/features/inventory/components/InventoryList";
+
+
 
 export default function InventoryPage() {
   return <InventoryList />;

@@ -1,4 +1,4 @@
-import { ProductList } from "@/components/modules/catalog/product/ProductList";
+import { ProductList } from "@/features/catalog/components/product/ProductList";
 
 export default function ProductListPage() {
     return <ProductList />;

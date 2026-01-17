@@ -19,7 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RoleAssignmentRow } from "@/components/modules/user-management/RoleAssignmentRow"
+import { RoleAssignmentRow } from "@/features/iam/components/RoleAssignmentRow"
 
 export default function AddUserPage() {
   const router = useRouter()

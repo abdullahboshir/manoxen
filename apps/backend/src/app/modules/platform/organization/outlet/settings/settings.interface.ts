@@ -1,5 +1,5 @@
 ﻿import { Document, Model } from 'mongoose';
-import type { IOutlet } from "..//outlet.interface";
+import type { IOutlet } from "../outlet.interface";
 
 
 

@@ -1,18 +1,10 @@
 import { Types, Model } from 'mongoose';
+import type { IUnit as IBaseUnit } from "@manoxen/shared-types";
 
-export interface IUnit {
-    _id: string; // Add this if you want to use it in frontend without casting
-    name: string; // e.g., "Kilogram"
-    symbol: string; // e.g., "kg"
-    status: 'active' | 'inactive';
-    businessUnit: Types.ObjectId | null; // Reference to the business unit, null for global
-    organization: Types.ObjectId | null; // Reference to the organization, null for platform-global
-    relatedBusinessTypes?: string[]; // e.g., ["Grocery", "Pharmacy"]
-    module: 'pos' | 'erp' | 'hrm' | 'ecommerce' | 'crm' | 'logistics' | 'system';
-    createdBy: Types.ObjectId;
-    isDeleted: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
+export interface IUnit extends Omit<IBaseUnit, '_id'> {
+    businessUnit: Types.ObjectId | null;
+    organization: Types.ObjectId | null;
+    createdBy?: Types.ObjectId;
 }
 
 export type UnitModel = Model<IUnit, object>;

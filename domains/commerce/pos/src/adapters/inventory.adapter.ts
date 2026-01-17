@@ -4,8 +4,6 @@ export class InventoryAdapter {
     async updateStock(_payload: any): Promise<boolean> { return true; }
     private async isModuleActive(moduleId: string): Promise<boolean> { return false; }
 }
-    }
-}
 
 
 

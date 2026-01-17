@@ -1,4 +1,4 @@
-import { CategoryList } from "@/components/modules/catalog/category/CategoryList";
+import { CategoryList } from "@/features/catalog/components/category/CategoryList";
 
 export default function CategoryListPage() {
     return <CategoryList />;

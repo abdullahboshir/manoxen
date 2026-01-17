@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { useGetSingleUserQuery, useUpdateUserMutation } from "@/redux/api/iam/userApi"
 import { toast } from "sonner"
-import { UserForm } from "@/components/modules/user-management/UserForm"
+import { UserForm } from "@/features/iam/components/UserForm"
 
 export default function GlobalEditUserPage() {
     const router = useRouter()

@@ -1,5 +1,6 @@
-import WarrantyList from "@/components/modules/catalog/warranties/WarrantyList"
+import WarrantyList from "@/features/catalog/components/warranties/WarrantyList";
 
-export default function WarrantiesPage() {
-    return <WarrantyList />
+
+export default function WarrantyListPage() {
+    return <WarrantyList />;
 }

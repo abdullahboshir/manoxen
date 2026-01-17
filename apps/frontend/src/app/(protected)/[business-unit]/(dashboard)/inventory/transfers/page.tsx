@@ -1,6 +1,6 @@
 "use client"
 
-import TransferList from "@/components/modules/inventory/TransferList"
+import TransferList from "@/features/inventory/components/TransferList"
 
 export default function TransfersPage() {
     return (

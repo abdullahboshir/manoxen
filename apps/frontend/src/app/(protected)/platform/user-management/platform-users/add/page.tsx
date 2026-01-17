@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { UserForm } from "@/components/modules/user-management/UserForm";
+import { UserForm } from "@/features/iam/components/UserForm";
 import { useCreateUserMutation } from "@/redux/api/iam/userApi";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";

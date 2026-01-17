@@ -1,6 +1,6 @@
 "use client"
 
-import VariantList from "@/components/modules/catalog/product/VariantList"
+import VariantList from "@/features/catalog/components/product/VariantList"
 
 export default function VariantsPage() {
     return (

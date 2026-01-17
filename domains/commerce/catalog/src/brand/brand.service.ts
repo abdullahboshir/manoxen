@@ -1,4 +1,4 @@
-﻿import { IBrand } from "./brand.interface";
+﻿import type { IBrand } from "./brand.interface";
 import { Brand } from "./brand.model";
 import { QueryBuilder, resolveBusinessUnitQuery, resolveBusinessUnitId } from "@manoxen/core-util";
 

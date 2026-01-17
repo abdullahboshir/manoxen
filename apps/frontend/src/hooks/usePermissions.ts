@@ -5,7 +5,6 @@ export function usePermissions() {
   const { can } = usePermission();
 
   const hasPermission = (permissionKey: any) => {
-    // Legacy support for older permission checks if any
     return can(permissionKey);
   };
 

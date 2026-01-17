@@ -1,10 +1,10 @@
 ﻿import { Schema, model } from "mongoose";
-import type { ICategories } from "./category.interface";
+import type { ICategory } from "./category.interface";
 import { makeSlug } from "@manoxen/core-util";
 import { contextScopePlugin } from "@manoxen/core-util";
 
 
-const CategorySchema = new Schema<ICategories>(
+const CategorySchema = new Schema<ICategory>(
   {
     name: {
       type: String,
@@ -94,7 +94,7 @@ CategorySchema.pre("save", function (next) {
 CategorySchema.index({ name: 1, businessUnit: 1 }, { unique: true });
 CategorySchema.index({ slug: 1, businessUnit: 1 }, { unique: true });
 
-export const Category = model<ICategories>("Category", CategorySchema);
+export const Category = model<ICategory>("Category", CategorySchema);
 
 // Apply Context-Aware Data Isolation
 CategorySchema.plugin(contextScopePlugin, {

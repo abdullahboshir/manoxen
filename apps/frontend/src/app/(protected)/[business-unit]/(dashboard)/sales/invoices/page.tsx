@@ -1,4 +1,4 @@
-import InvoiceList from "@/components/modules/sales/InvoiceList"
+import InvoiceList from "@/features/sales/components/InvoiceList"
 
 export default function InvoicesPage() {
     return <InvoiceList />

@@ -1,4 +1,4 @@
-﻿import { IProductContract } from "@manoxen/shared-types";
+﻿import type { IProductContract } from "@manoxen/shared-types";
 import { Product } from "./product.model";
 import { deleteProductService } from "./product.service";
 

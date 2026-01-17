@@ -1,7 +1,8 @@
 "use client";
 
 import { DataPageLayout } from "@/components/shared/DataPageLayout";
-import LedgerList from "@/components/modules/inventory/ledger/LedgerList";
+import LedgerList from "@/features/inventory/components/ledger/LedgerList";
+
 
 export default function LedgerPage() {
     return (

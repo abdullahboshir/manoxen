@@ -1,4 +1,4 @@
-﻿import { Action, Resource, UserContext, PolicyContext, PolicyResult } from "./types";
+﻿import type { Action, Resource, UserContext, PolicyContext, PolicyResult } from "./types";
 
 /**
  * The specific constraint engine.

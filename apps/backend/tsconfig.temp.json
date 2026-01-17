@@ -68,7 +68,6 @@
       "@manoxen/sales": ["../../domains/commerce/sales/src/index"],
       "@manoxen/sales/*.js": ["../../domains/commerce/sales/src/*.ts"],
       "@manoxen/sales/*": ["../../domains/commerce/sales/src/*"],
-      "#domain/catalog": ["../../domains/commerce/catalog/src/index"],
       "#domain/catalog/index.js": ["../../domains/commerce/catalog/src/index.ts"],
       "#domain/catalog/*.js": ["../../domains/commerce/catalog/src/*.ts"],
       "#domain/catalog/*": ["../../domains/commerce/catalog/src/*"],
@@ -88,15 +87,22 @@
       "#domain/governance/*.js": ["../../domains/platform/governance/src/*.ts"],
       "#domain/governance/*": ["../../domains/platform/governance/src/*"]
     },
-    "baseUrl": "./",
-    "rootDir": "../../"
+    "baseUrl": "./"
   },
 
   "include": [
-    "src/**/*.ts",
-    "../../domains/**/*.ts",
-    "../../libs/**/*.ts",
-    "../../packages/**/*.ts"
+    "src/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "../../libs/auth-client"]
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../domains/commerce/catalog" },
+    { "path": "../../domains/commerce/pos" },
+    { "path": "../../domains/commerce/sales" },
+    { "path": "../../domains/enterprise/erp" },
+    { "path": "../../domains/enterprise/hrm" },
+    { "path": "../../domains/platform/governance" },
+    { "path": "../../libs/core-util" },
+    { "path": "../../packages/iam-core" },
+    { "path": "../../packages/shared-types" }
+  ]
 }

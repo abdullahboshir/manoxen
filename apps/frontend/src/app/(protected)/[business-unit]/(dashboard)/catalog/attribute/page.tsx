@@ -1,6 +1,4 @@
-import { AttributeList } from "apps/frontend/src/components/modules/catalog/attribute/AttributeList";
-
-
+import { AttributeList } from "@/features/catalog/components/attribute/AttributeList";
 
 export default function AttributeListPage() {
     return <AttributeList />;

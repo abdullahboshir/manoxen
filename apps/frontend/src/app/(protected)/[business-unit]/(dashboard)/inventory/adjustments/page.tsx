@@ -1,4 +1,4 @@
-import AdjustmentList from "@/components/modules/inventory/AdjustmentList"
+import AdjustmentList from "@/features/inventory/components/AdjustmentList"
 
 export default function AdjustmentsPage() {
     return <AdjustmentList />

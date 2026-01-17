@@ -1,4 +1,5 @@
-import AttributeGroupList from "@/components/modules/catalog/attribute/AttributeGroupList";
+import AttributeGroupList from "@/features/catalog/components/attribute/AttributeGroupList";
+
 
 export default function AttributeGroupListPage() {
     return <AttributeGroupList />;

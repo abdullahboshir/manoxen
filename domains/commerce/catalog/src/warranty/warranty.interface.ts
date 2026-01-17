@@ -1,14 +1,7 @@
 import type { Document, Types } from "mongoose";
+import type { IWarranty as IBaseWarranty } from "@manoxen/shared-types";
 
-export interface IWarranty {
-  name: string;
-  duration: number; // e.g., 12
-  periodUnit: "days" | "weeks" | "months" | "years"; // e.g., "months"
-  type: "seller" | "manufacturer" | "brand";
-  description?: string;
-  termsConditions?: string;
-  availableModules: string[];
-  isActive: boolean;
+export interface IWarranty extends IBaseWarranty {
   organization: Types.ObjectId;
   businessUnit?: Types.ObjectId;
 }

@@ -1,7 +1,7 @@
 ﻿import type { Document, Types } from "mongoose";
-import type { TaxConfiguration } from "#app/modules/catalog/index";
+// import type { TaxConfiguration } from "#app/modules/catalog/index";
 
-
+import type { TaxConfiguration } from "@manoxen/catalog";
 export interface IProductPricing {
   product: Types.ObjectId;
   domain: string;

@@ -1,4 +1,4 @@
-﻿import type { DeliveryOptions, PhysicalProperties } from "#app/modules/catalog/index";
+﻿import type { DeliveryOptions, PhysicalProperties } from "@manoxen/catalog";
 import type { Document, Types } from "mongoose";
 
 

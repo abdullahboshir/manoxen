@@ -1,5 +1,7 @@
 "use client";
-import { UserManagementTable } from "@/components/modules/user-management/UserManagementTable";
+
+import { UserManagementTable } from "@/features/iam/components/UserManagementTable";
+
 
 export default function AllUsersPage() {
     return <UserManagementTable viewScope="platform" />;

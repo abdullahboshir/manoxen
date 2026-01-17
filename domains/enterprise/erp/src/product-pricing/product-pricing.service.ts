@@ -1,7 +1,7 @@
 ﻿import { Schema, model } from "mongoose";
 
 import type { IProductPricingDocument } from "./product-pricing.interface";
-import { TaxConfigurationSchema } from "#app/modules/catalog/index";
+import { TaxConfigurationSchema } from "@manoxen/catalog";
 
 const productPricingSchema = new Schema<IProductPricingDocument>({
   product: { type: Schema.Types.ObjectId, ref: 'Product', required: true, unique: true },

@@ -48,25 +48,7 @@ export interface IRequestContext extends ITenantContext {
 // ============================================
 // Module Configuration
 // ============================================
-export type ModuleName = 
-  | 'iam' 
-  | 'pos' 
-  | 'erp' 
-  | 'hrm' 
-  | 'ecommerce' 
-  | 'crm' 
-  | 'governance' 
-  | 'integrations' 
-  | 'system' 
-  | 'saas' 
-  | 'platform';
-
-export interface IModuleConfig {
-  enabled: boolean;
-  features?: Record<string, boolean>;
-}
-
-export type IActiveModules = Partial<Record<ModuleName, boolean>>;
+export * from "./common.types";
 
 export * from "./module.contracts";
 export * from "./product.types";

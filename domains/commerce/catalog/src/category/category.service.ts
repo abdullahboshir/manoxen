@@ -4,12 +4,12 @@ import httpStatus from "http-status";
 
 
 // import { AppError, QueryBuilder, resolveBusinessUnitId, resolveBusinessUnitQuery, CacheManager } from "@manoxen/core-util";
-import { ICategories } from "./category.interface";
+import type { ICategory } from "./category.interface";
 import { Category } from "./category.model";
 import { Product } from "../product/domain/product-core/product.model";
 import { AppError, QueryBuilder, resolveBusinessUnitId, resolveBusinessUnitIds, resolveBusinessUnitQuery, CacheManager } from "@manoxen/core-util";
 
-export const createCategoryService = async (payload: ICategories, user?: any) => {
+export const createCategoryService = async (payload: ICategory, user?: any) => {
   // 1. Resolve Business Unit ID first if present
   if (payload.businessUnit) {
     payload.businessUnit = await resolveBusinessUnitId(payload.businessUnit as any) as any;
@@ -92,7 +92,7 @@ export const getCategoryByIdService = async (id: string) => {
   }, 300); // 5 minutes for single item
 };
 
-export const updateCategoryService = async (id: string, payload: Partial<ICategories>) => {
+export const updateCategoryService = async (id: string, payload: Partial<ICategory>) => {
   if (payload.businessUnit) {
     payload.businessUnit = await resolveBusinessUnitId(payload.businessUnit as any) as any;
   }

@@ -1,4 +1,4 @@
-import { UnitList } from "@/components/modules/catalog/unit/UnitList";
+import { UnitList } from "@/features/catalog/components/unit/UnitList";
 
 export default function UnitListPage() {
     return <UnitList />;
