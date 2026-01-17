@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { useCurrentBusinessUnit } from "@/hooks/useCurrentBusinessUnit"
 import { usePermissions } from "@/hooks/usePermissions";
-import { useAuth } from "@/hooks/useAuth"
+import { useAuth } from "@manoxen/auth-client";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner"
 import { useGetAllUsersQuery } from "@/redux/api/iam/userApi"
 

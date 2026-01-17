@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useAuth } from "./useAuth"
+import { useAuth } from "@manoxen/auth-client"
 import { isSuperAdmin as checkIsSuperAdmin } from "@/config/auth-constants"
 
 export function useCurrentBusinessUnit() {

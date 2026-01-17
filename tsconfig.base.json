@@ -17,6 +17,7 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["apps/frontend/src/*"],
       "@manoxen/iam-core": ["packages/iam-core/src/index"],
       "@manoxen/core-util": ["libs/core-util/src/index"],
       "@manoxen/shared-types": ["packages/shared-types/src/index"],

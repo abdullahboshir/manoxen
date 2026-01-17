@@ -1,7 +1,7 @@
 "use client"
 
 import { usePermissions } from "@/hooks/usePermissions";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@manoxen/auth-client";
 import { useCurrentBusinessUnit } from "@/hooks/useCurrentBusinessUnit";
 import { useCreatePurchaseMutation } from "@/redux/api/inventory/purchaseApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";

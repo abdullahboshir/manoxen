@@ -5,7 +5,7 @@ import { PurchaseForm } from "@/components/modules/purchases/components/Purchase
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import { usePermissions } from "@/hooks/usePermissions"
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@manoxen/auth-client";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { Loader2 } from "lucide-react";
 

@@ -1,11 +1,16 @@
+import { useAuth, usePermission } from "@manoxen/auth-client";
+
 export function usePermissions() {
-  // TODO: Integrate with backend permission API
-  const hasPermission = (permissionKey: string) => {
-    // Parse permission key like "THEME.READ" to "theme" and "read"
-    const [resource, action] = permissionKey.toLowerCase().split('.');
-    // For now, allow all permissions (should come from user context)
-    return true;
+  const { user } = useAuth();
+  const { can } = usePermission();
+
+  const hasPermission = (permissionKey: any) => {
+    // Legacy support for older permission checks if any
+    return can(permissionKey);
   };
 
-  return { hasPermission };
+  return { 
+    hasPermission,
+    isSuperAdmin: user?.isSuperAdmin || false 
+  };
 }
