@@ -1,0 +1,25 @@
+{
+    "name":  "@manoxen/core-util",
+    "version":  "0.0.1",
+    "private":  true,
+    "engines": {
+        "node": ">=20.6.0"
+    },
+    "description": "Core Shared Utilities and Middlewares for Manoxen Backend",
+    "author": "Abdullah Bashir",
+    "license": "MIT",
+    "main":  "./dist/index.js",
+    "types":  "./dist/index.d.ts",
+    "devDependencies":  {
+                            "typescript":  "^5.0.0",
+                            "@types/express": "^5.0.0"
+                        },
+    "dependencies": {
+        "express": "^5.0.0",
+        "mongoose": "^8.0.0",
+        "http-status": "^2.0.0",
+        "redis": "^4.6.0",
+        "colors": "^1.4.0"
+    },
+    "type":  "module"
+}

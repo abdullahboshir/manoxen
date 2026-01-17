@@ -1,0 +1,20 @@
+{
+    "name":  "@manoxen/shared-types",
+    "version":  "0.0.1",
+    "private":  true,
+    "engines": {
+        "node": ">=20.6.0"
+    },
+    "description": "Unified TypeScript Type Definitions across Manoxen Monorepo",
+    "author": "Abdullah Bashir",
+    "license": "MIT",
+    "main":  "./dist/index.js",
+    "types":  "./dist/index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies":  {
+                            "typescript":  "^5.0.0"
+                        },
+    "type":  "module"
+}

@@ -1,0 +1,61 @@
+{
+  "name": "manoxen",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@11.7.0",
+  "description": "Full-stack Multi-tenant ERP Platform",
+  "author": "Abdullah Bashir",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/abdullahboshir/business-platform#readme",
+  "bugs": {
+    "url": "https://github.com/abdullahboshir/business-platform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdullahboshir/business-platform.git"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "domains/**/*",
+    "libs/*"
+  ],
+  "imports": {
+    "#core/*.js": "./apps/backend/src/core/*.ts",
+    "#app/*.js": "./apps/backend/src/app/*.ts",
+    "#shared/*.js": "./apps/backend/src/shared/*.ts",
+    "#core/*": "./apps/backend/src/core/*",
+    "#app/*": "./apps/backend/src/app/*",
+    "#shared/*": "./apps/backend/src/shared/*",
+    "#domain/catalog/*.js": "./domains/commerce/catalog/src/*.ts",
+    "#domain/catalog/*": "./domains/commerce/catalog/src/*",
+    "#domain/sales/*.js": "./domains/commerce/sales/src/*.ts",
+    "#domain/sales/*": "./domains/commerce/sales/src/*",
+    "#domain/pos/*.js": "./domains/commerce/pos/src/*.ts",
+    "#domain/pos/*": "./domains/commerce/pos/src/*",
+    "#domain/erp/*.js": "./domains/enterprise/erp/src/*.ts",
+    "#domain/erp/*": "./domains/enterprise/erp/src/*",
+    "#domain/hrm/*.js": "./domains/enterprise/hrm/src/*.ts",
+    "#domain/hrm/*": "./domains/enterprise/hrm/src/*",
+    "#domain/governance/*.js": "./domains/platform/governance/src/*.ts",
+    "#domain/governance/*": "./domains/platform/governance/src/*"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rimraf node_modules",
+    "clean:artifacts": "node scripts/clean-artifacts.js"
+  },
+  "devDependencies": {
+    "baseline-browser-mapping": "^2.9.14",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.3.3"
+  },
+  "dependencies": {
+    "styled-jsx": "^5.1.7"
+  }
+}

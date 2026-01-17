@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "dist",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@manoxen/iam-core": ["packages/iam-core/src/index"],
+      "@manoxen/core-util": ["libs/core-util/src/index"],
+      "@manoxen/shared-types": ["packages/shared-types/src/index"],
+      "@manoxen/*": [
+        "packages/*/src",
+        "apps/*/src",
+        "libs/*/src"
+      ],
+      "@manoxen/catalog": ["domains/commerce/catalog/src"],
+      "@manoxen/catalog/*": ["domains/commerce/catalog/src/*"],
+      "@manoxen/sales": ["domains/commerce/sales/src"],
+      "@manoxen/sales/*": ["domains/commerce/sales/src/*"],
+      "@manoxen/pos": ["domains/commerce/pos/src"],
+      "@manoxen/pos/*": ["domains/commerce/pos/src/*"],
+      "@manoxen/erp": ["domains/enterprise/erp/src"],
+      "@manoxen/erp/*": ["domains/enterprise/erp/src/*"],
+      "@manoxen/hrm": ["domains/enterprise/hrm/src"],
+      "@manoxen/hrm/*": ["domains/enterprise/hrm/src/*"],
+      "@manoxen/governance": ["domains/platform/governance/src"],
+      "@manoxen/governance/*": ["domains/platform/governance/src/*"],
+      "#core/*": ["apps/backend/src/core/*"],
+      "#app/*": ["apps/backend/src/app/*"],
+      "#shared/*": ["apps/backend/src/shared/*"],
+      "#domain/catalog/*": ["domains/commerce/catalog/src/*"],
+      "#domain/sales/*": ["domains/commerce/sales/src/*"],
+      "#domain/pos/*": ["domains/commerce/pos/src/*"],
+      "#domain/erp/*": ["domains/enterprise/erp/src/*"],
+      "#domain/hrm/*": ["domains/enterprise/hrm/src/*"],
+      "#domain/governance/*": ["domains/platform/governance/src/*"]
+    }
+  },
+  "files": [],
+  "references": [
+    { "path": "./domains/commerce/catalog" },
+    { "path": "./domains/commerce/pos" },
+    { "path": "./domains/commerce/sales" },
+    { "path": "./domains/enterprise/erp" },
+    { "path": "./domains/enterprise/hrm" },
+    { "path": "./domains/platform/governance" },
+    { "path": "./libs/core-util" },
+    { "path": "./packages/shared-types" }
+  ],
+  "exclude": ["node_modules", "dist", "build"]
+}

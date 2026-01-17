@@ -1,0 +1,36 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "../../../",
+    "paths": {
+      "#core/*": ["apps/backend/src/core/*"],
+      "#app/*": ["apps/backend/src/app/*"],
+      "#shared/*": ["apps/backend/src/shared/*"],
+      "@manoxen/iam-core": ["packages/iam-core/src/index"],
+      "@manoxen/core-util": ["libs/core-util/src/index"],
+      "@manoxen/shared-types": ["packages/shared-types/src/index"],
+      "@manoxen/catalog": ["domains/commerce/catalog/src"],
+      "@manoxen/catalog/*": ["domains/commerce/catalog/src/*"],
+      "@manoxen/sales": ["domains/commerce/sales/src"],
+      "@manoxen/sales/*": ["domains/commerce/sales/src/*"],
+      "@manoxen/pos": ["domains/commerce/pos/src"],
+      "@manoxen/pos/*": ["domains/commerce/pos/src/*"],
+      "@manoxen/erp": ["domains/enterprise/erp/src"],
+      "@manoxen/erp/*": ["domains/enterprise/erp/src/*"],
+      "@manoxen/hrm": ["domains/enterprise/hrm/src"],
+      "@manoxen/hrm/*": ["domains/enterprise/hrm/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "build"],
+  "references": [
+    { "path": "../../../libs/core-util" },
+    { "path": "../../../packages/iam-core" },
+    { "path": "../../commerce/catalog" },
+    { "path": "../../commerce/sales" },
+    { "path": "../../commerce/pos" },
+    { "path": "../../../packages/shared-types" }
+  ]
+}

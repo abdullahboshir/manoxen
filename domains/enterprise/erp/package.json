@@ -1,0 +1,23 @@
+{
+    "name":  "@manoxen/erp",
+    "version":  "0.0.1",
+    "private":  true,
+    "engines": {
+        "node": ">=20.6.0"
+    },
+    "description": "Enterprise Resource Planning (ERP) Core Domain for Manoxen",
+    "author": "Abdullah Bashir",
+    "license": "MIT",
+    "main":  "./dist/index.js",
+    "types":  "./dist/index.d.ts",
+    "dependencies":  {
+                         "mongoose":  "^8.0.0",
+                         "zod":  "4.3.5",
+                         "@manoxen/catalog": "*"
+                     },
+    "peerDependencies":  {
+                             "@manoxen/core-util":  "*",
+                             "@manoxen/shared-types":  "*"
+                         },
+    "type":  "module"
+}

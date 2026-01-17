@@ -1,0 +1,138 @@
+﻿import status from "http-status";
+
+import {
+  authMeService,
+  loginService,
+  logoutService,
+  refreshTokenAuthService,
+  setupPasswordService,
+  resendSetupInvitationService,
+} from "./auth.service";
+import { catchAsync, ApiResponse } from "@manoxen/core-util";
+import appConfig from "#shared/config/app.config";
+
+
+export const loginController = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const data = await loginService(email, password);
+
+  const { accessToken, refreshToken, needsPasswordChange } = data;
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: appConfig.NODE_ENV === "production",
+    sameSite: appConfig.NODE_ENV === "production" ? "none" : "strict",
+  });
+
+
+
+  ApiResponse.success(
+    res,
+    { accessToken, needsPasswordChange },
+    "User Login has been Successfully",
+    status.OK
+  );
+});
+
+export const refreshTokenController = catchAsync(async (req, res) => {
+  const { refreshToken } = req.cookies;
+
+
+  const result = await refreshTokenAuthService(refreshToken);
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: false, // Explicitly false for debugging
+    sameSite: "lax",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  ApiResponse.success(
+    res,
+    result,
+    "Access Token has been retrieved successfully",
+    status.OK
+  );
+});
+
+export const authMeController = catchAsync(async (req, res) => {
+  const userInfo = req.user;
+  const { businessUnitId } = req.query;
+
+  const scope = businessUnitId ? { businessUnitId: String(businessUnitId) } : undefined;
+
+  const result = await authMeService(userInfo, scope);
+
+  ApiResponse.success(
+    res,
+    result,
+    "Access Token has been retrieved successfully",
+    status.OK
+  );
+});
+
+export const logoutController = catchAsync(async (_req, res) => {
+  await logoutService();
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: false, // Match login/refresh
+    sameSite: "lax", // Match login/refresh
+    path: "/",
+  });
+  ApiResponse.success(
+    res,
+    null,
+    "User has been logged out successfully",
+    200
+  );
+});
+
+export const setupPasswordController = catchAsync(async (req, res) => {
+  const { token, password } = req.body;
+  const result = await setupPasswordService(token, password);
+
+  ApiResponse.success(
+    res,
+    result,
+    "Password has been set successfully",
+    status.OK
+  );
+  ApiResponse.success(
+    res,
+    result,
+    "Password has been set successfully",
+    status.OK
+  );
+});
+
+export const resendSetupInvitationController = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  const result = await resendSetupInvitationService(email);
+
+  ApiResponse.success(
+    res,
+    result,
+    "Invitation link has been resent successfully",
+    status.OK
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

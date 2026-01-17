@@ -1,0 +1,120 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDirs": [
+      "./src",
+      "../../domains/commerce/catalog/src",
+      "../../domains/commerce/pos/src",
+      "../../domains/commerce/sales/src",
+      "../../domains/enterprise/erp/src",
+      "../../domains/enterprise/hrm/src",
+      "../../domains/platform/governance/src",
+      "../../libs/core-util/src",
+      "../../packages/iam-core/src",
+      "../../packages/shared-types/src"
+    ],
+    "outDir": "./dist",
+
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
+    "moduleResolution": "Bundler",
+    "types": ["node"],
+
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Strict Type Checking
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": false,
+
+    // ESM behavior
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+
+    "paths": {
+      "#core/*.js": ["./src/core/*.ts"],
+      "#app/*.js": ["./src/app/*.ts"],
+      "#shared/*.js": ["./src/shared/*.ts"],
+      "#core/*": ["./src/core/*"],
+      "#app/*": ["./src/app/*"],
+      "#shared/*": ["./src/shared/*"],
+      "@core/*.js": ["./src/core/*.ts"],
+      "@app/*.js": ["./src/app/*.ts"],
+      "@shared/*.js": ["./src/shared/*.ts"],
+      "@core/*": ["./src/core/*"],
+      "@app/*": ["./src/app/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@manoxen/core-util": ["../../libs/core-util/src/index.ts"],
+      "@manoxen/iam-core": ["../../packages/iam-core/src/index"],
+      "@manoxen/shared-types": ["../../packages/shared-types/src/index"],
+      "@manoxen/catalog": ["../../domains/commerce/catalog/src/index"],
+      "@manoxen/catalog/*.js": ["../../domains/commerce/catalog/src/*.ts"],
+      "@manoxen/catalog/*": ["../../domains/commerce/catalog/src/*"],
+      "@manoxen/erp": ["../../domains/enterprise/erp/src/index"],
+      "@manoxen/erp/*.js": ["../../domains/enterprise/erp/src/*.ts"],
+      "@manoxen/erp/*": ["../../domains/enterprise/erp/src/*"],
+      "@manoxen/hrm": ["../../domains/enterprise/hrm/src/index"],
+      "@manoxen/hrm/*.js": ["../../domains/enterprise/hrm/src/*.ts"],
+      "@manoxen/hrm/*": ["../../domains/enterprise/hrm/src/*"],
+      "@manoxen/pos": ["../../domains/commerce/pos/src/index"],
+      "@manoxen/pos/*.js": ["../../domains/commerce/pos/src/*.ts"],
+      "@manoxen/pos/*": ["../../domains/commerce/pos/src/*"],
+      "@manoxen/governance": ["../../domains/platform/governance/src/index"],
+      "@manoxen/governance/*.js": ["../../domains/platform/governance/src/*.ts"],
+      "@manoxen/governance/*": ["../../domains/platform/governance/src/*"],
+      "@manoxen/sales": ["../../domains/commerce/sales/src/index"],
+      "@manoxen/sales/*.js": ["../../domains/commerce/sales/src/*.ts"],
+      "@manoxen/sales/*": ["../../domains/commerce/sales/src/*"],
+      "#domain/catalog/index.js": ["../../domains/commerce/catalog/src/index.ts"],
+      "#domain/catalog/*.js": ["../../domains/commerce/catalog/src/*.ts"],
+      "#domain/catalog/*": ["../../domains/commerce/catalog/src/*"],
+      "#domain/sales/index.js": ["../../domains/commerce/sales/src/index.ts"],
+      "#domain/sales/*.js": ["../../domains/commerce/sales/src/*.ts"],
+      "#domain/sales/*": ["../../domains/commerce/sales/src/*"],
+      "#domain/pos/index.js": ["../../domains/commerce/pos/src/index.ts"],
+      "#domain/pos/*.js": ["../../domains/commerce/pos/src/*.ts"],
+      "#domain/pos/*": ["../../domains/commerce/pos/src/*"],
+      "#domain/erp/index.js": ["../../domains/enterprise/erp/src/index.ts"],
+      "#domain/erp/*.js": ["../../domains/enterprise/erp/src/*.ts"],
+      "#domain/erp/*": ["../../domains/enterprise/erp/src/*"],
+      "#domain/hrm/index.js": ["../../domains/enterprise/hrm/src/index.ts"],
+      "#domain/hrm/*.js": ["../../domains/enterprise/hrm/src/*.ts"],
+      "#domain/hrm/*": ["../../domains/enterprise/hrm/src/*"],
+      "#domain/governance/index.js": ["../../domains/platform/governance/src/index.ts"],
+      "#domain/governance/*.js": ["../../domains/platform/governance/src/*.ts"],
+      "#domain/governance/*": ["../../domains/platform/governance/src/*"]
+    },
+    "baseUrl": "./"
+  },
+
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../domains/commerce/catalog" },
+    { "path": "../../domains/commerce/pos" },
+    { "path": "../../domains/commerce/sales" },
+    { "path": "../../domains/enterprise/erp" },
+    { "path": "../../domains/enterprise/hrm" },
+    { "path": "../../domains/platform/governance" },
+    { "path": "../../libs/core-util" },
+    { "path": "../../packages/iam-core" },
+    { "path": "../../packages/shared-types" }
+  ]
+}
