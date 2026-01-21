@@ -1,35 +1,31 @@
-﻿import mongoose from "mongoose";
-import appConfig from "..//shared/config/app.config";
-import { PlatformSettings } from "..//app/modules/platform/settings/platform-settings/platform-settings.model";
-import { SystemSettings } from "..//app/modules/platform/settings/system-settings/system-settings.model";
+import mongoose from "mongoose";
+import { appConfig } from "@manoxen/platform-core";
+import { PlatformSettings } from "../contexts/organization/src/index.js";
+import { SystemSettings } from "../contexts/system/src/index.js";
 import {
     DEFAULT_BRANDING, DEFAULT_SECURITY_HARDENING, DEFAULT_COMPLIANCE,
     DEFAULT_INTERNATIONALIZATION, DEFAULT_MAINTENANCE_POLICY, DEFAULT_LEGAL_GOVERNANCE,
     DEFAULT_COMMERCIAL_SAAS, DEFAULT_SSO_HUB, DEFAULT_WEBHOOK_ORCHESTRATOR,
     DEFAULT_API_DEVELOPER_REGISTRY, DEFAULT_RESOURCE_QUOTA, DEFAULT_BACKUP_REGISTRY,
-    DEFAULT_SMTP_CONFIG, DEFAULT_MODULE_MAP, DEFAULT_OBSERVABILITY,
+    DEFAULT_SMTP_CONFIG, DEFAULT_OBSERVABILITY,
     DEFAULT_STORAGE_REGISTRY, DEFAULT_GATEWAY_GOVERNANCE
-} from "..//app/modules/platform/organization/shared/common.defaults";
+} from "../contexts/organization/src/index.js";
+import { DEFAULT_MODULE_MAP, Organization } from "../contexts/organization/src/index.js";
 import "colors";
+
 
 const patchSettings = async () => {
     try {
         console.log("Connecting to DB...".yellow);
         await mongoose.connect(appConfig.db_url);
-        console.log("âœ… Connected to DB".green);
+        console.log("✅ Connected to DB".green);
 
         // --- PLATFORM SETTINGS ---
-        console.log("ðŸ› ï¸  Patching Platform Settings...".blue);
-        let platform = await PlatformSettings.findOne();
+        console.log("🛠️  Patching Platform Settings...".blue);
+        const platform = await (PlatformSettings as any).getSettings();
+        console.log("   Platform Settings initialized/found.");
 
-        if (!platform) {
-            console.log("   Platform Settings not found. Creating new...".magenta);
-            platform = new PlatformSettings({});
-        } else {
-            console.log("   Platform Settings found. Updating missing fields...".cyan);
-        }
-
-        // Apply Defaults via simple check
+        // Apply Defaults via simple check (Optional enrichment)
         if (!platform.branding) platform.branding = DEFAULT_BRANDING;
         if (!platform.securityHardening) platform.securityHardening = DEFAULT_SECURITY_HARDENING;
         if (!platform.compliance) platform.compliance = DEFAULT_COMPLIANCE;
@@ -42,22 +38,13 @@ const patchSettings = async () => {
         if (!platform.apiDeveloperRegistry) platform.apiDeveloperRegistry = DEFAULT_API_DEVELOPER_REGISTRY;
         if (!platform.resourceQuotaBlueprint) platform.resourceQuotaBlueprint = DEFAULT_RESOURCE_QUOTA;
 
-        // Deep merge for nested objects if they exist but might be partial (optional but safe)
-        // For now, we assume if the top-level key exists, it's fine, or we overwrite if it's strictly empty.
-
         await platform.save();
-        console.log("âœ… Platform Settings Patched".green);
+        console.log("✅ Platform Settings Patched".green);
 
         // --- SYSTEM SETTINGS ---
-        console.log("ðŸ› ï¸  Patching System Settings...".blue);
-        let system = await SystemSettings.findOne();
-
-        if (!system) {
-            console.log("   System Settings not found. Creating new...".magenta);
-            system = new SystemSettings({});
-        } else {
-            console.log("   System Settings found. Updating missing fields...".cyan);
-        }
+        console.log("🛠️  Patching System Settings...".blue);
+        const system = await (SystemSettings as any).getSettings();
+        console.log("   System Settings initialized/found.");
 
         if (!system.core) {
             system.core = {
@@ -85,12 +72,12 @@ const patchSettings = async () => {
         if (!system.internationalizationHub) system.internationalizationHub = DEFAULT_INTERNATIONALIZATION;
 
         await system.save();
-        console.log("âœ… System Settings Patched".green);
+        console.log("✅ System Settings Patched".green);
 
         process.exit(0);
 
     } catch (error) {
-        console.error("âŒ Patch Failed:", error);
+        console.error("❌ Patch Failed:", error);
         process.exit(1);
     }
 };

@@ -32,7 +32,7 @@ export const useBusinessUnitSubmit = () => {
    */
   const resolveBusinessUnit = (data: any) => {
     const submissionData = { ...data };
-    let targetBU = ";
+    let targetBU =  "";
 
     // Super admin can select BU
     if (isSuperAdmin && data.businessUnit) {
@@ -50,7 +50,7 @@ export const useBusinessUnitSubmit = () => {
     }
 
     // Handle global special case
-    if (targetBU === "global") targetBU = ";
+    if (targetBU === "global") targetBU =  "";
 
     // Set final BU (null for global, ID for specific)
     submissionData.businessUnit = targetBU || null;

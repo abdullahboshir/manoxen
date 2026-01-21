@@ -23,7 +23,7 @@ import { DataPageLayout } from "@/components/shared/DataPageLayout";
 import { StatCard } from "@/components/shared/StatCard";
 // import { AutoFormModal } from "@/components/shared/AutoFormModal"; // Re-enable if we want quick edit
 
-import { useGetInventorysQuery } from "@/redux/api/inventory/inventoryApi"; // CHANGED
+import { useGetInventorysQuery } from "@/features/inventory/api/inventoryApi"; // CHANGED
 import { useAuth } from "@manoxen/auth-client";
 import { usePermissions } from "@/hooks/usePermissions";
 import { PERMISSION_KEYS } from "@/config/permission-keys";

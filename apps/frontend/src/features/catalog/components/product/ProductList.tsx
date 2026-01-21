@@ -41,7 +41,7 @@ import {
     useGetProductsQuery,
     useDeleteProductMutation,
     useUpdateProductMutation
-} from "@/redux/api/catalog/productApi";
+} from "@/features/catalog/api/productApi";
 import { usePermissions } from "@/hooks/usePermissions";
 import { PERMISSION_KEYS } from "@/config/permission-keys";
 import { PRODUCT_STATUS, PRODUCT_STATUS_OPTIONS } from "@/constant/product.constant";
@@ -328,7 +328,7 @@ export function ProductList() {
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0 bg-background" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" className="h-8 w-8 p-0 bg-background" onClick={(e: any) => e.stopPropagation()}>
                                 <span className="sr-only">Open menu</span>
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>

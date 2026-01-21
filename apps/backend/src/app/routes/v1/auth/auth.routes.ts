@@ -1,4 +1,4 @@
-﻿import { authRoutes } from "#app/modules/iam/auth/auth.routes";
+import { authRoutes } from "@manoxen/iam/interface/http/routes/auth.routes";
 import { Router } from "express";
 
 const router = Router();

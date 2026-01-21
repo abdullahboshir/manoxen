@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetLedgerQuery } from "@/redux/api/inventory/inventoryApi";
+import { useGetLedgerQuery } from "@/features/inventory/api/inventoryApi";
 import { DataTable } from "@/components/shared/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";

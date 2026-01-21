@@ -7,7 +7,7 @@ export const PACKAGE_MODULE = {
     POS: 'pos',
     ERP: 'erp',
     HRM: 'hrm',
-    ECOMMERCE: 'ecommerce',
+    COMMERCE: 'commerce',
     CRM: 'crm',
     LOGISTICS: 'logistics'
 } as const;

@@ -1,4 +1,4 @@
-﻿import { type Request, type Response, type NextFunction } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 
 export const authMiddleware = (_req: Request, _res: Response, next: NextFunction) => {
   // Authentication logic here

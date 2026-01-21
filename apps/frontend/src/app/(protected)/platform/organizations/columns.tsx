@@ -21,7 +21,7 @@ export type OrganizationColumn = {
         pos: boolean
         erp: boolean
         hrm: boolean
-        ecommerce: boolean
+        commerce: boolean
         governance: boolean
     }
     legalRepresentative?: {

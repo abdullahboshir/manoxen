@@ -1,0 +1,8 @@
+{
+  "name": "@manoxen/ui-kit",
+  "version": "1.0.0",
+  "description": "UI Kit for Manoxen platform",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "type": "module"
+}

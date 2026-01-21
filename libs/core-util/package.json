@@ -1,25 +1,23 @@
 {
-    "name":  "@manoxen/core-util",
-    "version":  "0.0.1",
-    "private":  true,
-    "engines": {
-        "node": ">=20.6.0"
-    },
-    "description": "Core Shared Utilities and Middlewares for Manoxen Backend",
-    "author": "Abdullah Bashir",
-    "license": "MIT",
-    "main":  "./dist/index.js",
-    "types":  "./dist/index.d.ts",
-    "devDependencies":  {
-                            "typescript":  "^5.0.0",
-                            "@types/express": "^5.0.0"
-                        },
-    "dependencies": {
-        "express": "^5.0.0",
-        "mongoose": "^8.0.0",
-        "http-status": "^2.0.0",
-        "redis": "^4.6.0",
-        "colors": "^1.4.0"
-    },
-    "type":  "module"
+  "name": "@manoxen/core-util",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Core utility functions and classes for Manoxen platform",
+  "author": "Abdullah Bashir",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.0.0",
+    "http-status": "^2.1.0",
+    "ioredis": "^5.4.1",
+    "mongoose": "^8.0.0",
+    "ulid": "^2.3.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
 }

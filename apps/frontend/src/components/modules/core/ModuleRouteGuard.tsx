@@ -12,7 +12,7 @@ const MODULE_ROUTE_MAPPING: Record<string, string[]> = {
     pos: ['pos', 'outlets', 'terminals'],
     erp: ['inventory', 'sales', 'purchases', 'finance', 'accounting', 'catalog', 'reports', 'suppliers'],
     hrm: ['hrm', 'staff', 'payroll', 'attendance', 'leave', 'shift'],
-    ecommerce: ['online-store', 'content', 'products/collections'],
+    commerce: ['online-store', 'content', 'products/collections'],
     crm: ['marketing', 'customers', 'support', 'contacts'],
     logistics: ['logistics', 'risk', 'courier'],
 }

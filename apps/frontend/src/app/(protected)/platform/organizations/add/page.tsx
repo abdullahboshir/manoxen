@@ -101,7 +101,7 @@ export default function AddOrganizationPage() {
             pos: true,
             erp: true,
             hrm: false,
-            ecommerce: false,
+            commerce: false,
             crm: false,
             logistics: false,
             finance: false,

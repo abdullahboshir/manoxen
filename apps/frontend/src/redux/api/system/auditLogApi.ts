@@ -1,4 +1,4 @@
-import { baseApi } from "../base/baseApi";
+import { baseApi } from "@/redux/api/base/baseApi";
 
 export const auditLogApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -9,7 +9,7 @@ export const auditLogApi = baseApi.injectEndpoints({
             }),
         }),
         getAuditLogById: builder.query<any, string>({
-            query: (id) => `/audit-logs/${id}`,
+            query: (id) => ({ url: `/audit-logs/${id}` }),
         }),
     }),
 });

@@ -2,7 +2,8 @@
 
 import { useParams } from "next/navigation";
 import { useAuth } from "./useAuth";
-import { normalizeAuthString, USER_ROLE } from "@manoxen/iam-core";
+import { normalizeAuthString } from "@manoxen/iam-core/src/utils/role.helper";
+import { USER_ROLE } from "@manoxen/iam-core/src/constants/user.constant";
 
 interface UseCurrentRoleResult {
   currentRole?: string;

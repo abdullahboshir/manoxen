@@ -7,15 +7,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2, Plus, MinusIcon } from "lucide-react"
-import { useGetRolesQuery, useGetPermissionsQuery, useGetPermissionGroupsQuery, useGetPermissionResourcesQuery } from "@/redux/api/iam/roleApi"
+import { useGetRolesQuery, useGetPermissionsQuery, useGetPermissionGroupsQuery, useGetPermissionResourcesQuery } from "@/features/iam/api/roleApi"
 import { isSuperAdmin, USER_ROLES, matchesRole } from "@/config/auth-constants"
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi"
 import { useGetSystemSettingsQuery } from "@/redux/api/system/settingsApi";
 import { useAuth } from "@manoxen/auth-client";
-import { OutletMultiSelect } from "@/components/modules/user-management/OutletMultiSelect"
+import { OutletMultiSelect } from "./OutletMultiSelect"
 import { User } from "@/types/user";
 import { RESOURCE_KEYS, PLATFORM_RESOURCES, MODULE_RESOURCE_MAP } from "@/config/permission-keys";
-import { PermissionSelectorShared } from "@/components/modules/user-management/PermissionSelectorShared"
+import { PermissionSelectorShared } from "./PermissionSelectorShared"
 import { toast } from "sonner"
 import {
     Select,

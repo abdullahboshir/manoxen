@@ -54,11 +54,11 @@ import {
 import { toast } from "sonner";
 
 
-import { useCreatePurchaseMutation } from "@/redux/api/inventory/purchaseApi";
-import { useGetSuppliersQuery } from "@/redux/api/contacts/supplierApi";
+import { useCreatePurchaseMutation } from "@/features/inventory/api/purchaseApi";
+import { useGetSuppliersQuery } from "@/features/contacts/api/supplierApi";
 import { useGetOutletsQuery } from "@/redux/api/organization/outletApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
-import { useGetProductsQuery } from "@/redux/api/catalog/productApi";
+import { useGetProductsQuery } from "@/features/catalog/api/productApi";
 import { usePermissions } from "@/hooks/usePermissions";
 
 import { PURCHASE_STATUS_OPTIONS, PURCHASE_PAYMENT_METHOD_OPTIONS, PURCHASE_PAYMENT_STATUS_OPTIONS } from "@/constant/purchase.constant";
@@ -124,7 +124,7 @@ export function CreatePurchaseForm() {
     }, [scopedBU]);
 
 
-    const businessUnitId = selectedBUSlug || ";
+    const businessUnitId = selectedBUSlug ||  "";
 
     // Fetch ALL suppliers to ensure we get Global (empty businessUnits) + Scoped ones.
     // Client-side filtering handles the visibility logic.

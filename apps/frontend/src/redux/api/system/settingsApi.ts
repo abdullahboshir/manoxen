@@ -1,5 +1,5 @@
-import { tagTypes } from "../../tag-types";
-import { baseApi } from "../base/baseApi";
+import { tagTypes } from "@/redux/tag-types";
+import { baseApi } from "@/redux/api/base/baseApi";
 import {
   ISystemSettings,
   IPlatformSettings,

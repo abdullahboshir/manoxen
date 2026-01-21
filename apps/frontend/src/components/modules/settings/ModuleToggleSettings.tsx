@@ -20,7 +20,7 @@ export function ModuleToggleSettings() {
         pos: true,
         erp: true,
         hrm: true,
-        ecommerce: true,
+        commerce: true,
         crm: true,
         logistics: true,
         finance: true,
@@ -37,7 +37,7 @@ export function ModuleToggleSettings() {
                 pos: settings.enabledModules.pos ?? true,
                 erp: settings.enabledModules.erp ?? true,
                 hrm: settings.enabledModules.hrm ?? true,
-                ecommerce: settings.enabledModules.ecommerce ?? true,
+                commerce: settings.enabledModules.commerce ?? true,
                 crm: settings.enabledModules.crm ?? true,
                 logistics: settings.enabledModules.logistics ?? true,
                 finance: settings.enabledModules.finance ?? true,
@@ -172,8 +172,8 @@ export function ModuleToggleSettings() {
                     <ModuleSwitch
                         label="E-Commerce"
                         description="Online Storefront, Themes & CMS"
-                        checked={modules.ecommerce}
-                        onCheckedChange={(c) => handleToggle('ecommerce', c)}
+                        checked={modules.commerce}
+                        onCheckedChange={(c) => handleToggle('commerce', c)}
                     />
                     <ModuleSwitch
                         label="CRM Suite"

@@ -3,13 +3,17 @@ export type ModuleName =
   | 'pos' 
   | 'erp' 
   | 'hrm' 
-  | 'ecommerce' 
+  | 'commerce' 
   | 'crm' 
+  | 'logistics'
   | 'governance' 
   | 'integrations' 
   | 'system' 
   | 'saas' 
-  | 'platform';
+  | 'platform'
+  | 'accounting'
+  | 'reports'
+  | 'api_access';
 
 export interface IModuleConfig {
   enabled: boolean;

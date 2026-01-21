@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./core/iam" },
+    { "path": "./core/organization" },
+    { "path": "./core/governance" },
+    { "path": "./domains/commerce/catalog" },
+    { "path": "./domains/commerce/pos" },
+    { "path": "./domains/commerce/sales" },
+    { "path": "./domains/commerce/pricing" },
+    { "path": "./domains/enterprise/supply" },
+    { "path": "./domains/enterprise/accounting" },
+    { "path": "./domains/enterprise/ops" },
+    { "path": "./domains/enterprise/analytics" },
+    { "path": "./domains/enterprise/hrm" },
+    { "path": "./domains/enterprise/legal" },
+    { "path": "./domains/enterprise/corporate" },
+    { "path": "./domains/enterprise/operations" },
+    { "path": "./domains/platform/contracts" },
+    { "path": "./libs/core-util" },
+    { "path": "./packages/shared-types" }
+  ]
+}

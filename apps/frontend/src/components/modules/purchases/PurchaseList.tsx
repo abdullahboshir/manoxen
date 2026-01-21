@@ -29,8 +29,8 @@ import {
     useCreatePurchaseMutation,
     useUpdatePurchaseMutation,
     useDeletePurchaseMutation
-} from "@/redux/api/inventory/purchaseApi";
-import { useGetSuppliersQuery } from "@/redux/api/contacts/supplierApi";
+} from "@/features/inventory/api/purchaseApi";
+import { useGetSuppliersQuery } from "@/features/contacts/api/supplierApi";
 import { toast } from "sonner";
 import { PurchaseItemsField } from "./components/PurchaseItemsField";
 import { useAuth } from "@manoxen/auth-client";

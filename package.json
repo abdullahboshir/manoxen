@@ -20,7 +20,6 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "domains/**/*",
     "libs/*"
   ],
   "imports": {
@@ -30,32 +29,45 @@
     "#core/*": "./apps/backend/src/core/*",
     "#app/*": "./apps/backend/src/app/*",
     "#shared/*": "./apps/backend/src/shared/*",
-    "#domain/catalog/*.js": "./domains/commerce/catalog/src/*.ts",
-    "#domain/catalog/*": "./domains/commerce/catalog/src/*",
-    "#domain/sales/*.js": "./domains/commerce/sales/src/*.ts",
-    "#domain/sales/*": "./domains/commerce/sales/src/*",
-    "#domain/pos/*.js": "./domains/commerce/pos/src/*.ts",
-    "#domain/pos/*": "./domains/commerce/pos/src/*",
-    "#domain/erp/*.js": "./domains/enterprise/erp/src/*.ts",
-    "#domain/erp/*": "./domains/enterprise/erp/src/*",
-    "#domain/hrm/*.js": "./domains/enterprise/hrm/src/*.ts",
-    "#domain/hrm/*": "./domains/enterprise/hrm/src/*",
-    "#domain/governance/*.js": "./domains/platform/governance/src/*.ts",
-    "#domain/governance/*": "./domains/platform/governance/src/*"
+    "#domain/catalog/*.js": "./apps/backend/src/contexts/catalog/src/*.ts",
+    "#domain/catalog/*": "./apps/backend/src/contexts/catalog/src/*",
+    "#domain/sales/*.js": "./apps/backend/src/contexts/sales/src/*.ts",
+    "#domain/sales/*": "./apps/backend/src/contexts/sales/src/*",
+    "#domain/pos/*.js": "./apps/backend/src/contexts/pos/src/*.ts",
+    "#domain/pos/*": "./apps/backend/src/contexts/pos/src/*",
+    "#domain/accounting/*.js": "./apps/backend/src/contexts/accounting/src/*.ts",
+    "#domain/accounting/*": "./apps/backend/src/contexts/accounting/src/*",
+    "#domain/hrm/*.js": "./apps/backend/src/contexts/hrm/src/*.ts",
+    "#domain/hrm/*": "./apps/backend/src/contexts/hrm/src/*",
+    "#domain/organization/*.js": "./apps/backend/src/contexts/organization/src/*.ts",
+    "#domain/organization/*": "./apps/backend/src/contexts/organization/src/*",
+    "#domain/iam/*.js": "./apps/backend/src/contexts/identity/src/*.ts",
+    "#domain/iam/*": "./apps/backend/src/contexts/identity/src/*",
+    "#domain/governance/*.js": "./apps/backend/src/contexts/governance/src/*.ts",
+    "#domain/governance/*": "./apps/backend/src/contexts/governance/src/*",
+    "#contract/*.js": "./apps/backend/src/contexts/contracts/src/*.ts",
+    "#contract/*": "./apps/backend/src/contexts/contracts/src/*"
   },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
+    "tsc:backend": "turbo run build --filter=@manoxen/backend",
     "clean": "turbo run clean && rimraf node_modules",
     "clean:artifacts": "node scripts/clean-artifacts.js"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/papaparse": "^5.5.2",
+    "@types/react-dom": "^19.2.3",
     "baseline-browser-mapping": "^2.9.14",
     "rimraf": "^6.0.1",
     "turbo": "^2.3.3"
   },
   "dependencies": {
-    "styled-jsx": "^5.1.7"
+    "date-fns": "4.1.0",
+    "lucide-react": "0.453.0",
+    "styled-jsx": "^5.1.7",
+    "sweetalert2": "11.26.17"
   }
 }

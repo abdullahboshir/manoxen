@@ -21,7 +21,7 @@ import { DataPageLayout } from "@/components/shared/DataPageLayout";
 import { StatCard } from "@/components/shared/StatCard";
 import { AutoFormModal } from "@/components/shared/AutoFormModal";
 
-import { useCreateBrandMutation, useDeleteBrandMutation, useGetBrandsQuery, useUpdateBrandMutation } from "@/redux/api/catalog/brandApi";
+import { useCreateBrandMutation, useDeleteBrandMutation, useGetBrandsQuery, useUpdateBrandMutation } from "@/features/catalog/api/brandApi";
 import { useAuth } from "@manoxen/auth-client";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -269,7 +269,7 @@ export const BrandList = () => {
                     name="availableModules"
                     label="Available Modules"
                     placeholder="Select available modules..."
-                    include={['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations']}
+                    include={['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations']}
                 />
             )
         });
@@ -324,7 +324,7 @@ export const BrandList = () => {
                     businessUnit: (editingBrand.businessUnit as any)?.id || (editingBrand.businessUnit as any)?._id || editingBrand.businessUnit || "global"
                 } : {
                     status: "active",
-                    availableModules: ['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations'],
+                    availableModules: ['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations'],
                     businessUnit: isSuperAdmin ? (paramBusinessUnit ? businessUnits.find((b: any) => b.slug === paramBusinessUnit || b._id === paramBusinessUnit)?._id : "global") : "global"
                 }}
                 onSubmit={handleSubmit}

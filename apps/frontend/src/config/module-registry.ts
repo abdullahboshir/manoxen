@@ -54,10 +54,10 @@ export const OPERATIONAL_MODULES = [
   "erp",
   "crm",
   "inventory",
-  "ecommerce",
+  "commerce",
   "hrm",
   "logistics",
-  "finance",
+  "accounting",
   "marketing",
   "integrations",
 ];
@@ -159,7 +159,7 @@ export const APP_MODULES: Record<string, AppModule> = {
       },
       {
         title: "Reports",
-        path: "reports/logistics",
+        path: "marketing/logistics",
         resource: RESOURCE_KEYS.DELIVERY,
         action: ACTION_KEYS.VIEW,
       },
@@ -278,37 +278,13 @@ export const APP_MODULES: Record<string, AppModule> = {
     module: "crm",
   },
 
-  MARKETING: {
-    title: "Marketing",
-    path: "marketing",
-    icon: Megaphone,
-    resource: RESOURCE_KEYS.PROMOTION,
-    module: "marketing",
-    children: [
-      {
-        title: "Campaigns",
-        path: "marketing/campaigns",
-        resource: RESOURCE_KEYS.AD_CAMPAIGN,
-      },
-      {
-        title: "Discounts",
-        path: "marketing/discounts",
-        resource: RESOURCE_KEYS.PROMOTION,
-      },
-      {
-        title: "Coupons",
-        path: "marketing/coupons",
-        resource: RESOURCE_KEYS.COUPON,
-      },
-    ],
-  },
 
   STOREFRONT: {
     title: "Online Store",
     path: "storefront",
     icon: Globe,
     resource: RESOURCE_KEYS.STOREFRONT,
-    module: "ecommerce",
+    module: "commerce",
     children: [
       {
         title: "Themes",
@@ -356,21 +332,21 @@ export const APP_MODULES: Record<string, AppModule> = {
     ],
   },
 
-  FINANCE: {
-    title: "Finance",
-    path: "finance",
+  ACCOUNTING_OLD: {
+    title: "Accounting (Legacy)",
+    path: "accounting/legacy",
     icon: DollarSign,
     resource: RESOURCE_KEYS.ACCOUNT,
-    module: "finance",
+    module: "erp",
     children: [
       {
         title: "Transactions",
-        path: "finance/transactions",
+        path: "accounting/transactions",
         resource: RESOURCE_KEYS.TRANSACTION,
       },
       {
         title: "Accounts",
-        path: "finance/accounts",
+        path: "accounting/accounts",
         resource: RESOURCE_KEYS.ACCOUNT,
       },
     ],
@@ -379,7 +355,7 @@ export const APP_MODULES: Record<string, AppModule> = {
   ACCOUNTING: {
     title: "Accounting",
     path: "accounting",
-    module: "finance",
+    module: "erp", // Changed from finance
     children: [
       {
         title: "Chart of Accounts",
@@ -387,24 +363,56 @@ export const APP_MODULES: Record<string, AppModule> = {
         resource: RESOURCE_KEYS.ACCOUNT,
       },
       {
-        title: "Journal",
+        title: "Journal Entries",
         path: "accounting/journal",
-        resource: RESOURCE_KEYS.TRANSACTION,
+        resource: RESOURCE_KEYS.JOURNAL,
       },
       {
         title: "General Ledger",
         path: "accounting/ledger",
-        resource: RESOURCE_KEYS.TRANSACTION,
+        resource: RESOURCE_KEYS.LEDGER,
+      },
+      {
+        title: "Balance Sheet",
+        path: "accounting/balance-sheet",
+        resource: RESOURCE_KEYS.BALANCE_SHEET,
       },
     ],
   },
 
-  REPORTS: {
-    title: "Reports",
-    path: "reports",
-    icon: BarChart3,
+  MARKETING: {
+    title: "Marketing & Automation",
+    path: "marketing",
+    icon: Megaphone, // Changed to Megaphone for Marketing
     resource: RESOURCE_KEYS.REPORT,
-    module: "system",
+    module: "marketing",
+    children: [
+      {
+        title: "Analytics",
+        path: "marketing/analytics",
+        resource: RESOURCE_KEYS.REPORT,
+      },
+      {
+        title: "Campaigns",
+        path: "marketing/campaigns",
+        resource: RESOURCE_KEYS.AD_CAMPAIGN,
+      },
+      {
+        title: "Coupons",
+        path: "marketing/coupons",
+        resource: RESOURCE_KEYS.COUPON,
+      },
+      {
+        title: "Audiences",
+        path: "marketing/audiences",
+        resource: RESOURCE_KEYS.CUSTOMER,
+      },
+      {
+        title: "SEO Settings",
+        path: "marketing/seo",
+        resource: RESOURCE_KEYS.REPORT,
+      },
+    ],
   },
 
   NOTIFICATIONS: {
@@ -428,6 +436,16 @@ export const APP_MODULES: Record<string, AppModule> = {
         resource: RESOURCE_KEYS.TICKET,
       },
       { title: "Chats", path: "support/chats", resource: RESOURCE_KEYS.CHAT },
+      {
+        title: "Calls",
+        path: "support/calls",
+        resource: RESOURCE_KEYS.CALL,
+      },
+      {
+        title: "Meetings",
+        path: "support/meetings",
+        resource: RESOURCE_KEYS.MEETING,
+      },
       {
         title: "Knowledge Base",
         path: "support/kb",
@@ -486,6 +504,16 @@ export const APP_MODULES: Record<string, AppModule> = {
         resource: RESOURCE_KEYS.FEATURE,
       }, // [NEW] Module Registry
       {
+        title: "Tenants",
+        path: "system/tenants",
+        resource: RESOURCE_KEYS.TENANT,
+      },
+      {
+        title: "Domains & SSL",
+        path: "system/domains",
+        resource: RESOURCE_KEYS.DOMAIN,
+      },
+      {
         title: "Audit Logs",
         path: "system/audit-logs",
         resource: RESOURCE_KEYS.AUDIT_LOG,
@@ -509,6 +537,11 @@ export const APP_MODULES: Record<string, AppModule> = {
         title: "System Notifications",
         path: "system/notifications",
         resource: RESOURCE_KEYS.NOTIFICATION,
+      },
+      {
+        title: "Media Manager",
+        path: "system/media",
+        resource: RESOURCE_KEYS.MEDIA,
       },
       {
         title: "Languages",
@@ -563,7 +596,7 @@ export const APP_MODULES: Record<string, AppModule> = {
     path: "content",
     icon: FileText,
     resource: RESOURCE_KEYS.CONTENT,
-    module: "ecommerce",
+    module: "commerce",
   },
 
   RISK_MANAGEMENT: {
@@ -619,6 +652,22 @@ export const APP_MODULES: Record<string, AppModule> = {
     ],
   },
 
+  FINANCE: {
+    title: "Finance",
+    path: "finance",
+    icon: DollarSign,
+    resource: RESOURCE_KEYS.PAYMENT,
+    module: "finance",
+  },
+
+  REPORTS: {
+    title: "Reports",
+    path: "reports",
+    icon: BarChart3,
+    resource: RESOURCE_KEYS.REPORT,
+    module: "system",
+  },
+
   ROUTE_PATHS: {
     title: "Route Paths",
     path: "/route-paths",
@@ -668,12 +717,12 @@ export const ROUTE_PATHS = {
     SUBSCRIPTIONS: "customers/subscriptions",
     REVIEWS: "customers/reviews", // Added
   },
-  FINANCE: {
-    PAYMENTS: "finance/payments",
-    SETTLEMENTS: "finance/settlements",
-    PAYOUTS: "finance/payouts",
-    FRAUD: "finance/fraud-detection",
-    AUDIT_LOGS: "finance/audit-logs",
+  ACCOUNTING: {
+    PAYMENTS: "accounting/payments",
+    SETTLEMENTS: "accounting/settlements",
+    PAYOUTS: "accounting/payouts",
+    FRAUD: "accounting/fraud-detection",
+    AUDIT_LOGS: "accounting/audit-logs",
   },
   POS: {
     QUICK_SALES: "pos/quick-sales",
@@ -701,6 +750,14 @@ export const ROUTE_PATHS = {
   },
   LOGISTICS: {
     ROOT: "logistics",
+  },
+  FINANCE: {
+    PAYMENTS: "finance/payments",
+    SETTLEMENTS: "finance/settlements",
+    PAYOUTS: "finance/payouts",
+    FRAUD: "finance/fraud-detection",
+    AUDIT_LOGS: "finance/audit-logs",
+    ROOT: "finance",
   },
   // Add others as needed
 };

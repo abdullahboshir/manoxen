@@ -2,6 +2,7 @@ export const RESOURCE_KEYS = {
   // Business
   // Platform & Infrastructure
   BUSINESS_UNIT: "businessUnit",
+  SYSTEM: "system", // Legacy support
   SYSTEM_CONFIG: "systemConfig",
   PLATFORM_SETTING: "platformSetting",
   ORGANIZATION_SETTING: "organizationSetting",
@@ -13,6 +14,9 @@ export const RESOURCE_KEYS = {
   WEBHOOK: "webhook",
   THEME: "theme",
   PLUGIN: "plugin",
+  TENANT: "tenant",
+  DOMAIN: "domain",
+  SSL: "ssl",
   LANGUAGE: "language",
   CURRENCY: "currency",
   ZONE: "zone",
@@ -41,6 +45,8 @@ export const RESOURCE_KEYS = {
   PROMOTION: "promotion",
   ABANDONED_CART: "abandonedCart",
   CONTENT: "content",
+  MEDIA: "media",
+  FOLDER: "folder",
 
   // Customers & Users
   CUSTOMER: "customer",
@@ -76,6 +82,9 @@ export const RESOURCE_KEYS = {
   RECONCILIATION: "reconciliation",
   EXPENSE: "expense",
   EXPENSE_CATEGORY: "expenseCategory",
+  JOURNAL: "journal",
+  LEDGER: "ledger",
+  BALANCE_SHEET: "balanceSheet",
 
   // Logistics & Delivery
   SHIPPING: "shipping",
@@ -123,6 +132,9 @@ export const RESOURCE_KEYS = {
   SMS_TEMPLATE: "smsTemplate",
   TICKET: "ticket",
   DISPUTE: "dispute",
+  CALL: "call",
+  MEETING: "meeting",
+  NOTE: "note",
   QUESTION: "question",
 
   // Automation & Risk
@@ -134,7 +146,7 @@ export const RESOURCE_KEYS = {
 
   // Governance & Compliance
   SHAREHOLDER: "shareholder",
-  MEETING: "meeting",
+
   VOTING: "voting",
   COMPLIANCE: "compliance",
   LICENSE: "license",
@@ -143,8 +155,6 @@ export const RESOURCE_KEYS = {
   GLOBAL: "global",
 } as const;
 
-// Mapping of High-Level System Modules (Toggleable) to specific Resource Keys
-// If a module is Disabled, these resources will be hidden.
 // Mapping of High-Level System Modules (Toggleable) to specific Resource Keys
 // If a module is Disabled, these resources will be hidden.
 export const MODULE_RESOURCE_MAP: Record<string, string[]> = {
@@ -213,7 +223,7 @@ export const MODULE_RESOURCE_MAP: Record<string, string[]> = {
     RESOURCE_KEYS.ASSET,
   ],
 
-  ecommerce: [
+  commerce: [
     RESOURCE_KEYS.THEME,
     RESOURCE_KEYS.PLUGIN,
     RESOURCE_KEYS.SEO,
@@ -229,6 +239,9 @@ export const MODULE_RESOURCE_MAP: Record<string, string[]> = {
     RESOURCE_KEYS.TICKET,
     RESOURCE_KEYS.CHAT,
     RESOURCE_KEYS.DISPUTE,
+    RESOURCE_KEYS.CALL,
+    RESOURCE_KEYS.MEETING,
+    RESOURCE_KEYS.NOTE,
     RESOURCE_KEYS.AUDIENCE,
     RESOURCE_KEYS.PIXEL,
     RESOURCE_KEYS.EVENT,
@@ -267,6 +280,9 @@ export const MODULE_RESOURCE_MAP: Record<string, string[]> = {
     RESOURCE_KEYS.BUSINESS_SETTING,
     RESOURCE_KEYS.OUTLET_SETTING,
     RESOURCE_KEYS.BACKUP,
+    RESOURCE_KEYS.TENANT,
+    RESOURCE_KEYS.DOMAIN,
+    RESOURCE_KEYS.SSL,
     RESOURCE_KEYS.AUDIT_LOG,
     RESOURCE_KEYS.LANGUAGE,
     RESOURCE_KEYS.CURRENCY,

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Plus, Building2, Users, Store, DollarSign, Shield } from "lucide-react";
 
-import { useGetDashboardStatsQuery } from "@/redux/api/iam/adminApi";
+import { useGetDashboardStatsQuery } from "@/features/iam/api/adminApi";
 import { useGetBusinessUnitDashboardStatsQuery } from "@/redux/api/organization/businessUnitApi";
 import { useCurrentRole } from "@manoxen/auth-client";
 import { GrowthChart } from "@/components/modules/platform-dashboard/GrowthChart";

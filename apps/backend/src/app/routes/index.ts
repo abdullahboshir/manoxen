@@ -1,6 +1,6 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { v1Routes } from "./v1/index";
-import { SystemSettingsRoutes } from "..//modules/platform/settings/system-settings/system-settings.routes";
+import { SystemSettingsRoutes } from "@manoxen/system";
 import { ApiResponse } from "@manoxen/core-util";
 
 const router = Router();

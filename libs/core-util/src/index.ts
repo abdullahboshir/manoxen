@@ -16,3 +16,4 @@ export * from './database/shared-interfaces';
 export * from './controllers/GenericController';
 export * from './middleware/validateRequest';
 export * from './utils/cache-manager';
+export { default as redisClient } from './config/redis';

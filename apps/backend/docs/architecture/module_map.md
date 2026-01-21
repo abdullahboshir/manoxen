@@ -17,65 +17,53 @@ graph TD
 
 ## 📂 Directory Reference
 
-### 1. Platform (`/platform`)
+### 1. Apps Layer (`/apps`)
 
-**"The SaaS Engine"**
+**"The Application Gateway"**
 
-- `organization/`: Tenants (`organization`) and Business Units (`business-unit`).
-  - `organization/settings`: **Tenant Config** (Branding, Tax).
-  - `business-unit/settings`: **BU Config** (Master Configuration).
-    - `pos/`: Counter & Receipt settings.
-    - `finance/`: Tax & Payment.
-    - `commerce/`: Shipping & Checkout.
-    - `hrm/`: Attendance & Payroll.
-    - `general/`: Other Configurations.
-  - `outlet/settings`: **Outlet Config** (POS Counters).
-- `settings/system-settings`: **Global Config** (Currency, Languages).
-- `license/`: Subscription tracking.
-- `package/`: SaaS Plans.
+- `backend/`: The main API Gateway and Service consumer.
+  - `src/app/`: Express App setup, Middlewares, Routes.
+  - `src/core/`: Application-specific core logic (not to be confused with Monorepo Core).
 
-### 2. IAM (`/iam`)
+### 2. Core Layer (`/core`)
 
-**"Identity & Access"**
+**"The Foundation"** - Shared domains required by the entire platform.
 
-- `user/`: Central User entity.
-- `role/`: RBAC definitions.
-- `index.ts`: Public API for IAM.
+- `iam/`: **Identity & Access Management** (Users, Roles, Permissions).
+- `organization/`: **Tenancy Structure** (Organization, Business Unit, Outlet).
+- `governance/`: **Compliance** (Legal entities, Shareholders).
 
-### 3. ERP (`/erp`)
+### 3. Domains Layer (`/domains`)
 
-**"Back Office"**
+**"The Business Logic"** - Grouped by high-level functional areas.
 
-- `inventory/`: Stock & Warehouses.
-- `accounting/`: Ledgers & Transactions.
-- `purchase/`: Suppliers & Procurement.
-- `index.ts`: Public API for ERP.
-
-### 4. Commerce (`/commerce`)
-
-**"Sales Engine"**
+#### 🛒 Commerce (`/domains/commerce`)
 
 - `catalog/`: Products, Categories, Brands.
-- `sales/`: Orders, Invoices.
-- `storefront/`: Public website data.
-- `index.ts`: Public API for Commerce.
+- `sales/`: Orders, Invoices, Shipments.
+- `storefront/`: Public website content.
+- `pos/`: Point of Sale specific logic.
+- `pricing/`: Price books and calculations.
 
-### 5. POS (`/pos`)
+#### 🏢 Enterprise (`/domains/enterprise`)
 
-**"Retail Frontend Support"**
+- `finance/`: Accounting, Tax, Ledgers.
+- `supply/`: Inventory, Warehouses, Suppliers.
+- `hrm/`: Employees, Payroll, Attendance.
+- `ops/`: Operations management.
+- `analytics/`: Business Intelligence & Reporting.
 
-- `cash/`: Shift management & Petty cash.
-- `index.ts`: Public API for POS.
+#### ⚙️ Platform (`/domains/platform`)
+
+- `contracts/`: Shared interfaces and type definitions (if applicable).
 
 ## 🛑 Key Architecture Rules
 
 1.  **Strict Module Boundaries**:
-
     - Do NOT import internal files from other modules.
     - ALWAYS import from the Module Barrel (e.g., `import ... from '@app/modules/erp'`).
 
 2.  **Settings Hierarchy**:
-
     - **Global**: `Platform > Settings > SystemSettings`
     - **Organization**: `Platform > Org > Organization > Settings`
     - **Outlet**: `Platform > Org > Outlet > Settings`

@@ -222,7 +222,7 @@ export const sidebarMenuConfig = {
           },
         ],
       },
-      { ...MENU_MODULES.STOREFRONT, title: "E-Commerce", module: "ecommerce" },
+      { ...MENU_MODULES.STOREFRONT, title: "E-Commerce", module: "commerce" },
       {
         ...MENU_MODULES.CUSTOMERS,
         title: "CRM & Customers",
@@ -713,7 +713,8 @@ export const getSidebarMenu = (
   businessUnit: string,
   outletId?: string,
   organizationId?: string | null,
-  isOrganizationAdminRoute?: boolean
+  isOrganizationAdminRoute?: boolean,
+  organizationSlug?: string
 ) => {
   // Determine base URL based on role and route context
   let baseUrl = "/platform";
@@ -728,7 +729,11 @@ export const getSidebarMenu = (
   }
 
   if (businessUnit) {
-    baseUrl = `/${businessUnit}`;
+    if (organizationSlug) {
+      baseUrl = `/${organizationSlug}/${businessUnit}`;
+    } else {
+      baseUrl = `/${businessUnit}`;
+    }
   }
 
   const prefixMenuPaths = (items: any[]): any[] => {

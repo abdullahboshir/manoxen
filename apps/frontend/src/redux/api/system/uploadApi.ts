@@ -1,5 +1,5 @@
 
-import { baseApi } from "../base/baseApi";
+import { baseApi } from "@/redux/api/base/baseApi";
 
 export const uploadApi = baseApi.injectEndpoints({
   endpoints: (build) => ({

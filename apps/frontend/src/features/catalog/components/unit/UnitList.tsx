@@ -18,7 +18,7 @@ import { DataPageLayout } from "@/components/shared/DataPageLayout";
 import { StatCard } from "@/components/shared/StatCard";
 import { ColumnDef } from "@tanstack/react-table";
 import { AutoFormModal } from "@/components/shared/AutoFormModal";
-import { useCreateUnitMutation, useDeleteUnitMutation, useGetUnitsQuery, useUpdateUnitMutation } from "@/redux/api/catalog/unitApi";
+import { useCreateUnitMutation, useDeleteUnitMutation, useGetUnitsQuery, useUpdateUnitMutation } from "@/features/catalog/api/unitApi";
 import { toast } from "sonner";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi"; // Using consistent API
 import { useAuth } from "@manoxen/auth-client";

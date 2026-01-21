@@ -6,12 +6,13 @@ import { isSuperAdmin as checkIsSuperAdmin } from "@/config/auth-constants"
 
 export function useCurrentBusinessUnit() {
   const params = useParams()
-  const { user, isLoading: authLoading } = useAuth()
+  const { user, isLoading: authLoading, activeBusinessUnit: activeBUId } = useAuth()
   
   // Loading state
   if (authLoading) {
     return {
       currentBusinessUnit: null,
+      activeBUId: null,
       userBusinessUnits: [],
       hasUnitAccess: false,
       isLoading: true,
@@ -22,18 +23,33 @@ export function useCurrentBusinessUnit() {
   if (!user) {
     return {
       currentBusinessUnit: null,
+      activeBUId: null,
       userBusinessUnits: [],
       hasUnitAccess: false,
       isLoading: false,
     };
   }
 
-  // Get the business unit ID/slug from URL
+  // Get the segments from URL
+  const currentOrganizationSlug = params.organization as string | undefined
   const currentBusinessUnitSlug = (params["business-unit"] || params.businessUnit) as string | undefined
+  const currentOrganizationId = (params.organizationId || params.id) as string | undefined
+
+  console.log("[useCurrentBusinessUnitssssssssssssss] Debug:", {
+    currentOrganizationSlug,
+    currentBusinessUnitSlug,
+    currentOrganizationId,
+    userBusinessUnits: (user as any)?.businessUnits,
+    hasUnitAccess: false,
+    isLoading: false,
+  });
   
   // Get user's assigned business units (now objects with id, name, _id)
-  // We use the 'id' field (custom slug) for matching with URL
-  const userBusinessUnits = user?.businessUnits || []
+  // We derive this from multiple possible backend structures for robustness
+  const userBusinessUnits = (user as any)?.businessUnits || 
+    (user as any)?.context?.available?.map((a: any) => a.businessUnit).filter(Boolean) ||
+    (user as any)?.businessAccess?.map((a: any) => a.businessUnit).filter(Boolean) || 
+    [];
   
   const isSuperAdmin = checkIsSuperAdmin(user?.role) || (user?.globalRoles || []).some((r: any) => checkIsSuperAdmin(typeof r === 'string' ? r : r.id || r.name));
 
@@ -47,21 +63,34 @@ export function useCurrentBusinessUnit() {
         (unit.name && unit.name.toLowerCase().replace(/ /g, '-') === currentBusinessUnitSlug) ||
         (unit._id && unit._id.toString() === currentBusinessUnitSlug)
       ))
-    : false
+    : !!activeBUId;
 
-  // Find the full business unit object if it exists
-  const currentBusinessUnit = currentBusinessUnitSlug 
+  // Finding the full business unit object
+  const currentBusinessUnit = (currentBusinessUnitSlug 
     ? userBusinessUnits.find((unit: any) => 
-        unit.id === currentBusinessUnitSlug ||
-        unit.slug === currentBusinessUnitSlug ||
-        (unit.name && unit.name.toLowerCase().replace(/ /g, '-') === currentBusinessUnitSlug) ||
-        (unit._id && unit._id.toString() === currentBusinessUnitSlug)
+        (unit.slug && unit.slug === currentBusinessUnitSlug) ||
+        (unit.id && unit.id === currentBusinessUnitSlug) ||
+        (unit._id && unit._id.toString() === currentBusinessUnitSlug) ||
+        (unit.name && unit.name.toLowerCase().replace(/ /g, '-') === currentBusinessUnitSlug.toLowerCase())
       )
-    : null
+    : userBusinessUnits.find((unit: any) => 
+        (unit._id && unit._id.toString() === activeBUId) ||
+        (unit.id && unit.id === activeBUId)
+      )) || null
+
+  console.log("[useCurrentBusinessUnit] Debug:", {
+    urlSlug: currentBusinessUnitSlug,
+    activeBUId,
+    resolvedBU: currentBusinessUnit?.slug || currentBusinessUnit?._id,
+    availableUnitsCount: userBusinessUnits.length
+  });
 
   return {
-    currentBusinessUnit, // The full object { _id, name, id }
-    userBusinessUnits,   // List of all assigned units
+    currentBusinessUnit,
+    activeBUId,
+    currentOrganizationId,
+    currentOrganizationSlug,
+    userBusinessUnits,
     hasUnitAccess,
     isLoading: false,
   }

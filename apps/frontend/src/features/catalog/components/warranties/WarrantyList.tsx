@@ -27,7 +27,7 @@ import {
     useCreateWarrantyMutation,
     useUpdateWarrantyMutation,
     useDeleteWarrantyMutation
-} from "@/redux/api/catalog/warrantyApi"
+} from "@/features/catalog/api/warrantyApi"
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi"
 import { usePermissions } from "@/hooks/usePermissions"
 import { PERMISSION_KEYS } from "@/config/permission-keys"
@@ -212,7 +212,7 @@ export default function WarrantyList() {
                     name="availableModules"
                     label="Available Modules"
                     placeholder="Select available modules..."
-                    include={['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations']}
+                    include={['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations']}
                 />
             )
         });
@@ -238,7 +238,7 @@ export default function WarrantyList() {
             isActive: "true",
             periodUnit: "months",
             type: "seller",
-            availableModules: ['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations'],
+            availableModules: ['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations'],
             businessUnit: isSuperAdmin ? defaultBUValue : paramBusinessUnit
         };
     };

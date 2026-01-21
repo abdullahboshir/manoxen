@@ -30,7 +30,7 @@ import {
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
     useDeleteCategoryMutation
-} from "@/redux/api/catalog/categoryApi";
+} from "@/features/catalog/api/categoryApi";
 import { useAuth } from "@manoxen/auth-client";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -277,7 +277,7 @@ export const CategoryList = () => {
                     name="availableModules"
                     label="Available Modules"
                     placeholder="Select available modules..."
-                    include={['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations']}
+                    include={['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations']}
                 />
             )
         });
@@ -307,7 +307,7 @@ export const CategoryList = () => {
         return {
             isActive: "true",
             parentId: "null",
-            availableModules: ['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations'],
+            availableModules: ['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations'],
             businessUnit: isSuperAdmin ? defaultBUValue : paramBusinessUnit
         };
     };

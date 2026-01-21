@@ -103,7 +103,7 @@ export interface IProductCore {
   slug: string;
   sku: string;
   barcode?: string;
-  availableModules: ('pos' | 'erp' | 'hrm' | 'ecommerce' | 'crm' | 'logistics' | 'system')[];
+  availableModules: ModuleName[];
   translations?: {
     lang: string;
     field: string;
@@ -150,7 +150,7 @@ export interface IProductCore {
     importRestrictions: string[];
     safetyStandards: string[];
   };
-  marketing: {
+  reports: {
     isFeatured: boolean;
     isNew: boolean;
     isPopular: boolean;

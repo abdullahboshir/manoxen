@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -32,15 +32,11 @@ app.use(compression());
 
 // Serve Static Files
 import path from "path";
-import { maintenanceMode } from "#core/middleware/maintenance.middleware";
-import appConfig from "#shared/config/app.config";
-import contextMiddleware from "#core/middleware/context.middleware";
-import tenantMiddleware from "#core/middleware/tenant.middleware";
+import { maintenanceMode, contextMiddleware, notFoundMiddleware, globalErrorHandler } from "@manoxen/infra-common";
+import { appConfig } from "@manoxen/platform-core";
+import { tenantMiddleware } from "@manoxen/tenant-strategy";
 import { CacheManager } from "@manoxen/core-util";
-import { QUEUE_NAMES } from "#app/modules/platform/queue/queue.interface";
-import { QueueService } from "#app/modules/platform/queue/queue.service";
-import notFound from "#core/middleware/not-found";
-import globalErrorHandler from "#core/middleware/global-error-handler";
+import { QUEUE_NAMES, QueueService } from "@manoxen/system";
 import router from "#app/routes/index";
 import { ApiResponse } from "@manoxen/core-util";
 app.use("/uploads", express.static(path.join(process.cwd(), "storage/uploads")));
@@ -84,14 +80,14 @@ app.get("/health", (_req, res) => {
     status: "OK",
     uptime: process.uptime(),
     environment: appConfig.NODE_ENV,
-  }, "Server is healthy ðŸŸ¢");
+  }, "Server is healthy 🟢");
 });
 
 app.use("/api", router);
 
 app.get("/", (_req, res) => {
   ApiResponse.success(res, {
-    message: "ðŸš€ Welcome to Unified Solution API",
+    message: "🚀 Welcome to Manoxen API",
     status: "Running",
     version: "v1.0.0",
     documentation: "/api/v1/docs",
@@ -120,17 +116,18 @@ app.get("/test-scalability", async (_req, res) => {
       worker_process_id: process.pid,
       cache_check: cacheResult,
       queue_check: "Job Dispatched to 'email-queue'",
-      note: "Check terminal logs for 'âœ… Redis HIT' and 'ðŸ“¨ Processing Email Job'",
+      note: "Check terminal logs for '✅ Redis HIT' and '📨 Processing Email Job'",
     }, "Scalability Verification Complete");
   } catch (error: any) {
     ApiResponse.error(res, error.message, "VERIFICATION_ERROR", 500);
   }
 });
 
-app.use(notFound);
+app.use(notFoundMiddleware);
 app.use(globalErrorHandler);
 
 export default app;
+
 
 
 

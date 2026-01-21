@@ -19,7 +19,7 @@ import {
     Shield
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useGetProductsQuery } from "@/redux/api/catalog/productApi"
+import { useGetProductsQuery } from "@/features/catalog/api/productApi"
 import { USER_ROLES, isSuperAdmin } from "@/config/auth-constants"
 
 interface CommandPaletteProps {

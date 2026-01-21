@@ -1,0 +1,8 @@
+﻿E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\organization\business-units\[slug]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\business-units\[slug]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\licenses\[id]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\packages\[id]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\user-management\users\[id]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\outlets\[outletId]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\purchases\[id]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\user-management\users\[id]\edit\page.tsx

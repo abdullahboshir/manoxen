@@ -1,5 +1,5 @@
-import { tagTypes } from "../../tag-types";
-import { createCrudApi } from "../base/createCrudApi";
+import { tagTypes } from "@/redux/tag-types";
+import { createCrudApi } from "@/redux/api/base/createCrudApi";
 
 const { api: meetingApi, hooks } = createCrudApi({
   resourceName: "meeting",

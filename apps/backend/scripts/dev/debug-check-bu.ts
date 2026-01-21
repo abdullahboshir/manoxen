@@ -5,7 +5,7 @@ import path from "path";
 // Load env
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
-const dbUrl = process.env.DATABASE_URL || "mongodb://localhost:27017/manoxen";
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/manoxen";
 
 async function run() {
   try {

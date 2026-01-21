@@ -7,7 +7,7 @@ import {
     useUpdatePermissionGroupMutation,
     useDeletePermissionGroupMutation,
     useGetPermissionsQuery
-} from '@/redux/api/iam/roleApi';
+} from '@/features/iam/api/roleApi';
 import {
     Table,
     TableBody,

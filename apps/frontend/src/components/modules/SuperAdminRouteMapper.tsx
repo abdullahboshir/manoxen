@@ -1,27 +1,27 @@
-import AccountList from "./accounting/AccountList";
-import BudgetList from "./accounting/BudgetList";
-import ExpenseList from "./accounting/ExpenseList";
-import TransactionList from "./accounting/TransactionList";
+import AccountList from "@/features/accounting/AccountList";
+import BudgetList from "@/features/accounting/BudgetList";
+import ExpenseList from "@/features/accounting/ExpenseList";
+import TransactionList from "@/features/accounting/TransactionList";
 
-import AffiliateList from "./marketing/AffiliateList";
-import AudienceList from "./marketing/AudienceList";
-import CampaignList from "./marketing/CampaignList";
-import CouponList from "./marketing/CouponList";
-import EventList from "./marketing/EventList";
-import PixelList from "./marketing/PixelList";
-import PromotionList from "./marketing/PromotionList";
-import SeoSettings from "./marketing/SeoSettings";
+import AffiliateList from "@/features/marketing/AffiliateList";
+import AudienceList from "@/features/marketing/AudienceList";
+import CampaignList from "@/features/marketing/CampaignList";
+import CouponList from "@/features/marketing/CouponList";
+import EventList from "@/features/marketing/EventList";
+import PixelList from "@/features/marketing/PixelList";
+import PromotionList from "@/features/marketing/PromotionList";
+import SeoSettings from "@/features/marketing/SeoSettings";
 
-import CourierList from "./logistics/CourierList";
-import ParcelList from "./logistics/ParcelList";
+import CourierList from "@/features/supply-chain/CourierList";
+import ParcelList from "@/features/supply-chain/ParcelList";
 
-import AssetList from "./hrm/AssetList";
-import AttendanceList from "./hrm/AttendanceList";
-import DepartmentList from "./hrm/DepartmentList";
-import DesignationList from "./hrm/DesignationList";
-import LeaveList from "./hrm/LeaveList";
-import PayrollList from "./hrm/PayrollList";
-import StaffList from "./hrm/StaffList";
+import AssetList from "@/features/hrm/AssetList";
+import AttendanceList from "@/features/hrm/AttendanceList";
+import DepartmentList from "@/features/hrm/DepartmentList";
+import DesignationList from "@/features/hrm/DesignationList";
+import LeaveList from "@/features/hrm/LeaveList";
+import PayrollList from "@/features/hrm/PayrollList";
+import StaffList from "@/features/hrm/StaffList";
 
 import ContentList from "./content/ContentList";
 
@@ -52,61 +52,61 @@ import QuestionList from "./storefront/QuestionList";
 
 // Map route segments to Components
 export const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
-    // Accounting
-    "accounting/accounts": AccountList,
-    "accounting/budgets": BudgetList,
-    "accounting/expenses": ExpenseList,
-    "accounting/transactions": TransactionList,
+  // Accounting
+  "accounting/accounts": AccountList,
+  "accounting/budgets": BudgetList,
+  "accounting/expenses": ExpenseList,
+  "accounting/transactions": TransactionList,
 
-    // Marketing
-    "marketing/affiliates": AffiliateList,
-    "marketing/campaigns": CampaignList,
-    "marketing/coupons": CouponList,
-    "marketing/promotions": PromotionList,
-    "marketing/seo": SeoSettings,
-    "marketing/audiences": AudienceList,
-    "marketing/pixel": PixelList,
+  // Reports & Analytics (formerly Marketing)
+  "reports/affiliates": AffiliateList,
+  "reports/campaigns": CampaignList,
+  "reports/coupons": CouponList,
+  "reports/promotions": PromotionList,
+  "reports/seo": SeoSettings,
+  "reports/audiences": AudienceList,
+  "reports/pixel": PixelList,
 
-    // Logistics
-    "logistics/courier": CourierList,
-    "logistics/parcel": ParcelList,
+  // Logistics
+  "logistics/courier": CourierList,
+  "logistics/parcel": ParcelList,
 
-    // HRM
-    "hrm/assets": AssetList,
-    "hrm/attendance": AttendanceList,
-    "hrm/departments": DepartmentList,
-    "hrm/designations": DesignationList,
-    "hrm/leave": LeaveList,
-    "hrm/payroll": PayrollList,
-    "hrm/staff": StaffList,
+  // HRM
+  "hrm/assets": AssetList,
+  "hrm/attendance": AttendanceList,
+  "hrm/departments": DepartmentList,
+  "hrm/designations": DesignationList,
+  "hrm/leave": LeaveList,
+  "hrm/payroll": PayrollList,
+  "hrm/staff": StaffList,
 
-    // Content
-    "content": ContentList,
+  // Content
+  content: ContentList,
 
-    // Risk
-    "risk/fraud": FraudDetectionList,
-    "risk/blacklist": BlacklistList,
-    "risk/rules": RiskRulesList,
+  // Risk
+  "risk/fraud": FraudDetectionList,
+  "risk/blacklist": BlacklistList,
+  "risk/rules": RiskRulesList,
 
-    // Support
-    "support/chat": ChatInterface,
-    "support/disputes": DisputeList,
-    "support/tickets": TicketList,
+  // Support
+  "support/chat": ChatInterface,
+  "support/disputes": DisputeList,
+  "support/tickets": TicketList,
 
-    // System
-    "system/api-keys": ApiKeyList,
-    "system/audit-logs": AuditLogList,
-    "system/backups": BackupList,
-    "system/currencies": CurrencyList,
-    "system/email-templates": EmailTemplateList,
-    "system/languages": LanguageList,
-    "system/notifications": NotificationList,
-    "system/sms-templates": SmsTemplateList,
-    "system/webhooks": WebhookList,
-    "system/zones": ZoneList,
+  // System
+  "system/api-keys": ApiKeyList,
+  "system/audit-logs": AuditLogList,
+  "system/backups": BackupList,
+  "system/currencies": CurrencyList,
+  "system/email-templates": EmailTemplateList,
+  "system/languages": LanguageList,
+  "system/notifications": NotificationList,
+  "system/sms-templates": SmsTemplateList,
+  "system/webhooks": WebhookList,
+  "system/zones": ZoneList,
 
-    // Storefront (online-store)
-    "online-store/landing-pages": LandingPageList,
-    "online-store/plugins": PluginList,
-    "online-store/themes": ThemeList,
+  // Storefront (online-store)
+  "online-store/landing-pages": LandingPageList,
+  "online-store/plugins": PluginList,
+  "online-store/themes": ThemeList,
 };

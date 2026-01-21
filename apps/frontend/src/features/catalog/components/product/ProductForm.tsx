@@ -8,19 +8,19 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Check, Loader2, Upload, X, Trash2, Plus, Settings, LinkIcon } from "lucide-react";
 
-import { useGetCategoriesQuery } from "@/redux/api/catalog/categoryApi";
+import { useGetCategoriesQuery } from "@/features/catalog/api/categoryApi";
 
-import { useGetBrandsQuery } from "@/redux/api/catalog/brandApi";
+import { useGetBrandsQuery } from "@/features/catalog/api/brandApi";
 import { useUploadFileMutation } from "@/redux/api/system/uploadApi";
-import { useGetUnitsQuery } from "@/redux/api/catalog/unitApi";
-import { useGetTaxsQuery } from "@/redux/api/finance/taxApi";
+import { useGetUnitsQuery } from "@/features/catalog/api/unitApi";
+import { useGetTaxsQuery } from "@/features/accounting/api/taxApi";
 
 import {
     useCreateProductMutation,
     useUpdateProductMutation,
-} from "@/redux/api/catalog/productApi";
+} from "@/features/catalog/api/productApi";
 import { useGetBusinessUnitByIdQuery } from "@/redux/api/organization/businessUnitApi";
-import { useGetAttributeGroupQuery } from "@/redux/api/catalog/attributeGroupApi";
+import { useGetAttributeGroupQuery } from "@/features/catalog/api/attributeGroupApi";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -138,9 +138,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             ...defaultProductValues.details,
             ...initialData.details
         },
-        marketing: {
-            ...defaultProductValues.marketing,
-            ...initialData.marketing
+        reports: {
+            ...defaultProductValues.reports,
+            ...(initialData.reports || initialData.marketing || {})
         },
         statusInfo: {
             ...defaultProductValues.statusInfo,
@@ -1448,7 +1448,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                             <CardContent>
                                 <FormField
                                     control={form.control}
-                                    name="marketing.seo.metaTitle"
+                                    name="reports.seo.metaTitle"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Meta Title</FormLabel>
@@ -1458,7 +1458,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="marketing.seo.metaDescription"
+                                    name="reports.seo.metaDescription"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Meta Description</FormLabel>

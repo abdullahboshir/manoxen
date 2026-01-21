@@ -1,16 +1,14 @@
-﻿import { Server } from "http";
+import { Server } from "http";
 import cluster from "cluster";
 import os from "os";
 import "colors";
 import app from "./app";
-import mongoose from "mongoose";
-import ConnectionManager from "#core/database/mongoose/connection-manager";
-import { runRolePermissionSeeder } from "#core/database/mongoose/seeders/auth/index";
-import { seedPackages } from "#core/database/mongoose/seeders/package.seeder";
-import { runSettingsSeeder } from "#core/database/mongoose/seeders/settings/index";
+import { ConnectionManager } from "@manoxen/infra-common";
+import { runRolePermissionSeeder } from "@manoxen/iam";
+import { runSettingsSeeder, seedPackages } from "@manoxen/organization";
 import { JobManager } from "#app/jobs/manager";
-import { WorkerService } from "#app/modules/platform/queue/worker.service";
-import appConfig from "#shared/config/app.config";
+import { appConfig } from "@manoxen/platform-core";
+import mongoose from "mongoose";
 
 
 let server: Server;
@@ -20,23 +18,24 @@ const numCPUs = Number(process.env['WORKERS']) || os.cpus().length;
 async function bootstrap() {
   try {
     if (cluster.isPrimary) {
-      console.log(`ðŸŒŸ Primary Process ${process.pid} is running`.yellow.bold);
+      console.log(`🌟 Primary Process ${process.pid} is running`.yellow.bold);
 
       // 1. Initialize Default DB Connection (ConnectionManager for Multi-Tenancy)
       await ConnectionManager.initDefaultConnection();
 
       // 1.1 Pre-create collections & indexes (Critical for atomic seeding on fresh DB)
       // Index creation cannot run inside a transaction.
-      console.log("ðŸ“¦ Initializing Collections & Indexes...".gray);
+      console.log("📦 Initializing Collections & Indexes...".gray);
+      // mongoose already imported at top level
       const models = mongoose.modelNames();
       for (const modelName of models) {
         await mongoose.model(modelName).createCollection();
       }
-      console.log("âœ… Collections Initialized".green);
+      console.log("✅ Collections Initialized".green);
 
       // 2. Run Seeders (Atomic Transaction)
       // 2. Run Seeders (Atomic Transaction removed for stability)
-      console.log("ðŸŒ± Running Seeders...".blue);
+      console.log("🌱 Running Seeders...".blue);
       // const session = await mongoose.startSession(); // Transaction disabled to avoid 'yielding disabled' write conflicts
       try {
         // session.startTransaction();
@@ -46,9 +45,9 @@ async function bootstrap() {
         await runSettingsSeeder(); // Atomic System & Platform Settings
 
         // await session.commitTransaction();
-        console.log("âœ… All Seeders Completed Successfully".green.bold);
+        console.log("✅ All Seeders Completed Successfully".green.bold);
       } catch (error: any) {
-        console.error("âŒ Seeding Failed:", error.message);
+        console.error("❌ Seeding Failed:", error.message);
         // await session.abortTransaction();
         // process.exit(1); // Don't exit dev server on seed fail, just log
       } finally {
@@ -62,13 +61,13 @@ async function bootstrap() {
       // NOTE: If using an external process manager like PM2 or Kubernetes (ReplicaSet),
       // DISABLE this internal clustering to avoid port conflicts and let the infrastructure handle scaling.
       // Set WORKERS=0 or use separate entry point for production.
-      console.log(`ðŸš€ Forking ${numCPUs} workers for full scalability...`.green);
+      console.log(`🚀 Forking ${numCPUs} workers for full scalability...`.green);
       for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
       }
 
       cluster.on("exit", (worker, _code, _signal) => {
-        console.log(`ðŸ’€ Worker ${worker.process.pid} died. Restarting...`.red);
+        console.log(`💀 Worker ${worker.process.pid} died. Restarting...`.red);
         cluster.fork();
       });
 
@@ -81,16 +80,16 @@ async function bootstrap() {
       // Workers compete for jobs, which is good for scale.
       // OPTIMIZATION: Check if this node should run background workers
       if (process.env['ENABLE_QUEUE'] !== "false") { // Default true for simplicity unless explicitly disabled
-        WorkerService.initWorkers();
+        // WorkerService.initWorkers();
       }
 
       // 3. Start HTTP Server
       server = app.listen(appConfig.port, () => {
-        console.log(`ðŸš€ Worker ${process.pid} serving on port ${appConfig.port}`.green);
+        console.log(`🚀 Worker ${process.pid} serving on port ${appConfig.port}`.green);
       });
     }
   } catch (err: any) {
-    console.log("âŒ Startup error:".red, err?.message);
+    console.log("❌ Startup error:".red, err?.message);
     process.exit(1);
   }
 }
@@ -99,7 +98,7 @@ bootstrap();
 
 // Graceful Shutdown Logic
 const shutdown = (_code: number, _signal: string) => {
-  console.log(`ðŸ›‘ Worker ${process.pid} shutting down...`.yellow);
+  console.log(`🛑 Worker ${process.pid} shutting down...`.yellow);
   if (server) {
     server.close(() => {
       console.log("HTTTP Server closed");
@@ -131,6 +130,7 @@ process.on("uncaughtException", (err) => {
     process.exit(1);
   }
 });
+
 
 
 

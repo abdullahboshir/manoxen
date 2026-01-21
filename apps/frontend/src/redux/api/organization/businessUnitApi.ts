@@ -1,5 +1,5 @@
-import { tagTypes } from "../../tag-types";
-import { baseApi } from "../base/baseApi";
+import { tagTypes } from "@/redux/tag-types";
+import { baseApi } from "@/redux/api/base/baseApi";
 
 export const businessUnitApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -11,7 +11,9 @@ export const businessUnitApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: any) => {
         // Handle various response structures and ensure array return
-        const data = response?.data?.data || response?.data || response;
+        // Paginated: { success, data: { meta, result } } -> response.data.result
+        // Simple: { success, data: [...] } -> response.data
+        const data = response?.data?.result || response?.result || response?.data || response;
         return Array.isArray(data) ? data : [];
       },
       providesTags: [tagTypes.businessUnit],

@@ -1,9 +1,26 @@
 "use client";
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileQuestion, Home, ArrowLeft } from 'lucide-react'
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+const FileQuestion = dynamic(
+  () => import("lucide-react").then((mod) => mod.FileQuestion),
+  { ssr: false },
+);
+const Home = dynamic(() => import("lucide-react").then((mod) => mod.Home), {
+  ssr: false,
+});
+const ArrowLeft = dynamic(
+  () => import("lucide-react").then((mod) => mod.ArrowLeft),
+  { ssr: false },
+);
 
 export default function NotFound() {
   return (
@@ -14,9 +31,7 @@ export default function NotFound() {
             <FileQuestion className="h-8 w-8 text-muted-foreground" />
           </div>
           <CardTitle className="text-3xl">404</CardTitle>
-          <CardDescription className="text-lg">
-            Page Not Found
-          </CardDescription>
+          <CardDescription className="text-lg">Page Not Found</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground">
@@ -29,7 +44,11 @@ export default function NotFound() {
                 Go Home
               </Link>
             </Button>
-            <Button variant="outline" onClick={() => window.history.back()} className="w-full">
+            <Button
+              variant="outline"
+              onClick={() => window.history.back()}
+              className="w-full"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Go Back
             </Button>
@@ -37,5 +56,5 @@ export default function NotFound() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

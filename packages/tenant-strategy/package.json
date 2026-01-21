@@ -1,0 +1,22 @@
+{
+  "name": "@manoxen/tenant-strategy",
+  "version": "1.0.0",
+  "description": "Tenant resolution and strategy for multi-tenant architecture",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@manoxen/core-util": "*",
+    "@manoxen/organization": "*",
+    "express": "^5.1.0",
+    "mongoose": "^8.0.3",
+    "redis": "^4.6.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.0"
+  }
+}

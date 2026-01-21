@@ -83,7 +83,9 @@ export const AttributeSection = ({ form, variantFields, appendVariant, removeVar
                                     stock: 0,
                                     images: [],
                                     options: [],
-                                    isDefault: false
+                                    isDefault: false,
+                                    weightUnit: "kg",
+                                    dimensionUnit: "cm"
                                 })}>
                                     <Plus className="mr-2 h-4 w-4" /> Add Single Variant
                                 </Button>

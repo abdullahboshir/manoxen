@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "@/config/api-endpoints";
-import { baseApi as apiSlice } from "../base/baseApi";
+import { baseApi as apiSlice } from "@/redux/api/base/baseApi";
 import { tagTypes } from "@/redux/tag-types";
 
 export const organizationApi = apiSlice.injectEndpoints({
@@ -34,7 +34,7 @@ export const organizationApi = apiSlice.injectEndpoints({
         data: data,
       }),
       invalidatesTags: [tagTypes.organization],
-      invalidatesTags: [tagTypes.organization],
+
     }),
     updateOrganizationTenantConfig: builder.mutation({
       query: ({ id, ...data }) => ({

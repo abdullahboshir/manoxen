@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSetupPasswordMutation, useResendSetupInvitationMutation } from "@/redux/api/iam/authApi";
+import { useSetupPasswordMutation, useResendSetupInvitationMutation } from "@/features/iam/api/authApi";
 import { Eye, EyeOff, Loader2, ShieldCheck, AlertTriangle } from "lucide-react";
 
 function SetupPasswordContent() {

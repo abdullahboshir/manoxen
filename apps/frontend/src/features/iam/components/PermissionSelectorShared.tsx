@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from '@/components/ui/badge';
 import { Button } from "@/components/ui/button";
 import { Loader2, Search, Check, Package, ShoppingCart, Users, Settings, Building2, TrendingUp, Shield, Warehouse, ShoppingBag, Globe, Truck, FileText, MessageSquare, Megaphone, BoxIcon, CreditCard, Monitor, Briefcase } from 'lucide-react';
-import { useGetPermissionResourcesQuery, useGetPermissionsQuery } from "@/redux/api/iam/roleApi";
+import { useGetPermissionResourcesQuery, useGetPermissionsQuery } from "@/features/iam/api/roleApi";
 
 interface PermissionSelectorSharedProps {
     selectedPermissionIds: string[];

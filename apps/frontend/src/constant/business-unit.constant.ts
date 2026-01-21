@@ -77,7 +77,7 @@ export const SYSTEM_MODULES = {
     POS: 'pos',             // Point of Sale
     ERP: 'erp',             // Inventory, Purchasing, Accounts
     HRM: 'hrm',             // Staff, Attendance, Payroll
-    ECOMMERCE: 'ecommerce', // Online Storefront
+    COMMERCE: 'commerce', // Online Storefront
     CRM: 'crm',             // Customers, Marketing, Tickets
     LOGISTICS: 'logistics', // Couriers, Shipments
 } as const;

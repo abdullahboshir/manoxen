@@ -1,9 +1,9 @@
-﻿import { SystemSettings } from "#app/modules/platform/settings/system-settings/system-settings.model";
+import { SystemSettings } from "@manoxen/system";
 import type { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
 import { CacheManager } from "@manoxen/core-util";
 import { ApiResponse } from '@manoxen/core-util';
-import { ModuleRegistryService } from "#app/modules/platform/module-registry.service";
+import { ModuleRegistryService } from "../../contexts/organization/src/index.js";
 
 /**
  * moduleGuard Middleware

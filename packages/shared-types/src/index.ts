@@ -52,3 +52,49 @@ export * from "./common.types";
 
 export * from "./module.contracts";
 export * from "./product.types";
+
+// ============================================
+// Tenant Configuration
+// ============================================
+export type DeploymentType = 'shared' | 'dedicated';
+
+export interface ITenantConfig {
+  deploymentType: DeploymentType;
+  customDomain?: string;       // e.g., 'client.theirorganization.com'
+  databaseUri?: string;        // Dedicated DB URI (encrypted at rest)
+  storageConfig?: {
+    provider?: 'cloudinary' | 's3' | 'local';
+    // Cloudinary specific
+    cloudName?: string;
+    apiKey?: string;
+    apiSecret?: string;
+    // S3 specific
+    bucket?: string;
+    region?: string;
+    accessKeyId?: string;
+    secretAccessKey?: string;
+    // Common
+    cdnUrl?: string;
+    basePath?: string; // Custom folder prefix
+  };
+  isProvisioned?: boolean;     // Has the dedicated environment been set up?
+  provisionedAt?: Date;
+}
+
+// ============================================
+// Domain Manifest
+// ============================================
+export interface IDomainManifest {
+  domain: string;
+  type: 'core' | 'supporting' | 'generic';
+  status: 'active' | 'deprecated' | 'planned';
+  version: string;
+  description?: string;
+  dependencies?: string[];
+  optional?: string[];
+  exposes?: string[];
+  notes?: string;
+  roadmap?: Record<string, string>;
+  createdAt?: string;
+}
+

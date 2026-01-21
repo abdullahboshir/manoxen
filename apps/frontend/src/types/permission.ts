@@ -15,6 +15,17 @@ export enum PermissionResourceType {
     OUTLET = "OUTLET",
     REPORT = "REPORT",
     SETTINGS = "SETTINGS",
+    MEDIA = "MEDIA",
+    FOLDER = "FOLDER",
+    TENANT = "TENANT",
+    DOMAIN = "DOMAIN",
+    SSL = "SSL",
+    JOURNAL = "JOURNAL",
+    LEDGER = "LEDGER",
+    BALANCE_SHEET = "BALANCE_SHEET",
+    CALL = "CALL",
+    MEETING = "MEETING",
+    NOTE = "NOTE",
     // Add missing ones from RESOURCE_KEYS if needed
 }
 

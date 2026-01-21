@@ -17,7 +17,7 @@ export const SeoSection = ({ form }: SeoSectionProps) => {
             <CardContent className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="marketing.seo.metaTitle"
+                    name="reports.seo.metaTitle"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Meta Title</FormLabel>
@@ -30,7 +30,7 @@ export const SeoSection = ({ form }: SeoSectionProps) => {
                 />
                 <FormField
                     control={form.control}
-                    name="marketing.seo.metaDescription"
+                    name="reports.seo.metaDescription"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Meta Description</FormLabel>
@@ -43,7 +43,7 @@ export const SeoSection = ({ form }: SeoSectionProps) => {
                 />
                 <FormField
                     control={form.control}
-                    name="marketing.seo.keywords"
+                    name="reports.seo.keywords"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Meta Keywords (Comma separated)</FormLabel>

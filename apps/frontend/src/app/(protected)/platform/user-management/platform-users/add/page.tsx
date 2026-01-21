@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { UserForm } from "@/features/iam/components/UserForm";
-import { useCreateUserMutation } from "@/redux/api/iam/userApi";
+import { useCreateUserMutation } from "@/features/iam/api/userApi";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";

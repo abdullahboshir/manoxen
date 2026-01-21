@@ -16,7 +16,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { useGetOrdersQuery, useUpdateOrderMutation } from "@/redux/api/sales/orderApi";
+import { useGetOrdersQuery, useUpdateOrderMutation } from "@/features/sales/api/orderApi";
 import { IOrder } from "./order.types";
 import { toast } from "sonner";
 import { usePermissions } from "@/hooks/usePermissions";

@@ -3,6 +3,7 @@ export * from './constants/user.constant';
 export * from './constants/role.constant';
 export * from './constants/permission.constant';
 export * from './constants/module.constant';
+export * from './constants/module.config';
 export * from './types/user.types';
 export * from './types/role.types';
 export * from './types/common.types';

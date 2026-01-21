@@ -49,6 +49,9 @@ export const MODULE_RESOURCE_MAP = {
         PermissionSourceObj.settlement,
         PermissionSourceObj.payout,
         PermissionSourceObj.reconciliation,
+        PermissionSourceObj.journal,
+        PermissionSourceObj.ledger,
+        PermissionSourceObj.balanceSheet,
 
         // Inventory & Supply Chain
         PermissionSourceObj.inventory,
@@ -99,7 +102,7 @@ export const MODULE_RESOURCE_MAP = {
     ],
 
     // E-Commerce
-    ecommerce: [
+    commerce: [
         PermissionSourceObj.theme,
         PermissionSourceObj.plugin,
         PermissionSourceObj.seo,
@@ -115,6 +118,9 @@ export const MODULE_RESOURCE_MAP = {
         PermissionSourceObj.ticket,
         PermissionSourceObj.chat,
         PermissionSourceObj.dispute,
+        PermissionSourceObj.call,
+        PermissionSourceObj.meeting,
+        PermissionSourceObj.note,
         PermissionSourceObj.audience,
         PermissionSourceObj.pixel,
         PermissionSourceObj.event,
@@ -134,7 +140,7 @@ export const MODULE_RESOURCE_MAP = {
     governance: [
         PermissionSourceObj.shareholder,
         PermissionSourceObj.voting,
-        PermissionSourceObj.meeting,
+        // PermissionSourceObj.meeting, // Moved to CRM
         PermissionSourceObj.compliance,
     ],
 
@@ -152,6 +158,11 @@ export const MODULE_RESOURCE_MAP = {
         PermissionSourceObj.businessSetting,
         PermissionSourceObj.outletSetting,
         PermissionSourceObj.backup,
+        PermissionSourceObj.media,
+        PermissionSourceObj.folder,
+        PermissionSourceObj.tenant,
+        PermissionSourceObj.domain,
+        PermissionSourceObj.ssl,
         PermissionSourceObj.auditLog,
         PermissionSourceObj.language,
         PermissionSourceObj.currency,

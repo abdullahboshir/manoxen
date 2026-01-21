@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PurchaseItemsField } from "./PurchaseItemsField";
-import { useGetSuppliersQuery } from "@/redux/api/contacts/supplierApi";
+import { useGetSuppliersQuery } from "@/features/contacts/api/supplierApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { useGetOutletsQuery } from "@/redux/api/organization/outletApi";
 import { useAuth } from "@manoxen/auth-client";

@@ -1,1 +1,0 @@
-﻿# Manoxen DDD Monorepo

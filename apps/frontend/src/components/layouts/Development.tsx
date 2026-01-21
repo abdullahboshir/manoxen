@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Wrench,
   Clock,
@@ -10,12 +11,18 @@ import {
   Layers,
   AlertCircle,
   ArrowRight,
-  Home
-} from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+  Home,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,16 +30,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 
 export default function DevelopmentLaout() {
   const pathname = usePathname();
   const [progress, setProgress] = useState<any>(0);
 
   // Parse the path
-  const pathSegments = pathname.split('/').filter(segment => segment);
-  const currentPage = pathSegments[pathSegments.length - 1] || 'dashboard';
-  const parentPage = pathSegments.length > 1 ? pathSegments[pathSegments.length - 2] : null;
+  const pathSegments = pathname.split("/").filter((segment) => segment);
+  const currentPage = pathSegments[pathSegments.length - 1] || "dashboard";
+  const parentPage =
+    pathSegments.length > 1 ? pathSegments[pathSegments.length - 2] : null;
 
   // Simulate progress animation
   useEffect(() => {
@@ -43,17 +51,17 @@ export default function DevelopmentLaout() {
   // Format page name for display
   const formatPageName = (name: string) => {
     return name
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   // Development status data
   const developmentData = {
-    status: 'in-development',
-    estimatedCompletion: 'December 2024',
-    team: ['Frontend Team', 'Backend Team', 'UI/UX Team'],
-    dependencies: ['API Integration', 'Database Schema', 'Payment Gateway'],
+    status: "in-development",
+    estimatedCompletion: "December 2024",
+    team: ["Frontend Team", "Backend Team", "UI/UX Team"],
+    dependencies: ["API Integration", "Database Schema", "Payment Gateway"],
   };
 
   return (
@@ -76,7 +84,9 @@ export default function DevelopmentLaout() {
                     {formatPageName(segment)}
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={`/${pathSegments.slice(0, index + 1).join('/')}`}>
+                  <BreadcrumbLink
+                    href={`/${pathSegments.slice(0, index + 1).join("/")}`}
+                  >
                     {formatPageName(segment)}
                   </BreadcrumbLink>
                 )}
@@ -118,9 +128,12 @@ export default function DevelopmentLaout() {
                   <div className="flex items-start gap-3">
                     <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-yellow-800">Development in Progress</h4>
+                      <h4 className="font-semibold text-yellow-800">
+                        Development in Progress
+                      </h4>
                       <p className="text-yellow-700 mt-1">
-                        This page is currently being developed. Our team is working hard to bring you this feature soon.
+                        This page is currently being developed. Our team is
+                        working hard to bring you this feature soon.
                       </p>
                     </div>
                   </div>
@@ -138,7 +151,8 @@ export default function DevelopmentLaout() {
                     </div>
                     <Spinner values={progress} className="h-5" />
                     <p className="text-sm text-gray-600">
-                      Estimated completion: {developmentData.estimatedCompletion}
+                      Estimated completion:{" "}
+                      {developmentData.estimatedCompletion}
                     </p>
                   </div>
                 </div>
@@ -155,10 +169,16 @@ export default function DevelopmentLaout() {
                     <div className="mt-2 space-y-1">
                       {pathSegments.map((segment, index) => (
                         <div key={index} className="flex items-center">
-                          <div className="w-6 text-gray-400">{'├─'}</div>
-                          <span className={index === pathSegments.length - 1 ? 'font-bold' : ''}>
+                          <div className="w-6 text-gray-400">{"├─"}</div>
+                          <span
+                            className={
+                              index === pathSegments.length - 1
+                                ? "font-bold"
+                                : ""
+                            }
+                          >
                             {formatPageName(segment)}
-                            {index === pathSegments.length - 1 && ' (Current)'}
+                            {index === pathSegments.length - 1 && " (Current)"}
                           </span>
                         </div>
                       ))}
@@ -168,7 +188,6 @@ export default function DevelopmentLaout() {
               </div>
             </CardContent>
           </Card>
-
 
           {/* Bottom Stats */}
           <div className="mt-8 grid grid-cols-2 md:grid-cols-2 gap-4">
@@ -212,7 +231,10 @@ export default function DevelopmentLaout() {
             <CardContent>
               <ul className="space-y-3">
                 {developmentData.team.map((team, index) => (
-                  <li key={index} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded">
+                  <li
+                    key={index}
+                    className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded"
+                  >
                     <div className="h-2 w-2 rounded-full bg-green-500"></div>
                     <span>{team}</span>
                   </li>
@@ -230,10 +252,13 @@ export default function DevelopmentLaout() {
             <CardContent>
               <div className="space-y-3">
                 {developmentData.dependencies.map((dep, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded"
+                  >
                     <span className="text-sm">{dep}</span>
                     <Badge variant={index === 0 ? "default" : "outline"}>
-                      {index === 0 ? 'In Progress' : 'Pending'}
+                      {index === 0 ? "In Progress" : "Pending"}
                     </Badge>
                   </div>
                 ))}
@@ -269,30 +294,35 @@ export default function DevelopmentLaout() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Button variant="ghost" className="w-full justify-start" asChild>
-                  <a href="/">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  asChild
+                >
+                  <Link href="/">
                     <Home className="mr-2 h-4 w-4" />
                     Dashboard Home
-                  </a>
+                  </Link>
                 </Button>
-                <Button variant="ghost" className="w-full justify-start" asChild>
-                  <a href="/products">
-                    Products
-                  </a>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  asChild
+                >
+                  <Link href="/products">Products</Link>
                 </Button>
-                <Button variant="ghost" className="w-full justify-start" asChild>
-                  <a href="/orders">
-                    Orders
-                  </a>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  asChild
+                >
+                  <Link href="/orders">Orders</Link>
                 </Button>
               </div>
             </CardContent>
           </Card>
         </div>
-
-
       </div>
-
     </div>
   );
 }

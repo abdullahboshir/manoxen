@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "../../",
+    "composite": true,
+    "paths": {
+      "@manoxen/core-util": ["./libs/core-util/src/index"],
+      "@manoxen/shared-types": ["./packages/shared-types/src/index"],
+      "@manoxen/platform-core": ["./packages/platform-core/src/index"],
+      "@manoxen/infra-common": ["./libs/infra-common/src/index"],
+      "@manoxen/iam-core": ["./packages/iam-core/src/index"],
+      "@manoxen/organization": ["./packages/tenant-strategy/src/declarations.d.ts"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "build"],
+  "references": [
+    { "path": "../../libs/core-util" },
+    { "path": "../../libs/infra-common" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/iam-core" },
+    { "path": "../../packages/shared-types" }
+  ]
+}

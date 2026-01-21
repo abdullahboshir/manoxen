@@ -50,7 +50,7 @@ import {
     useUpdateRoleMutation,
     useDeleteRoleMutation,
     useGetPermissionResourcesQuery,
-} from "@/redux/api/iam/roleApi";
+} from "@/features/iam/api/roleApi";
 import { usePermissions } from "@/hooks/usePermissions";
 import { ROLE_SCOPE as RoleScope, RoleScopeType, isSuperAdmin as checkIsSuperAdmin, normalizeAuthString, USER_ROLES } from "@/config/auth-constants"
 

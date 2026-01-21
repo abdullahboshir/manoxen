@@ -162,7 +162,7 @@ export interface ISharedModuleMap {
   pos: boolean;
   erp: boolean;
   hrm: boolean;
-  ecommerce: boolean;
+  commerce: boolean;
   crm: boolean;
   logistics: boolean;
   finance: boolean;

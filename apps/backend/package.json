@@ -14,18 +14,69 @@
     "#core/*": "./src/core/*",
     "#app/*": "./src/app/*",
     "#shared/*": "./src/shared/*",
-    "#domain/catalog/*.js": "../../domains/commerce/catalog/src/*.ts",
-    "#domain/catalog/*": "../../domains/commerce/catalog/src/*",
-    "#domain/sales/*.js": "../../domains/commerce/sales/src/*.ts",
-    "#domain/sales/*": "../../domains/commerce/sales/src/*",
-    "#domain/pos/*.js": "../../domains/commerce/pos/src/*.ts",
-    "#domain/pos/*": "../../domains/commerce/pos/src/*",
-    "#domain/erp/*.js": "../../domains/enterprise/erp/src/*.ts",
-    "#domain/erp/*": "../../domains/enterprise/erp/src/*",
-    "#domain/hrm/*.js": "../../domains/enterprise/hrm/src/*.ts",
-    "#domain/hrm/*": "../../domains/enterprise/hrm/src/*",
-    "#domain/governance/*.js": "../../domains/platform/governance/src/*.ts",
-    "#domain/governance/*": "../../domains/platform/governance/src/*"
+    "#domain/catalog/*.js": "./src/contexts/catalog/src/*.ts",
+    "#domain/catalog/*": "./src/contexts/catalog/src/*",
+    "#domain/catalog": "./src/contexts/catalog/src/index.ts",
+
+    "#domain/sales/*.js": "./src/contexts/sales/src/*.ts",
+    "#domain/sales/*": "./src/contexts/sales/src/*",
+    "#domain/sales": "./src/contexts/sales/src/index.ts",
+
+    "#domain/pos/*.js": "./src/contexts/pos/src/*.ts",
+    "#domain/pos/*": "./src/contexts/pos/src/*",
+    "#domain/pos": "./src/contexts/pos/src/index.ts",
+
+    "#domain/accounting/*.js": "./src/contexts/accounting/src/*.ts",
+    "#domain/accounting/*": "./src/contexts/accounting/src/*",
+    "#domain/accounting": "./src/contexts/accounting/src/index.ts",
+
+    "#domain/supply/*.js": "./src/contexts/supply/src/*.ts",
+    "#domain/supply/*": "./src/contexts/supply/src/*",
+    "#domain/supply": "./src/contexts/supply/src/index.ts",
+
+    "#domain/ops/*.js": "./src/contexts/ops/src/*.ts",
+    "#domain/ops/*": "./src/contexts/ops/src/*",
+    "#domain/ops": "./src/contexts/ops/src/index.ts",
+
+    "#domain/analytics/*.js": "./src/contexts/analytics/src/*.ts",
+    "#domain/analytics/*": "./src/contexts/analytics/src/*",
+    "#domain/analytics": "./src/contexts/analytics/src/index.ts",
+
+    "#domain/hrm/*.js": "./src/contexts/hrm/src/*.ts",
+    "#domain/hrm/*": "./src/contexts/hrm/src/*",
+    "#domain/hrm": "./src/contexts/hrm/src/index.ts",
+
+    "#domain/governance/*.js": "./src/contexts/governance/src/*.ts",
+    "#domain/governance/*": "./src/contexts/governance/src/*",
+    "#domain/governance": "./src/contexts/governance/src/index.ts",
+
+    "#domain/pricing/*.js": "./src/contexts/pricing/src/*.ts",
+    "#domain/pricing/*": "./src/contexts/pricing/src/*",
+    "#domain/pricing": "./src/contexts/pricing/src/index.ts",
+
+    "#domain/legal/*.js": "./src/contexts/legal/src/*.ts",
+    "#domain/legal/*": "./src/contexts/legal/src/*",
+    "#domain/legal": "./src/contexts/legal/src/index.ts",
+
+    "#domain/corporate/*.js": "./src/contexts/corporate/src/*.ts",
+    "#domain/corporate/*": "./src/contexts/corporate/src/*",
+    "#domain/corporate": "./src/contexts/corporate/src/index.ts",
+
+    "#domain/organization/*.js": "./src/contexts/organization/src/*.ts",
+    "#domain/organization/*": "./src/contexts/organization/src/*",
+    "#domain/organization": "./src/contexts/organization/src/index.ts",
+
+    "#domain/iam/*.js": "./src/contexts/identity/src/*.ts",
+    "#domain/iam/*": "./src/contexts/identity/src/*",
+    "#domain/iam": "./src/contexts/identity/src/index.ts",
+
+    "#domain/system/*.js": "./src/contexts/system/src/*.ts",
+    "#domain/system/*": "./src/contexts/system/src/*",
+    "#domain/system": "./src/contexts/system/src/index.ts",
+
+    "#domain/contracts/*.js": "./src/contexts/contracts/src/*.ts",
+    "#domain/contracts/*": "./src/contexts/contracts/src/*",
+    "#domain/contracts": "./src/contexts/contracts/src/index.ts"
   },
   "scripts": {
     "dev": "nodemon --exec \"node --import tsx\" src/server.ts",

@@ -2,11 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "composite": true
   },
   "include": ["src/**/*"],
   "exclude": ["dist"],
   "references": [
-    { "path": "../../libs/core-util" }
+    { "path": "../../libs/core-util" },
+    { "path": "../shared-types" }
   ]
 }

@@ -7,20 +7,20 @@ import { defaultProductValues, productSchema, ProductFormValues } from "../produ
 
 import { 
     useGetCategoriesQuery, 
-} from "@/redux/api/catalog/categoryApi";
+} from "@/features/catalog/api/categoryApi";
 
-import { useGetBrandsQuery } from "@/redux/api/catalog/brandApi";
-import { useGetUnitsQuery } from "@/redux/api/catalog/unitApi";
-import { useGetTaxsQuery } from "@/redux/api/finance/taxApi";
+import { useGetBrandsQuery } from "@/features/catalog/api/brandApi";
+import { useGetUnitsQuery } from "@/features/catalog/api/unitApi";
+import { useGetTaxsQuery } from "@/features/accounting/api/taxApi";
 import { 
     useCreateProductMutation, 
     useUpdateProductMutation, 
     useGetProductQuery,
-} from "@/redux/api/catalog/productApi";
+} from "@/features/catalog/api/productApi";
 import { useUploadFileMutation } from "@/redux/api/system/uploadApi";
 import { useAuth } from "@manoxen/auth-client";
 import { useGetBusinessUnitsQuery, useGetBusinessUnitByIdQuery } from "@/redux/api/organization/businessUnitApi";
-import { useGetAttributeGroupQuery } from "@/redux/api/catalog/attributeGroupApi";
+import { useGetAttributeGroupQuery } from "@/features/catalog/api/attributeGroupApi";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useCurrentRole } from "@manoxen/auth-client";
 import { isSuperAdmin as checkIsSuperAdmin } from "@/config/auth-constants";
@@ -209,9 +209,9 @@ export const useProductForm = (initialData?: any) => {
         if (initialData && !isRefDataLoading) { // Wait for ref data
             // Helper to safely get ID
             const getId = (item: any) => {
-                if (!item) return ";
+                if (!item) return "";
                 if (typeof item === 'string') return item;
-                return item._id || item.id || ";
+                return item._id || item.id || "";
             };
 
             const pCat = getId(initialData.primaryCategory || initialData.category);
@@ -274,6 +274,7 @@ export const useProductForm = (initialData?: any) => {
                 name: initialData.name,
                 nameBangla: initialData.nameBangla || "",
                 slug: initialData.slug,
+                domain: initialData.domain || "retail",
                 sku: initialData.sku || initialData.inventory?.sku || "",
 
                 businessUnit: businessUnitVal,
@@ -325,17 +326,17 @@ export const useProductForm = (initialData?: any) => {
                 statusInfo: {
                     status: initialData.statusInfo?.status || "draft",
                 },
-                marketing: {
-                    isFeatured: initialData.marketing?.isFeatured || false,
-                    isNew: initialData.marketing?.isNew || false,
-                    isBestSeller: initialData.marketing?.isBestSeller || false,
-                    isPopular: initialData.marketing?.isPopular || false,
-                    isTrending: initialData.marketing?.isTrending || false,
+                reports: {
+                    isFeatured: initialData.reports?.isFeatured || initialData.marketing?.isFeatured || false,
+                    isNew: initialData.reports?.isNew || initialData.marketing?.isNew || false,
+                    isBestSeller: initialData.reports?.isBestSeller || initialData.marketing?.isBestSeller || false,
+                    isPopular: initialData.reports?.isPopular || initialData.marketing?.isPopular || false,
+                    isTrending: initialData.reports?.isTrending || initialData.marketing?.isTrending || false,
                     seo: {
-                        metaTitle: initialData.marketing?.seo?.metaTitle || "",
-                        metaDescription: initialData.marketing?.seo?.metaDescription || "",
-                        keywords: initialData.marketing?.seo?.keywords || [],
-                        canonicalUrl: initialData.marketing?.seo?.canonicalUrl || ""
+                        metaTitle: initialData.reports?.seo?.metaTitle || initialData.marketing?.seo?.metaTitle || "",
+                        metaDescription: initialData.reports?.seo?.metaDescription || initialData.marketing?.seo?.metaDescription || "",
+                        keywords: initialData.reports?.seo?.keywords || initialData.marketing?.seo?.keywords || [],
+                        canonicalUrl: initialData.reports?.seo?.canonicalUrl || initialData.marketing?.seo?.canonicalUrl || ""
                     }
                 },
             
@@ -473,10 +474,10 @@ export const useProductForm = (initialData?: any) => {
                     rating: 5,
                     isVerified: true
                 },
-                marketing: {
-                    ...data.marketing,
+                reports: {
+                    ...data.reports,
                     seo: {
-                        ...data.marketing?.seo,
+                        ...data.reports?.seo,
                         slug: slug, 
                     }
                 }

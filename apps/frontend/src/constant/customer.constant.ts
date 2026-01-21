@@ -12,7 +12,7 @@ export const CUSTOMER_MODULE = {
     POS: 'pos',
     ERP: 'erp',
     HRM: 'hrm',
-    ECOMMERCE: 'ecommerce',
+    COMMERCE: 'commerce',
     CRM: 'crm',
     LOGISTICS: 'logistics',
     SYSTEM: 'system'
@@ -22,7 +22,7 @@ export const CUSTOMER_MODULE_OPTIONS = [
     { label: 'POS', value: CUSTOMER_MODULE.POS },
     { label: 'ERP', value: CUSTOMER_MODULE.ERP },
     { label: 'HRM', value: CUSTOMER_MODULE.HRM },
-    { label: 'E-Commerce', value: CUSTOMER_MODULE.ECOMMERCE },
+    { label: 'E-Commerce', value: CUSTOMER_MODULE.COMMERCE },
     { label: 'CRM', value: CUSTOMER_MODULE.CRM },
     { label: 'Logistics', value: CUSTOMER_MODULE.LOGISTICS },
     { label: 'System', value: CUSTOMER_MODULE.SYSTEM }

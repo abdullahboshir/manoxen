@@ -3,11 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   transpilePackages: [
     "@manoxen/shared-types",
-    "@manoxen/catalog",
-    "@manoxen/sales",
-    "@manoxen/pos",
-    "@manoxen/erp",
-    "@manoxen/hrm"
+    "@manoxen/auth-client",
+    "@manoxen/iam-core"
   ],
   images: {
     remotePatterns: [
@@ -19,6 +16,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     turbo: {},
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
   },
 };
 

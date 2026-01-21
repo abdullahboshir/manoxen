@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,30 +15,77 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@manoxen/shared-types": ["../../packages/shared-types/src"],
-      "@manoxen/shared-types/*": ["../../packages/shared-types/src/*"],
-      "@manoxen/shared": ["../../packages/shared-types/src"],
-      "@manoxen/catalog": ["../../domains/commerce/catalog/src"],
-      "@manoxen/catalog/*": ["../../domains/commerce/catalog/src/*"],
-      "@manoxen/sales": ["../../domains/commerce/sales/src"],
-      "@manoxen/sales/*": ["../../domains/commerce/sales/src/*"],
-      "@manoxen/pos": ["../../domains/commerce/pos/src"],
-      "@manoxen/pos/*": ["../../domains/commerce/pos/src/*"],
-      "@manoxen/erp": ["../../domains/enterprise/erp/src"],
-      "@manoxen/erp/*": ["../../domains/enterprise/erp/src/*"],
-      "@manoxen/hrm": ["../../domains/enterprise/hrm/src"],
-      "@manoxen/hrm/*": ["../../domains/enterprise/hrm/src/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@manoxen/shared-types": [
+        "../../packages/shared-types/src"
+      ],
+      "@manoxen/shared-types/*": [
+        "../../packages/shared-types/src/*"
+      ],
+      "@manoxen/shared": [
+        "../../packages/shared-types/src"
+      ],
+      "@manoxen/catalog": [
+        "../backend/src/contexts/catalog/src"
+      ],
+      "@manoxen/catalog/*": [
+        "../backend/src/contexts/catalog/src/*"
+      ],
+      "@manoxen/sales": [
+        "../backend/src/contexts/sales/src"
+      ],
+      "@manoxen/sales/*": [
+        "../backend/src/contexts/sales/src/*"
+      ],
+      "@manoxen/pos": [
+        "../backend/src/contexts/pos/src"
+      ],
+      "@manoxen/pos/*": [
+        "../backend/src/contexts/pos/src/*"
+      ],
+      "@manoxen/ops": ["../backend/src/contexts/ops/src"],
+      "@manoxen/ops/*": ["../backend/src/contexts/ops/src/*"],
+      "@manoxen/erp": [
+        "../backend/src/contexts/ops/src"
+      ],
+      "@manoxen/erp/*": [
+        "../backend/src/contexts/ops/src/*"
+      ],
+      "@manoxen/hrm": [
+        "../backend/src/contexts/hrm/src"
+      ],
+      "@manoxen/hrm/*": [
+        "../backend/src/contexts/hrm/src/*"
+      ],
+      "@manoxen/organization": [
+        "../backend/src/contexts/organization/src"
+      ],
+      "@manoxen/organization/*": [
+        "../backend/src/contexts/organization/src/*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "papaparse"
+    ],
+    "noEmit": true
   },
   "include": [
     "next-env.d.ts",
@@ -46,12 +97,11 @@
     "../../domains/**/*.tsx"
   ],
   "references": [
-    { "path": "../../domains/commerce/catalog" },
-    { "path": "../../domains/commerce/sales" },
-    { "path": "../../domains/commerce/pos" },
-    { "path": "../../domains/enterprise/erp" },
-    { "path": "../../domains/enterprise/hrm" },
-    { "path": "../../packages/shared-types" }
+    {
+      "path": "../../packages/shared-types"
+    }
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

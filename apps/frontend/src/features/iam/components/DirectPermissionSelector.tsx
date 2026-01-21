@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Loader2, Search, ChevronDown, ChevronRight } from 'lucide-react';
-import { useGetPermissionGroupsQuery } from "@/redux/api/iam/roleApi";
+import { useGetPermissionGroupsQuery } from "@/features/iam/api/roleApi";
 
 interface DirectPermissionSelectorProps {
     selectedPermissionIds: string[];

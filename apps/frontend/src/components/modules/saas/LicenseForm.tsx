@@ -44,7 +44,7 @@ const licenseFormSchema = z.object({
     key: z.string().min(10, { message: "License key must be generated." }),
     packageId: z.string().min(1, { message: "Package is required." }),
     clientId: z.string().min(1, { message: "Business Unit (Client) is required." }), // Renamed and Required
-    status: z.enum(["active", "inactive", "expired", "revoked"]).default("active"),
+    status: z.enum(["active", "inactive", "expired", "revoked"]),
     expiresAt: z.string().optional(), // ISO String
 })
 

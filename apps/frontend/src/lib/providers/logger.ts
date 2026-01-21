@@ -153,7 +153,7 @@ class GlobalLogger {
 
     // ✅ FIX: Server-side - faster implementation
     try {
-      const stack = new Error().stack || ";
+      const stack = new Error().stack ||  "";
       const lines = stack.split("\n");
 
       for (let i = 2; i < Math.min(lines.length, 5); i++) {

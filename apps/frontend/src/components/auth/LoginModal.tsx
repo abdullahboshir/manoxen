@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLoadingStore } from "@/store/loadingStore";
 
-import { useUserRegisterMutation } from "@/redux/api/iam/authApi";
+import { useUserRegisterMutation } from "@/features/iam/api/authApi";
 import Link from "next/link";
 import { useAuth } from "@manoxen/auth-client";
 import { Eye, EyeOff, Loader2 } from "lucide-react";

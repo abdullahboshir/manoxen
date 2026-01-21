@@ -1,7 +1,5 @@
-﻿import "colors";
-import { QueueService } from "..//modules/platform/queue/queue.service";
-import { QUEUE_NAMES } from "..//modules/platform/queue/queue.interface";
-
+import "colors";
+import { QueueService, QUEUE_NAMES } from "@manoxen/system";
 /**
  * Industrial Standard Job Manager
  * Orchestrates all background maintenance tasks using Bull repeatable jobs.
@@ -12,7 +10,7 @@ export class JobManager {
      * These are registered once in the primary process.
      */
     static async initAll() {
-        console.log("ðŸ› ï¸  Initializing Industrial Job Manager...".cyan.bold);
+        console.log("🛠️  Initializing Industrial Job Manager...".cyan.bold);
 
         // 1. Stock Alert Job (Every Midnight)
         await this.scheduleJob('stock-alert', '0 0 * * *');
@@ -45,7 +43,7 @@ export class JobManager {
         // Runs every 24 hours
         await this.scheduleJob('subscription-maintenance', '0 0 * * *');
 
-        console.log("âœ… All Maintenance Jobs Registered Successfully".green);
+        console.log("✅ All Maintenance Jobs Registered Successfully".green);
     }
 
     /**
@@ -67,9 +65,9 @@ export class JobManager {
                     removeOnComplete: true,
                 }
             );
-            console.log(`   ðŸ”¸ Scheduled: ${taskName.padEnd(25)} [${cron}]`.gray);
+            console.log(`   🔸 Scheduled: ${taskName.padEnd(25)} [${cron}]`.gray);
         } catch (error: any) {
-            console.error(`   âŒ Failed to schedule ${taskName}:`.red, error.message);
+            console.error(`   ❌ Failed to schedule ${taskName}:`.red, error.message);
         }
     }
 }

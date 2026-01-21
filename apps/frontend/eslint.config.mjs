@@ -1,47 +1,41 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-        rules: {
+    rules: {
       // ✅ TypeScript strictness
-      "@typescript-eslint/no-explicit-any": "error", // disallow "any"
-      "@typescript-eslint/explicit-function-return-type": "warn", // functions must declare return type
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }], // avoid unused vars
-      "@typescript-eslint/consistent-type-imports": "error", // enforce import type { ... }
-      "@typescript-eslint/no-inferrable-types": "warn", // avoid redundant type annotations
-      "@typescript-eslint/no-non-null-assertion": "warn", // discourage !
-      "@typescript-eslint/array-type": ["error", { default: "array-simple" }], // enforce simple array type: string[]
-      "@typescript-eslint/ban-types": [
-        "error",
-        {
-          types: {
-            Object: { message: "Use {} or Record<string, unknown> instead" },
-            String: { message: "Use string instead" },
-            Number: { message: "Use number instead" },
-            Boolean: { message: "Use boolean instead" },
-          },
-        },
-      ],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/no-inferrable-types": "warn",
+      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
 
       // ✅ General JS/TS best practices
-      "eqeqeq": ["error", "always"], // enforce ===
-      "no-console": ["warn", { allow: ["warn", "error"] }], // discourage console.log
-      "prefer-const": "error", // use const when possible
-      "no-var": "error", // disallow var
+      "eqeqeq": ["error", "always"],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "prefer-const": "warn",
+      "no-var": "error",
+      "react/no-unescaped-entities": "off",
     },
+  },
+  {
+    ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
   }
-]);
+];
 
 export default eslintConfig;

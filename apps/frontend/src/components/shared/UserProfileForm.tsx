@@ -18,8 +18,8 @@ import {
     useUpdateUserMutation,
     useGetProfileQuery,
     useUpdateProfileMutation
-} from "@/redux/api/iam/userApi";
-import { useGetRolesQuery } from "@/redux/api/iam/roleApi";
+} from "@/features/iam/api/userApi";
+import { useGetRolesQuery } from "@/features/iam/api/roleApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 import { useAuth } from "@manoxen/auth-client";

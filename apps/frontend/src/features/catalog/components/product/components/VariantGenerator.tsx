@@ -3,7 +3,7 @@ import { Plus, Trash2, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCreateAttributeMutation, useGetAttributesQuery } from "@/redux/api/catalog/attributeApi";
+import { useCreateAttributeMutation, useGetAttributesQuery } from "@/features/catalog/api/attributeApi";
 import { AutoFormModal } from "@/components/shared/AutoFormModal";
 import { TagInput } from "@/components/shared/TagInput";
 import { Controller } from "react-hook-form";

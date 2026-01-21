@@ -3,7 +3,7 @@
 import { useRouter, useParams, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
-import { useCreateUserMutation } from "@/redux/api/iam/userApi"
+import { useCreateUserMutation } from "@/features/iam/api/userApi"
 import { toast } from "sonner"
 import { UserForm } from "@/features/iam/components/UserForm"
 

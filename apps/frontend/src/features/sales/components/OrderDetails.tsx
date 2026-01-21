@@ -23,7 +23,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useGetOrderQuery, useUpdateOrderMutation } from "@/redux/api/sales/orderApi";
+import { useGetOrderQuery, useUpdateOrderMutation } from "@/features/sales/api/orderApi";
 import { IOrder } from "./order.types";
 import { InvoicePrint } from "./InvoicePrint";
 

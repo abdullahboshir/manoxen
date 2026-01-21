@@ -2,7 +2,8 @@
 import { useAuth } from "./useAuth";
 import { useCurrentRole } from "./useCurrentRole";
 import { useMemo } from "react";
-import { isOrganizationOwner, USER_ROLE } from "@manoxen/iam-core";
+import { isOrganizationOwner } from "@manoxen/iam-core/src/utils/role.helper";
+import { USER_ROLE } from "@manoxen/iam-core/src/constants/user.constant";
 
 export function usePermission() {
   const { user } = useAuth();
@@ -13,8 +14,19 @@ export function usePermission() {
   }, [user]);
 
 
-  const can = (resource: string, action: string): boolean => {
+  const can = (resource: string, action?: string): boolean => {
     if (user?.isSuperAdmin) return true;
+
+    let res = resource;
+    let act = action;
+
+    if (!act && res.includes(':')) {
+        const parts = res.split(':');
+        res = parts[0];
+        act = parts[1];
+    }
+
+    if (!act) return false; // Action is required
 
     // @ts-ignore
     const isOwnerRole = isOrganizationOwner(currentRole) || currentRole === USER_ROLE.ORGANIZATION_OWNER || currentRole === 'owner';
@@ -25,14 +37,14 @@ export function usePermission() {
     if (!permissions.length) return false;
 
     if (typeof permissions[0] === 'string') {
-      const key = `${resource}:${action}`;
+      const key = `${res}:${act}`;
       return permissions.includes(key);
     }
 
     // Handle Object Format (Legacy/Fallback)
     const matching = permissions.filter((p: any) => 
-      p.resource === resource && 
-      p.action === action && 
+      p.resource === res && 
+      p.action === act && 
       p.isActive
     );
 

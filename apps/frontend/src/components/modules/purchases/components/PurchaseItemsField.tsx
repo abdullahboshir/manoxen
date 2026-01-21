@@ -4,7 +4,7 @@ import { useFieldArray, Control, useFormContext, Controller } from "react-hook-f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Trash2, Search, Package } from "lucide-react";
-import { useGetProductsQuery } from "@/redux/api/catalog/productApi";
+import { useGetProductsQuery } from "@/features/catalog/api/productApi";
 import {
     Select,
     SelectContent,

@@ -18,7 +18,7 @@ import { StatCard } from "@/components/shared/StatCard";
 import { AutoFormModal } from "@/components/shared/AutoFormModal";
 import { TagInput } from "@/components/shared/TagInput";
 import { ColumnDef } from "@tanstack/react-table";
-import { useCreateAttributeMutation, useDeleteAttributeMutation, useGetAttributesQuery, useUpdateAttributeMutation } from "@/redux/api/catalog/attributeApi";
+import { useCreateAttributeMutation, useDeleteAttributeMutation, useGetAttributesQuery, useUpdateAttributeMutation } from "@/features/catalog/api/attributeApi";
 import { toast } from "sonner";
 import { Controller } from "react-hook-form";
 import { useAuth } from "@manoxen/auth-client";

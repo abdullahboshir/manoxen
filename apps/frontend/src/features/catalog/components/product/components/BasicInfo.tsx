@@ -1,5 +1,4 @@
 
-import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -23,7 +22,7 @@ export const BasicInfo = ({ form, categories, brands, setLevel1, setLevel2, setL
     // Watch category fields to drive the hierarchy options dynamically
     const watchedL1 = form.watch("primaryCategory");
     const getSafeId = (item: any) => {
-        if (!item) return ";
+        if (!item) return "";
         if (typeof item === 'string') return item.trim();
         return String(item._id || item.id || "").trim();
     };

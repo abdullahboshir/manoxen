@@ -109,7 +109,7 @@ export const OrganizationSection = ({ form, units, businessUnits, isLocked }: Or
                         name="availableModules"
                         label="Available Modules"
                         placeholder="Select where this product is available..."
-                        include={['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations']}
+                        include={['pos', 'commerce', 'logistics', 'crm', 'marketing', 'integrations']}
                     />
                 </div>
 
@@ -118,7 +118,7 @@ export const OrganizationSection = ({ form, units, businessUnits, isLocked }: Or
                     <div className="flex flex-wrap gap-4">
                         <FormField
                             control={form.control}
-                            name="marketing.isFeatured"
+                            name="reports.isFeatured"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 border p-3 rounded-md">
                                     <FormControl>
@@ -130,7 +130,7 @@ export const OrganizationSection = ({ form, units, businessUnits, isLocked }: Or
                         />
                         <FormField
                             control={form.control}
-                            name="marketing.isNew"
+                            name="reports.isNew"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 border p-3 rounded-md">
                                     <FormControl>
@@ -142,7 +142,7 @@ export const OrganizationSection = ({ form, units, businessUnits, isLocked }: Or
                         />
                         <FormField
                             control={form.control}
-                            name="marketing.isBestSeller"
+                            name="reports.isBestSeller"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 border p-3 rounded-md">
                                     <FormControl>

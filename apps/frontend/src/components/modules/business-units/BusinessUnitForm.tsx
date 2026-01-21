@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useCreateBusinessUnitMutation, useUpdateBusinessUnitMutation, useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { useGetAllOrganizationsQuery } from "@/redux/api/platform/organizationApi";
-import { useGetAttributeGroupsQuery } from "@/redux/api/catalog/attributeGroupApi";
+import { useGetAttributeGroupsQuery } from "@/features/catalog/api/attributeGroupApi";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -162,7 +162,7 @@ export function BusinessUnitForm({ slug }: BusinessUnitFormProps = {}) {
                 [MODULES.POS]: true,
                 [MODULES.ERP]: true,
                 [MODULES.HRM]: false,
-                [MODULES.ECOMMERCE]: false,
+                [MODULES.COMMERCE]: false,
                 [MODULES.CRM]: false,
                 [MODULES.LOGISTICS]: false,
                 [MODULES.GOVERNANCE]: false,

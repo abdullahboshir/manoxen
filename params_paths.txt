@@ -1,0 +1,9 @@
+﻿E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\organization\business-units\[slug]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\business-units\[slug]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\platform\licenses\[id]\edit\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\layout.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\hrm\attendance\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(protected)\[business-unit]\(dashboard)\hrm\leave\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(public)\shop\[businessUnitId]\page.tsx
+E:\WEB-DEVELOPMENT\PROJECTS\business-platform\manoxen\apps\frontend\src\app\(public)\shop\[businessUnitId]\[...slug]\page.tsx

@@ -1,36 +1,36 @@
-import { useState, useMemo, useEffect, useRef } from "react"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { getSidebarMenu } from "@/config/sidebar-menu"
-import { OPERATIONAL_MODULES } from "@/config/module-registry"
-import { Input } from "@/components/ui/input"
-import { Search, ChevronLeft, ChevronRight } from "lucide-react"
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { getSidebarMenu } from "@/config/sidebar-menu";
+import { OPERATIONAL_MODULES } from "@/config/module-registry";
+import { Input } from "@/components/ui/input";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useGetSystemSettingsQuery } from "@/redux/api/system/settingsApi"
+import { useGetSystemSettingsQuery } from "@/redux/api/system/settingsApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { useGetOutletQuery } from "@/redux/api/organization/outletApi";
-import { SidebarMenu } from "./SidebarMenu"
-import { useAuth } from "@manoxen/auth-client"
-import { useCurrentRole } from "@manoxen/auth-client"
+import { SidebarMenu } from "./SidebarMenu";
+import { useAuth } from "@manoxen/auth-client";
+import { useCurrentRole } from "@manoxen/auth-client";
 import {
   normalizeAuthString,
   USER_ROLES,
   isSuperAdmin as checkIsSuperAdminHelper,
-  isOrganizationOwner as checkisOrganizationOwnerHelper
+  isOrganizationOwner as checkisOrganizationOwnerHelper,
 } from "@/config/auth-constants";
 
 interface SidebarProps {
-  className?: string
-  onItemClick?: () => void
+  className?: string;
+  onItemClick?: () => void;
 }
 
 export function Sidebar({ className, onItemClick }: SidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const params = useParams()
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const { user, isLoading: isUserLoading } = useAuth()
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { user, isLoading: isUserLoading } = useAuth();
   const { currentRole } = useCurrentRole();
 
   // Cache settings to prevent flicker during refetch
@@ -41,21 +41,38 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
   const { data: systemSettings } = useGetSystemSettingsQuery(undefined);
 
   // 1. Resolve Business Unit Context
-  let businessUnit = (params["business-unit"] || params.businessUnit) as string
+  let businessUnit = (params["business-unit"] || params.businessUnit) as string;
 
   const RESERVED_PATHS = [
-    "user-management", "finance", "reports", "support", "system",
-    "logistics", "risk", "business-units", "settings", "profile", "dashboard"
+    "user-management",
+    "finance",
+    "reports",
+    "support",
+    "system",
+    "logistics",
+    "risk",
+    "business-units",
+    "settings",
+    "profile",
+    "dashboard",
   ];
 
   // Detect if we're on organization route
-  const isOrganizationAdminRoute = pathname.startsWith('/organization');
+  const isOrganizationAdminRoute = pathname.startsWith("/organization");
 
   if (!businessUnit) {
-    const segments = pathname.split('/').filter(Boolean);
+    const segments = pathname.split("/").filter(Boolean);
     if (segments.length >= 1) {
       const firstSegment = segments[0];
-      const GLOBAL_ROOTS = ["auth", "platform", "organization", "home", "api", "_next", "favicon.ico"];
+      const GLOBAL_ROOTS = [
+        "auth",
+        "platform",
+        "organization",
+        "home",
+        "api",
+        "_next",
+        "favicon.ico",
+      ];
 
       if (
         !GLOBAL_ROOTS.includes(firstSegment) &&
@@ -66,32 +83,47 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     }
   }
 
-  if (pathname.startsWith('/platform') || pathname.startsWith('/organization')) {
+  if (
+    pathname.startsWith("/platform") ||
+    pathname.startsWith("/organization")
+  ) {
     businessUnit = "";
   }
 
-  const outletId = (params.outletId as string) || searchParams.get('outlet');
-  const organizationId = searchParams.get('organization');
+  const outletId = (params.outletId as string) || searchParams.get("outlet");
+  const organizationId = searchParams.get("organization");
 
   // 2. Identify Roles & Scopes Robustly
-  const currentIsSuperAdmin = !!(user?.isSuperAdmin || (user?.globalRoles || []).some((r: any) =>
-    checkIsSuperAdminHelper(typeof r === 'string' ? r : r.slug || r.name)
-  ));
+  const currentIsSuperAdmin = !!(
+    user?.isSuperAdmin ||
+    (user?.globalRoles || []).some((r: any) =>
+      checkIsSuperAdminHelper(typeof r === "string" ? r : r.slug || r.name),
+    )
+  );
 
-  const currentisOrganizationOwner = !!((user?.globalRoles || []).some((r: any) =>
-    checkisOrganizationOwnerHelper(typeof r === 'string' ? r : r.slug || r.name)
-  ) || (user?.businessAccess || []).some((acc: any) =>
-    checkisOrganizationOwnerHelper(typeof acc.role === 'string' ? acc.role : acc.role?.slug || acc.role?.name) ||
-    acc.scope === 'ORGANIZATION'
-  ));
+  const currentisOrganizationOwner = !!(
+    (user?.globalRoles || []).some((r: any) =>
+      checkisOrganizationOwnerHelper(
+        typeof r === "string" ? r : r.slug || r.name,
+      ),
+    ) ||
+    (user?.businessAccess || []).some(
+      (acc: any) =>
+        checkisOrganizationOwnerHelper(
+          typeof acc.role === "string"
+            ? acc.role
+            : acc.role?.slug || acc.role?.name,
+        ) || acc.scope === "ORGANIZATION",
+    )
+  );
 
   // Determine Active Role
   let role = currentRole as string;
   if (!role) {
-    if (pathname.startsWith('/platform')) {
+    if (pathname.startsWith("/platform")) {
       // Platform route is only for super-admin/platform users
       role = USER_ROLES.SUPER_ADMIN;
-    } else if (pathname.startsWith('/organization')) {
+    } else if (pathname.startsWith("/organization")) {
       // Organization route is for organization owners
       role = USER_ROLES.ORGANIZATION_OWNER;
     } else if (businessUnit) {
@@ -107,17 +139,25 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     }
   }, [isUserLoading, user, currentIsSuperAdmin, currentisOrganizationOwner]);
 
-  const isSuperAdmin = isUserLoading ? cachedSuperAdminRef.current : currentIsSuperAdmin;
-  const isOrganizationOwner = isUserLoading ? cachedOrganizationOwnerRef.current : currentisOrganizationOwner;
+  const isSuperAdmin = isUserLoading
+    ? cachedSuperAdminRef.current
+    : currentIsSuperAdmin;
+  const isOrganizationOwner = isUserLoading
+    ? cachedOrganizationOwnerRef.current
+    : currentisOrganizationOwner;
 
   // 3. Fetch Contextual Data (Business Units / Outlets)
   const canFetchAllUnits = isSuperAdmin || isOrganizationOwner;
   const { data: allBusinessUnits } = useGetBusinessUnitsQuery(
-    canFetchAllUnits && organizationId ? { organization: organizationId } : undefined,
-    { skip: !canFetchAllUnits }
+    canFetchAllUnits && organizationId
+      ? { organization: organizationId }
+      : undefined,
+    { skip: !canFetchAllUnits },
   );
 
-  const businessUnitsResult = Array.isArray(allBusinessUnits) ? allBusinessUnits : (allBusinessUnits as any)?.data || [];
+  const businessUnitsResult = Array.isArray(allBusinessUnits)
+    ? allBusinessUnits
+    : (allBusinessUnits as any)?.data || [];
   const contextAvailable = user?.context?.available || [];
   let availableUnits: any[] = [];
 
@@ -126,31 +166,59 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
   } else if (contextAvailable.length > 0) {
     availableUnits = contextAvailable.map((ctx: any) => ({
       ...(ctx.businessUnit || ctx.organization),
-      outlets: ctx.outlets || []
+      outlets: ctx.outlets || [],
     }));
   } else {
-    const userBUs = (user?.businessAccess || []).map((acc: any) => acc.businessUnit).filter(Boolean);
-    availableUnits = [...new Map(userBUs.map((bu: any) => [bu._id || bu.id, bu])).values()];
+    const userBUs = (user?.businessAccess || [])
+      .map((acc: any) => acc.businessUnit)
+      .filter(Boolean);
+    availableUnits = [
+      ...new Map(userBUs.map((bu: any) => [bu._id || bu.id, bu])).values(),
+    ];
   }
 
   const activeUnit = businessUnit
-    ? availableUnits.find((u: any) => u.id === businessUnit || u.slug === businessUnit || u._id?.toString() === businessUnit)
+    ? availableUnits.find(
+        (u: any) =>
+          u.id === businessUnit ||
+          u.slug === businessUnit ||
+          u._id?.toString() === businessUnit,
+      )
     : null;
 
-  const { data: activeOutletData } = useGetOutletQuery(outletId as string, { skip: !outletId });
+  const { data: activeOutletData } = useGetOutletQuery(outletId as string, {
+    skip: !outletId,
+  });
   const activeOutlet = activeOutletData?.data || activeOutletData || null;
 
   // 4. Resolve Active Modules for Filtering
   const outletModules = activeOutlet?.activeModules;
-  const unitModules = activeUnit?.activeModules || activeUnit?.organization?.activeModules;
+  const unitModules =
+    activeUnit?.activeModules || activeUnit?.organization?.activeModules;
   const userModules = (user as any)?.organization?.activeModules;
-  const activeModules = outletModules || unitModules || userModules || systemSettings?.enabledModules || {};
+  const activeModules =
+    outletModules ||
+    unitModules ||
+    userModules ||
+    systemSettings?.enabledModules ||
+    {};
 
   // 5. Menu Generation
-  const isOwnerContext = isOrganizationOwner || role === USER_ROLES.ORGANIZATION_OWNER || role === 'owner';
-  let menuRole = (isOwnerContext && businessUnit) ? 'business-admin' : role;
+  const isOwnerContext =
+    isOrganizationOwner ||
+    role === USER_ROLES.ORGANIZATION_OWNER ||
+    role === "owner";
+  let menuRole = isOwnerContext && businessUnit ? "business-admin" : role;
 
-  const rawMenuItems = getSidebarMenu(menuRole, businessUnit || "", outletId as string, organizationId, isOrganizationAdminRoute);
+  const organization = params.organization as string;
+  const rawMenuItems = getSidebarMenu(
+    menuRole,
+    businessUnit || "",
+    outletId as string,
+    organizationId,
+    isOrganizationAdminRoute,
+    organization,
+  );
 
   // 6. Filter Menu Items by Module configuration
   const configuredMenuItems = useMemo(() => {
@@ -178,24 +246,41 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
   const permittedMenuItems = useMemo(() => {
     if (!user && !isUserLoading) return [];
     const isSuperAdminUser = isSuperAdmin;
-    const isOrganizationOwnerUser = isOrganizationOwner || role === USER_ROLES.ORGANIZATION_OWNER || role === 'owner';
+    const isOrganizationOwnerUser =
+      isOrganizationOwner ||
+      role === USER_ROLES.ORGANIZATION_OWNER ||
+      role === "owner";
     const effectivePermissions = (user as any)?.effectivePermissions || [];
 
     const filterByPermission = (items: any[]): any[] => {
       return items.reduce((acc: any[], item: any) => {
         let hasAccess = false;
-        const moduleKey = item.module ? item.module.toLowerCase() : '';
-        const bypassRoles = ['business-admin', 'store-manager', 'admin', 'manager'];
-        const isOperationalBypass = bypassRoles.includes(role) && OPERATIONAL_MODULES.includes(moduleKey);
+        const moduleKey = item.module ? item.module.toLowerCase() : "";
+        const bypassRoles = [
+          "business-admin",
+          "store-manager",
+          "admin",
+          "manager",
+        ];
+        const isOperationalBypass =
+          bypassRoles.includes(role) && OPERATIONAL_MODULES.includes(moduleKey);
 
-        if (isSuperAdminUser || isOrganizationOwnerUser || isOperationalBypass) {
+        if (
+          isSuperAdminUser ||
+          isOrganizationOwnerUser ||
+          isOperationalBypass
+        ) {
           hasAccess = true;
         } else if (item.resource) {
           const resource = item.resource.toLowerCase();
-          const action = (item.action || 'read').toLowerCase();
+          const action = (item.action || "read").toLowerCase();
           hasAccess = effectivePermissions.some((p: string) => {
             const pLower = p.toLowerCase();
-            return pLower === `${resource}:${action}` || pLower === `*` || (pLower === resource && !action);
+            return (
+              pLower === `${resource}:${action}` ||
+              pLower === `*` ||
+              (pLower === resource && !action)
+            );
           });
         } else {
           hasAccess = true; // No resource key = public/generic
@@ -206,7 +291,11 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
           if (newItem.children) {
             newItem.children = filterByPermission(newItem.children);
             // Hide parent if it has children defined but none are accessible
-            if (item.children && item.children.length > 0 && newItem.children.length === 0) {
+            if (
+              item.children &&
+              item.children.length > 0 &&
+              newItem.children.length === 0
+            ) {
               hasAccess = false;
             }
           }
@@ -216,7 +305,14 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
       }, []);
     };
     return filterByPermission(configuredMenuItems);
-  }, [configuredMenuItems, user, isSuperAdmin, isOrganizationOwner, isUserLoading, role]);
+  }, [
+    configuredMenuItems,
+    user,
+    isSuperAdmin,
+    isOrganizationOwner,
+    isUserLoading,
+    role,
+  ]);
 
   // 8. Search Filtering
   const finalMenuItems = useMemo(() => {
@@ -224,14 +320,16 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     const lowerQuery = searchQuery.toLowerCase();
     const searchFilter = (items: any[]): any[] => {
       return items.reduce((acc: any[], item: any) => {
-        const matchesTitle = (item.title || "").toLowerCase().includes(lowerQuery);
+        const matchesTitle = (item.title || "")
+          .toLowerCase()
+          .includes(lowerQuery);
         let matchingChildren: any[] = [];
         if (item.children) matchingChildren = searchFilter(item.children);
-        
+
         if (matchesTitle || matchingChildren.length > 0) {
           acc.push({
             ...item,
-            children: matchingChildren
+            children: matchingChildren,
           });
         }
         return acc;
@@ -241,23 +339,52 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
   }, [permittedMenuItems, searchQuery]);
 
   return (
-    <div className={cn("flex h-full flex-col border-r bg-background transition-all duration-300", isCollapsed ? "w-16" : "w-64", className)}>
+    <div
+      className={cn(
+        "flex h-full flex-col border-r bg-background transition-all duration-300",
+        isCollapsed ? "w-16" : "w-64",
+        className,
+      )}
+    >
       {!isCollapsed && (
         <div className="p-3 border-b">
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search menu..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-8 h-9 text-sm" />
+            <Input
+              placeholder="Search menu..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-9 text-sm"
+            />
           </div>
         </div>
       )}
       <div className="flex-1 overflow-auto">
-        <SidebarMenu items={finalMenuItems} isCollapsed={isCollapsed} onItemClick={onItemClick} currentPath={pathname} businessUnit={businessUnit} role={role} />
+        <SidebarMenu
+          items={finalMenuItems}
+          isCollapsed={isCollapsed}
+          onItemClick={onItemClick}
+          currentPath={pathname}
+          businessUnit={businessUnit}
+          role={role}
+        />
       </div>
       <div className="border-t p-3 flex justify-end">
-        <button onClick={() => setIsCollapsed(!isCollapsed)} className={cn("flex h-8 w-8 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent hover:text-foreground transition-all", isCollapsed ? "mx-auto" : "")} title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}>
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent hover:text-foreground transition-all",
+            isCollapsed ? "mx-auto" : "",
+          )}
+          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+        >
+          {isCollapsed ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
         </button>
       </div>
     </div>
-  )
+  );
 }

@@ -209,8 +209,8 @@ export const productSchema = z.object({
       .optional(),
   }),
 
-  // Marketing (SEO)
-  marketing: z
+  // Reports & Analytics (Performance tracking, SEO)
+  reports: z
     .object({
       isFeatured: z.boolean().default(false),
       isNew: z.boolean().default(false),
@@ -262,6 +262,14 @@ export const productSchema = z.object({
         stock: z.number().min(0).default(0),
         images: z.array(z.string()).default([]),
         isDefault: z.boolean().default(false),
+        
+        // Physical Properties for Variants
+        weight: z.number().optional(),
+        weightUnit: z.enum(["kg", "g", "lb"]).default("kg"),
+        length: z.number().optional(),
+        width: z.number().optional(),
+        height: z.number().optional(),
+        dimensionUnit: z.enum(["cm", "inch"]).default("cm"),
       })
     )
     .optional(),
@@ -288,10 +296,10 @@ export const defaultProductValues: ProductFormValues = {
   primaryCategory: "",
   availableModules: [
     "pos",
-    "ecommerce",
+    "commerce",
     "logistics",
     "crm",
-    "marketing",
+    "reports",
     "integrations",
   ],
 
@@ -397,7 +405,7 @@ export const defaultProductValues: ProductFormValues = {
       returnShipping: "buyer_paid",
     },
   },
-  marketing: {
+  reports: {
     isFeatured: false,
     isNew: false,
     isBestSeller: false,

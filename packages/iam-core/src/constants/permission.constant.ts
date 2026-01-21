@@ -15,21 +15,37 @@ import {
 import {
   PermissionResourceType,
   PermissionModule,
+  PermissionSystemCore,
+  PermissionLicensedModule,
+  PermissionLicensedModuleUnion,
+  PermissionPlatformFeature,
   PermissionActionType,
   PermissionScope,
   PermissionEffect,
   PermissionResolveStrategy,
-  PermissionConditionOperator
+  PermissionConditionOperator,
+  DomainToLicensedModuleMapping,
+  LicensedModuleToProductPackageMapping,
+  SystemCoreRequirements,
+  TerminologyMapping,
 } from "./permission.resource";
 
 export {
   PermissionResourceType,
   PermissionModule,
+  PermissionSystemCore,
+  PermissionLicensedModule,
+  type PermissionLicensedModuleUnion,
+  PermissionPlatformFeature,
   PermissionActionType,
   PermissionScope,
   PermissionEffect,
   PermissionResolveStrategy,
-  PermissionConditionOperator
+  PermissionConditionOperator,
+  DomainToLicensedModuleMapping,
+  LicensedModuleToProductPackageMapping,
+  SystemCoreRequirements,
+  TerminologyMapping,
 };
 
 /* ------------------------------------------------------------------

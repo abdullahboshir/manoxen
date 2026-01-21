@@ -20,7 +20,7 @@ import {
     useCreateAttributeGroupMutation, 
     useUpdateAttributeGroupMutation, 
     useDeleteAttributeGroupMutation 
-} from "@/redux/api/catalog/attributeGroupApi";
+} from "@/features/catalog/api/attributeGroupApi";
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi";
 import { DataTable } from "@/components/shared/DataTable";
 import { DataPageLayout } from "@/components/shared/DataPageLayout";

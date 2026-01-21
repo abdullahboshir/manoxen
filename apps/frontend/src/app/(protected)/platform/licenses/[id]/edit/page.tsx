@@ -2,10 +2,13 @@
 
 import LicenseForm from "@/components/modules/saas/LicenseForm"
 import { useGetLicenseByIdQuery } from "@/redux/api/platform/licenseApi"
+import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react"
 
-export default function EditLicensePage({ params }: { params: { id: string } }) {
-    const { data: license, isLoading } = useGetLicenseByIdQuery(params.id)
+export default function EditLicensePage() {
+    const params = useParams();
+    const id = params.id as string;
+    const { data: license, isLoading } = useGetLicenseByIdQuery(id)
 
     // License API returns { success: true, data: { ...license } }
     // Or just check if license.data exists

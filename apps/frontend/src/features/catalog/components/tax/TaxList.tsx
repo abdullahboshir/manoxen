@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useGetTaxsQuery, useDeleteTaxMutation, useCreateTaxMutation, useUpdateTaxMutation } from "@/redux/api/finance/taxApi"; // Added update hook if exists?
+import { useGetTaxsQuery, useDeleteTaxMutation, useCreateTaxMutation, useUpdateTaxMutation } from "@/features/accounting/api/taxApi";
 import { DataTable } from "@/components/shared/DataTable";
 import { DataPageLayout } from "@/components/shared/DataPageLayout";
 import { StatCard } from "@/components/shared/StatCard";
@@ -225,7 +225,7 @@ export const TaxList = () => {
                         name="availableModules"
                         label="Select Modules"
                         placeholder="Select Modules"
-                        include={['pos', 'ecommerce', 'logistics', 'crm', 'marketing', 'integrations']}
+                        include={['pos', 'commerce', 'logistics', 'crm', 'reports', 'integrations']}
                     />
                 )
             }

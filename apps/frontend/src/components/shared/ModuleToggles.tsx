@@ -9,7 +9,7 @@ interface ModuleTogglesData {
     pos?: boolean
     erp?: boolean
     hrm?: boolean
-    ecommerce?: boolean
+    commerce?: boolean
     crm?: boolean
     logistics?: boolean
     finance?: boolean
@@ -30,7 +30,7 @@ const MODULES = [
     { key: "pos", label: "POS (Point of Sale)", icon: ShoppingCart, description: "Point of sale systems and retail operations", color: "text-blue-500" },
     { key: "erp", label: "ERP Core & Master Data", icon: Package, description: "Shared business entities, workflows & master data framework", color: "text-purple-500" },
     { key: "hrm", label: "HRM (Human Resource Management)", icon: Users, description: "Employee management and payroll systems", color: "text-green-500" },
-    { key: "ecommerce", label: "E-Commerce", icon: Globe, description: "Online store and digital marketplace", color: "text-orange-500" },
+    { key: "commerce", label: "E-Commerce", icon: Globe, description: "Online store and digital marketplace", color: "text-orange-500" },
     { key: "crm", label: "CRM (Customer Relationship)", icon: TrendingUp, description: "Customer data and relationship management", color: "text-pink-500" },
     { key: "logistics", label: "Logistics & Supply Chain", icon: Truck, description: "Inventory, shipping, and warehouse management", color: "text-yellow-600" },
     { key: "finance", label: "Finance & Accounting", icon: DollarSign, description: "Financial reporting and accounting tools", color: "text-emerald-500" },

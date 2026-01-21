@@ -1,0 +1,309 @@
+﻿apps/backend/src/app/routes/v1/admin.routes.ts(11,5): error TS2724: '"@manoxen/iam"' has no exported member named 'PermissionGroupRoutes'. Did you mean 'permissionRoutes'?
+apps/backend/src/app/routes/v1/index.ts(25,22): error TS2307: Cannot find module '@manoxen/iam/interface/http/middleware/auth.middleware' or its corresponding type declarations.
+apps/backend/src/contexts/accounting/src/interface/http/controllers/subscription.controller.ts(1,10): error TS1484: 'Request' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/accounting/src/interface/http/controllers/subscription.controller.ts(1,19): error TS1484: 'Response' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/accounting/src/interface/http/routes/reconciliation.routes.ts(7,21): error TS2554: Expected 3 arguments, but got 1.
+apps/backend/src/contexts/accounting/src/interface/http/routes/reconciliation.routes.ts(7,21): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'void' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+apps/backend/src/contexts/accounting/src/interface/http/routes/settlement.routes.ts(7,40): error TS2554: Expected 3 arguments, but got 1.
+apps/backend/src/contexts/accounting/src/interface/http/routes/settlement.routes.ts(7,40): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'void' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+apps/backend/src/contexts/analytics/src/application/services/profit-loss.service.ts(6,63): error TS2307: Cannot find module './profit-loss.interface' or its corresponding type declarations.
+apps/backend/src/contexts/analytics/src/application/services/profit-loss.service.ts(7,23): error TS2307: Cannot find module '@manoxen/sales/sales/order/order.model' or its corresponding type declarations.
+apps/backend/src/contexts/analytics/src/application/services/profit-loss.service.ts(8,10): error TS2305: Module '"@manoxen/pos"' has no exported member 'Expense'.
+apps/backend/src/contexts/analytics/src/interface/http/controllers/profit-loss.controller.ts(5,35): error TS2307: Cannot find module '../../../../application/services/profit-loss.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/application/adapters/product.adapter.ts(2,10): error TS2305: Module '"../services/product.service"' has no exported member 'ProductService'.
+apps/backend/src/contexts/catalog/src/application/utils/product.utils.ts(13,30): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/attribute.model.ts(3,28): error TS2307: Cannot find module '../../../../domain/entities/attribute.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/attribute.model.ts(11,5): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'IAttributeDocument | { id?: SchemaDefinitionProperty<any, IAttributeDocument, Document<unknown, {}, FlatRecord<IAttributeDocument>, {}, ResolveSchemaOptions<...>> & FlatRecord<...> & Required<...> & { ...; }> | undefined; _id?: SchemaDefinitionProperty<...> | undefined; }'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/inventory/stock.model.ts(2,37): error TS2307: Cannot find module '../../../domain/entities/stock.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/inventory/stock.model.ts(20,28): error TS2571: Object is of type 'unknown'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/inventory/stock.model.ts(20,50): error TS2571: Object is of type 'unknown'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-details/product-details.interface.ts(2,60): error TS2307: Cannot find module '../../product-shared/product-shared.interface' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-details/product-details.model.ts(4,38): error TS2307: Cannot find module '../../../domain/entities/product-details.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-details/product-details.model.ts(5,67): error TS2307: Cannot find module '../../product-shared/product-shared.model' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-shipping/product-shipping.model.ts(2,47): error TS2307: Cannot find module '../../../domain/entities/product-shipping.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.interface.ts(2,60): error TS2307: Cannot find module '../../product-shared/product-shared.interface' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.model.ts(4,46): error TS2307: Cannot find module '../../../domain/entities/product-variant.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.model.ts(5,42): error TS2307: Cannot find module '../../product-shared/product-shared.model' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.model.ts(102,7): error TS2571: Object is of type 'unknown'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.model.ts(103,29): error TS2571: Object is of type 'unknown'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-variant/product-variant.service.ts(5,42): error TS2307: Cannot find module '../../product-shared/product-shared.model' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/features/product-warranty-return/product-warranty-return.model.ts(2,53): error TS2307: Cannot find module '../../../domain/entities/product-warranty-return.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/unit.model.ts(3,15): error TS2305: Module '"../../../domain/entities/unit.entity"' has no exported member 'UnitModel'.
+apps/backend/src/contexts/catalog/src/infrastructure/persistence/mongoose/warranty.model.ts(44,31): error TS2304: Cannot find name 'IWarrantyDocument'.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/attribute-group.controller.ts(2,39): error TS2307: Cannot find module '../../../../application/services/attribute-group.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/attribute.controller.ts(3,34): error TS2307: Cannot find module '../../../../application/services/attribute.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/brand.controller.ts(2,30): error TS2307: Cannot find module '../../../../application/services/brand.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/category.controller.ts(10,8): error TS2307: Cannot find module '../../../../application/services/category.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/tax.controller.ts(1,28): error TS2307: Cannot find module '../../../../application/services/tax.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/tax.controller.ts(3,27): error TS2307: Cannot find module '../../../../domain/entities/tax.entity' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/unit.controller.ts(2,29): error TS2307: Cannot find module '../../../../application/services/unit.service' or its corresponding type declarations.
+apps/backend/src/contexts/catalog/src/interface/http/controllers/warranty.controller.ts(5,33): error TS2307: Cannot find module '../../../../application/services/warranty.service' or its corresponding type declarations.
+apps/backend/src/contexts/contacts/src/infrastructure/persistence/mongoose/customer.model.ts(2,10): error TS1484: 'ICustomer' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/contacts/src/infrastructure/persistence/mongoose/customer.model.ts(66,3): error TS2353: Object literal may only specify known properties, and 'user' does not exist in type 'Schema<any, Model<any, any, any, any, any, any>, {}, {}, {}, {}, DefaultSchemaOptions, { [x: number]: unknown; [x: symbol]: unknown; [x: string]: unknown; }, Document<unknown, {}, FlatRecord<{ ...; }>, {}, ResolveSchemaOptions<...>> & FlatRecord<...> & Required<...> & { ...; }> | { ...; }'.
+apps/backend/src/contexts/corporate/src/index.ts(1,30): error TS2307: Cannot find module './voting/voting.routes' or its corresponding type declarations.
+apps/backend/src/contexts/corporate/src/interface/http/controllers/voting.controller.ts(5,31): error TS2307: Cannot find module '../../../../application/services/voting.service' or its corresponding type declarations.
+apps/backend/src/contexts/corporate/src/interface/http/routes/voting.routes.ts(2,34): error TS2307: Cannot find module './voting.controller' or its corresponding type declarations.
+apps/backend/src/contexts/governance/src/interface/http/controllers/compliance.controller.ts(5,35): error TS2307: Cannot find module '../../../../application/services/compliance.service' or its corresponding type declarations.
+apps/backend/src/contexts/governance/src/interface/http/routes/compliance.routes.ts(2,38): error TS2307: Cannot find module './compliance.controller' or its corresponding type declarations.
+apps/backend/src/contexts/hrm/src/application/services/leave.service.ts(2,22): error TS2724: '"../../infrastructure/persistence/mongoose/leave.model"' has no exported member named 'ILeave'. Did you mean 'Leave'?
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/asset-category.model.ts(3,10): error TS1484: 'IAssetCategory' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/asset-category.model.ts(22,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IAssetCategoryDocument, Document<unknown, {}, FlatRecord<IAssetCategoryDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/department.model.ts(3,10): error TS1484: 'IDepartment' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/department.model.ts(19,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IDepartmentDocument, Document<unknown, {}, FlatRecord<IDepartmentDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/department.model.ts(20,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IDepartmentDocument, Document<unknown, {}, FlatRecord<IDepartmentDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/designation.model.ts(3,10): error TS1484: 'IDesignation' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/designation.model.ts(14,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IDesignationDocument, Document<unknown, {}, FlatRecord<IDesignationDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/designation.model.ts(19,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IDesignationDocument, Document<unknown, {}, FlatRecord<IDesignationDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/designation.model.ts(20,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IDesignationDocument, Document<unknown, {}, FlatRecord<IDesignationDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave-type.model.ts(3,10): error TS1484: 'ILeaveType' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave-type.model.ts(16,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveTypeDocument, Document<unknown, {}, FlatRecord<ILeaveTypeDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave-type.model.ts(17,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveTypeDocument, Document<unknown, {}, FlatRecord<ILeaveTypeDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave.model.ts(3,10): error TS1484: 'ILeave' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave.model.ts(10,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveDocument, Document<unknown, {}, FlatRecord<ILeaveDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave.model.ts(11,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveDocument, Document<unknown, {}, FlatRecord<ILeaveDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave.model.ts(23,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveDocument, Document<unknown, {}, FlatRecord<ILeaveDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/leave.model.ts(24,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, ILeaveDocument, Document<unknown, {}, FlatRecord<ILeaveDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/shift.model.ts(3,10): error TS1484: 'IShift' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/shift.model.ts(13,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IShiftDocument, Document<unknown, {}, FlatRecord<IShiftDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/hrm/src/infrastructure/persistence/mongoose/shift.model.ts(14,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; index: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IShiftDocument, Document<unknown, {}, FlatRecord<IShiftDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/identity/src/application/services/auth.service.ts(615,42): error TS2307: Cannot find module '#shared/mail/mail.service' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/application/services/permission-group.service.ts(3,29): error TS2307: Cannot find module '#core/utils/cacheKeys' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/application/services/permission.service.ts(437,17): error TS2339: Property 'isOpen' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/packages/platform-core/dist/index")'.
+apps/backend/src/contexts/identity/src/application/services/permission.service.ts(443,36): error TS2339: Property 'scan' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/packages/platform-core/dist/index")'.
+apps/backend/src/contexts/identity/src/application/services/permission.service.ts(447,24): error TS2339: Property 'del' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/packages/platform-core/dist/index")'.
+apps/backend/src/contexts/identity/src/application/services/user.service.ts(21,53): error TS2307: Cannot find module '@manoxen/contracts' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/infrastructure/persistence/mongoose/permission.model.ts(18,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IPermissionDocument, Document<unknown, {}, FlatRecord<IPermissionDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/identity/src/infrastructure/persistence/mongoose/permission.model.ts(19,5): error TS2322: Type '{ type: typeof Schema.Types.ObjectId; ref: string; required: true; }' is not assignable to type 'SchemaDefinitionProperty<string, IPermissionDocument, Document<unknown, {}, FlatRecord<IPermissionDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringSchemaDefinition | undefined'.
+      Type 'typeof ObjectId' is not assignable to type 'typeof Mixed | StringConstructor | typeof String | String'.
+        Type 'typeof ObjectId' is not assignable to type 'typeof Mixed'.
+          Types of property 'schemaName' are incompatible.
+            Type '"ObjectId"' is not assignable to type '"Mixed"'.
+apps/backend/src/contexts/identity/src/infrastructure/persistence/mongoose/user.model.ts(43,3): error TS2322: Type '{ type: (typeof Schema.Types.ObjectId)[]; ref: string; default: never[]; }' is not assignable to type 'SchemaDefinitionProperty<string[], IUserDocument, Document<unknown, {}, FlatRecord<IUserDocument>, {}, ResolveSchemaOptions<DefaultSchemaOptions>> & FlatRecord<...> & Required<...> & { ...; }> | undefined'.
+  Types of property 'type' are incompatible.
+    Type '(typeof ObjectId)[]' is not assignable to type 'typeof Mixed | AnyArray<StringSchemaDefinition> | AnyArray<SchemaTypeOptions<string, IUserDocument, Document<unknown, {}, FlatRecord<IUserDocument>, {}, ResolveSchemaOptions<...>> & FlatRecord<...> & Required<...> & { ...; }>> | undefined'.
+      Type '(typeof ObjectId)[]' is not assignable to type 'StringSchemaDefinition[]'.
+        Type 'typeof ObjectId' is not assignable to type 'StringSchemaDefinition'.
+          Type 'typeof ObjectId' is missing the following properties from type 'StringConstructor': fromCharCode, fromCodePoint, raw
+apps/backend/src/contexts/identity/src/infrastructure/persistence/mongoose/user.model.ts(82,10): error TS2339: Property 'password' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/identity/src/infrastructure/persistence/mongoose/user.model.ts(82,44): error TS2339: Property 'password' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/identity/src/infrastructure/seeders/business.seeder.ts(210,25): error TS2339: Property 'BUSINESS_FINANCE' does not exist on type '{ readonly SUPER_ADMIN: "super-admin"; readonly PLATFORM_ADMIN: "platform-admin"; readonly PLATFORM_SUPPORT: "platform-support"; readonly PLATFORM_ACCOUNTING: "platform-accounting"; ... 28 more ...; readonly GUEST: "guest"; }'.
+apps/backend/src/contexts/identity/src/interface/http/controllers/role.controller.ts(3,29): error TS2307: Cannot find module '../../../../application/services/role.service' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/middleware.ts(5,20): error TS2307: Cannot find module '#shared/kernel/config/app.config' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/middleware.ts(9,22): error TS2307: Cannot find module '@manoxen/iam/user/user.model' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/middleware.ts(10,36): error TS2307: Cannot find module '@manoxen/iam/user-business-access/user-business-access.model' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/middleware.ts(13,22): error TS2307: Cannot find module '#shared/kernel/errors/app-error' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/auth.routes.ts(4,151): error TS2307: Cannot find module './auth.controller' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/auth.routes.ts(7,18): error TS2307: Cannot find module '../middleware/auth.middleware' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/permission.routes.ts(10,8): error TS2307: Cannot find module './permission.controller' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/permission.routes.ts(11,18): error TS2307: Cannot find module '../middleware/auth.middleware' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/permission.routes.ts(12,10): error TS2305: Module '"@manoxen/iam-core"' has no exported member 'authorize'.
+apps/backend/src/contexts/identity/src/interface/http/routes/role.routes.ts(12,8): error TS2307: Cannot find module './role.controller' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/role.routes.ts(15,18): error TS2307: Cannot find module '../middleware/auth.middleware' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/role.routes.ts(16,10): error TS2305: Module '"@manoxen/iam-core"' has no exported member 'authorize'.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(17,8): error TS2307: Cannot find module './user.controller' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(18,38): error TS2307: Cannot find module './create-user.controller' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(27,18): error TS2307: Cannot find module '#core/middleware/auth' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(28,27): error TS2307: Cannot find module '#core/middleware/authorize' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(30,24): error TS2307: Cannot find module '#core/utils/file-upload' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(31,33): error TS2307: Cannot find module '#core/middleware/validateRequest' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(33,28): error TS2307: Cannot find module '../role/role.routes' or its corresponding type declarations.
+apps/backend/src/contexts/identity/src/interface/http/routes/user.routes.ts(36,41): error TS2307: Cannot find module '#app/modules/contacts/index' or its corresponding type declarations.
+apps/backend/src/contexts/integration/src/application/services/webhook.service.ts(1,25): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/webhook.model' or its corresponding type declarations.
+apps/backend/src/contexts/legal/src/index.ts(1,35): error TS2307: Cannot find module './shareholder/shareholder.routes' or its corresponding type declarations.
+apps/backend/src/contexts/legal/src/interface/http/controllers/shareholder.controller.ts(4,36): error TS2307: Cannot find module '../../../../application/services/shareholder.service' or its corresponding type declarations.
+apps/backend/src/contexts/legal/src/interface/http/routes/shareholder.routes.ts(2,39): error TS2307: Cannot find module './shareholder.controller' or its corresponding type declarations.
+apps/backend/src/contexts/logistics/src/interface/http/controllers/logistics.controller.ts(5,35): error TS2307: Cannot find module '#shared/presentation/GenericController' or its corresponding type declarations.
+apps/backend/src/contexts/logistics/src/interface/http/controllers/logistics.controller.ts(6,34): error TS2307: Cannot find module '../../../../application/services/logistics.service' or its corresponding type declarations.
+apps/backend/src/contexts/logistics/src/interface/http/routes/logistics.routes.ts(2,62): error TS2307: Cannot find module './logistics.controller' or its corresponding type declarations.
+apps/backend/src/contexts/logistics/src/interface/http/routes/logistics.routes.ts(3,45): error TS2307: Cannot find module '#core/routes/middleware/auth-middleware' or its corresponding type declarations.
+apps/backend/src/contexts/marketing/src/application/services/marketing.service.ts(1,46): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/ad-campaign.model' or its corresponding type declarations.
+apps/backend/src/contexts/marketing/src/application/services/marketing.service.ts(2,36): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/pixel.model' or its corresponding type declarations.
+apps/backend/src/contexts/ops/src/index.ts(1,31): error TS2307: Cannot find module './meeting/meeting.routes' or its corresponding type declarations.
+apps/backend/src/contexts/ops/src/interface/http/controllers/meeting.controller.ts(5,32): error TS2307: Cannot find module '../../../../application/services/meeting.service' or its corresponding type declarations.
+apps/backend/src/contexts/ops/src/interface/http/routes/meeting.routes.ts(2,35): error TS2307: Cannot find module './meeting.controller' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/automation.service.ts(1,72): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/automation-rule.model' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/automation.service.ts(4,30): error TS2307: Cannot find module '@domain/system' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/automation.service.ts(5,29): error TS2307: Cannot find module '../../infrastructure/queue/queue.interface' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/business-unit.service.ts(11,32): error TS2724: '"../../index.js"' has no exported member named 'IBusinessUnitCoreDocument'. Did you mean 'IBusinessUnitCore'?
+apps/backend/src/contexts/organization/src/application/services/business-unit.service.ts(52,9): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+apps/backend/src/contexts/organization/src/application/services/business-unit.service.ts(99,46): error TS2352: Conversion of type 'ObjectId' to type 'string' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+apps/backend/src/contexts/organization/src/application/services/business-unit.service.ts(472,15): error TS2339: Property 'Purchase' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/contexts/supply/src/index")'.
+apps/backend/src/contexts/organization/src/application/services/business-unit.service.ts(473,15): error TS2339: Property 'Expense' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/contexts/pos/src/index")'.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(1,25): error TS2307: Cannot find module './license.model' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(2,31): error TS2307: Cannot find module './license.interface' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(6,30): error TS2307: Cannot find module '../queue/queue.service' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(7,29): error TS2307: Cannot find module '../queue/queue.interface' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(26,26): error TS2307: Cannot find module '../organization/business-unit/core/business-unit.model' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/license.service.ts(27,30): error TS2307: Cannot find module '../organization/organization.model' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/module-registry.service.ts(1,33): error TS2307: Cannot find module '../shared/module-registry' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/organization.service.ts(195,21): error TS2339: Property 'Purchase' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/contexts/supply/src/index")'.
+apps/backend/src/contexts/organization/src/application/services/organization.service.ts(196,21): error TS2339: Property 'Expense' does not exist on type 'typeof import("E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/contexts/pos/src/index")'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(16,32): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(52,41): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(58,41): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(69,41): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(115,37): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/outlet.service.ts(123,32): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+apps/backend/src/contexts/organization/src/application/services/settings-resolution.service.ts(1,32): error TS2307: Cannot find module '../../../system/src/infrastructure/persistence/mongoose/system-settings.model' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/application/services/settings-resolution.service.ts(21,37): error TS2339: Property 'settings' does not exist on type 'FlattenMaps<IOutletDocument> & Required<{ _id: ObjectId; }> & { __v: number; }'.
+apps/backend/src/contexts/organization/src/application/services/settings-resolution.service.ts(36,38): error TS18048: 'bu.organization' is possibly 'undefined'.
+apps/backend/src/contexts/organization/src/domain/entities/organization.entity.ts(2,15): error TS2305: Module '"../../shared/common.interface"' has no exported member 'IOrganizationSettings'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(117,9): error TS2353: Object literal may only specify known properties, and 'tenantType' does not exist in type '{ organization?: SchemaDefinitionProperty<string | undefined, IBusinessUnitCoreDocument, Document<unknown, {}, FlatRecord<IBusinessUnitCoreDocument>, {}, ResolveSchemaOptions<...>> & FlatRecord<...> & Required<...> & { ...; }> | undefined; ... 53 more ...; deletedAt?: SchemaDefinitionProperty<...> | undefined; }'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(239,17): error TS2339: Property 'status' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(239,48): error TS2339: Property 'visibility' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(243,17): error TS2339: Property 'status' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(247,17): error TS2339: Property 'status' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(251,17): error TS2339: Property 'performance' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(255,17): error TS2339: Property 'statistics' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(259,15): error TS2339: Property 'createdAt' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.model.ts(260,59): error TS2339: Property 'createdAt' does not exist on type 'IfAny<FlatRecord<DocType>, any, TVirtuals & TInstanceMethods extends Record<string, never> ? Document<unknown, {}, FlatRecord<...>, TVirtuals, ResolveSchemaOptions<...>> & Default__v<...> : IfAny<...>>'.
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/business-unit.repository.ts(2,15): error TS2724: '"../../../domain/entities/business-unit.entity"' has no exported member named 'IBusinessUnitCoreDocument'. Did you mean 'IBusinessUnitCore'?
+apps/backend/src/contexts/organization/src/infrastructure/persistence/mongoose/organization.repository.ts(2,15): error TS2305: Module '"../../../domain/entities/organization.entity"' has no exported member 'IOrganizationDocument'.
+apps/backend/src/contexts/organization/src/interface/http/controllers/business-unit.controller.ts(4,37): error TS2307: Cannot find module '../../../../application/services/business-unit.service' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/business-unit.routes.ts(1,8): error TS1192: Module '"E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/app/routes/middleware/auth-middleware"' has no default export.
+apps/backend/src/contexts/organization/src/interface/http/routes/business-unit.routes.ts(7,117): error TS2307: Cannot find module './business-unit.validation' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/business-unit.routes.ts(8,200): error TS2307: Cannot find module './business-unit.controller' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/organization.routes.ts(2,41): error TS2307: Cannot find module './organization.controller' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/organization.routes.ts(4,68): error TS2307: Cannot find module './organization.validation' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/organization.routes.ts(6,44): error TS2307: Cannot find module './settings/settings.routes' or its corresponding type declarations.
+apps/backend/src/contexts/organization/src/interface/http/routes/organization.routes.ts(7,8): error TS1192: Module '"E:/WEB-DEVELOPMENT/PROJECTS/business-platform/manoxen/apps/backend/src/app/routes/middleware/auth-middleware"' has no default export.
+apps/backend/src/contexts/organization/src/settings/settings.interface.ts(4,10): error TS1484: 'IOrganizationDocument' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+apps/backend/src/contexts/pos/src/application/services/cash-register.service.ts(2,36): error TS2307: Cannot find module './cash-register.interface' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/application/services/cash-register.service.ts(4,42): error TS2307: Cannot find module '#core/utils/query-helper' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/application/services/expense-category.service.ts(2,39): error TS2307: Cannot find module './expense-category.interface' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/application/services/expense-category.service.ts(4,42): error TS2307: Cannot find module '#core/utils/query-helper' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/application/services/expense.service.ts(4,42): error TS2307: Cannot find module '#core/utils/query-helper' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/application/services/expense.service.ts(7,31): error TS2307: Cannot find module './expense.interface' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/index.ts(6,15): error TS2307: Cannot find module './cash/expense/expense.model' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/index.ts(9,31): error TS2307: Cannot find module './cash/expense/expense.routes' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/index.ts(10,39): error TS2307: Cannot find module './cash/expense/expense-category.routes' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/index.ts(11,36): error TS2307: Cannot find module './cash/cash-register/cash-register.routes' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/controllers/cash-register.controller.ts(4,37): error TS2307: Cannot find module '../../../../application/services/cash-register.service' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/controllers/expense-category.controller.ts(5,40): error TS2307: Cannot find module '../../../../application/services/expense-category.service' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/controllers/expense.controller.ts(5,32): error TS2307: Cannot find module '../../../../application/services/expense.service' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/cash-register.routes.ts(2,40): error TS2307: Cannot find module './cash-register.controller' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/cash-register.routes.ts(3,40): error TS2307: Cannot find module './cash-register.validation' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/expense-category.routes.ts(2,43): error TS2307: Cannot find module './expense-category.controller' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/expense-category.routes.ts(3,43): error TS2307: Cannot find module './expense-category.validation' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/expense.routes.ts(2,35): error TS2307: Cannot find module './expense.controller' or its corresponding type declarations.
+apps/backend/src/contexts/pos/src/interface/http/routes/expense.routes.ts(3,35): error TS2307: Cannot find module './expense.validation' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/application/services/order.service.ts(7,33): error TS2307: Cannot find module './order.repository' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/application/services/order.service.ts(8,29): error TS2307: Cannot find module './order.interface' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/application/services/promotion.service.ts(1,44): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/promotion.model' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/application/services/risk.service.ts(1,44): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/blacklist.model' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/application/services/risk.service.ts(2,42): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/risk-rule.model' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/infrastructure/persistence/mongoose/order.repository.ts(2,29): error TS2307: Cannot find module './order.interface' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/interface/http/controllers/order.controller.ts(2,104): error TS2307: Cannot find module '../../../../application/services/order.service' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/interface/http/controllers/risk.controller.ts(6,29): error TS2307: Cannot find module '../../../../application/services/risk.service' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/interface/http/routes/order.routes.ts(2,116): error TS2307: Cannot find module './order.controller' or its corresponding type declarations.
+apps/backend/src/contexts/sales/src/interface/http/routes/risk.routes.ts(2,79): error TS2307: Cannot find module './risk.controller' or its corresponding type declarations.
+apps/backend/src/contexts/supply/src/interface/http/controllers/stock.controller.ts(4,71): error TS2307: Cannot find module '../../../../application/services/stock.service' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/alert.service.ts(1,29): error TS2307: Cannot find module '#shared/mail/mail.service' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/audit.service.ts(2,37): error TS2307: Cannot find module '../../../infrastructure/persistence/mongoose/audit-log.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(2,23): error TS2307: Cannot find module '../../../catalog/src/infrastructure/persistence/mongoose/features/inventory/stock.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(3,26): error TS2307: Cannot find module '../../../organization/src/infrastructure/persistence/mongoose/business-unit.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(7,26): error TS2307: Cannot find module '../../../catalog/src/infrastructure/persistence/mongoose/category.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(8,23): error TS2307: Cannot find module '../../../sales/src/infrastructure/persistence/mongoose/order.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(10,29): error TS2307: Cannot find module '../../../supply/src/infrastructure/persistence/mongoose/stock-ledger.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(11,22): error TS2307: Cannot find module '../../../identity/src/infrastructure/persistence/mongoose/user.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/maintenance.service.ts(12,39): error TS2307: Cannot find module '../../../catalog/src/application/adapters/product.adapter' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/media.service.ts(1,23): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/media.model' or its corresponding type declarations.
+apps/backend/src/contexts/system/src/application/services/tax-setting.service.ts(1,28): error TS2307: Cannot find module '../infrastructure/persistence/mongoose/tax-setting.model' or its corresponding type declarations.

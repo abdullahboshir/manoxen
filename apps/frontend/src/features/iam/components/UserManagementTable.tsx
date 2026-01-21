@@ -35,14 +35,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AutoFormModal } from "@/components/shared/AutoFormModal"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useGetAllUsersQuery, useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation } from "@/redux/api/iam/userApi"
+import { useGetAllUsersQuery, useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation } from "@/features/iam/api/userApi"
 
 import Swal from "sweetalert2"
 
 
 import { PERMISSION_KEYS } from "@/config/permission-keys"
 import { useGetBusinessUnitsQuery } from "@/redux/api/organization/businessUnitApi"
-import { useGetRolesQuery } from "@/redux/api/iam/roleApi"
+import { useGetRolesQuery } from "@/features/iam/api/roleApi"
 import { useGetOutletsQuery } from "@/redux/api/organization/outletApi"
 
 // Local constants removed, using centralized ones

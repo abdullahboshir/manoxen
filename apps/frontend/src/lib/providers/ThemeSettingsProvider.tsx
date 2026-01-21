@@ -11,7 +11,7 @@ import {
 import {
   useGetSettingsQuery,
   useUpdateSettingsMutation,
-} from "@/redux/api/iam/userApi";
+} from "@/features/iam/api/userApi";
 
 import { authKey } from "@/constant/authKey";
 

@@ -25,7 +25,7 @@ export const PACKAGE_FEATURES = [
     description: "Customer management, Loyalty, and Campaigns",
   },
   {
-    key: "ecommerce",
+    key: "commerce",
     label: "Online Store",
     description: "E-commerce storefront and builder",
   },

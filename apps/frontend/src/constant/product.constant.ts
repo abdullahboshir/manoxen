@@ -103,18 +103,18 @@ export const PRODUCT_DOMAIN_OPTIONS = [
 
 export const AVAILABLE_MODULES = {
   POS: "pos",
-  ECOMMERCE: "ecommerce",
+  COMMERCE: "commerce",
   LOGISTICS: "logistics",
   CRM: "crm",
-  MARKETING: "marketing",
+  REPORTS: "reports",
   INTEGRATIONS: "integrations",
 } as const;
 
 export const AVAILABLE_MODULES_OPTIONS = [
   { label: "POS Terminal", value: AVAILABLE_MODULES.POS },
-  { label: "Online Storefront", value: AVAILABLE_MODULES.ECOMMERCE },
+  { label: "Online Storefront", value: AVAILABLE_MODULES.COMMERCE },
   { label: "Logistics & Warehouse", value: AVAILABLE_MODULES.LOGISTICS },
   { label: "Corporate CRM", value: AVAILABLE_MODULES.CRM },
-  { label: "Marketing Automation", value: AVAILABLE_MODULES.MARKETING },
+  { label: "Reports & SEO", value: AVAILABLE_MODULES.REPORTS },
   { label: "Marketplace Sync", value: AVAILABLE_MODULES.INTEGRATIONS },
 ];

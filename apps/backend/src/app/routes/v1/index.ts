@@ -1,40 +1,46 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 
 // import businessAdminRoutes from "./vendor";
 
 import { authGroupRoutes } from "./auth/auth.routes";
-import { adminGroupRoutes } from "./super-admin/index";
-import { customerGroupRoutes } from "./customer/index";
-import { publicGroupRoutes } from "./public/index";
-import { PackageRoutes } from "#app/modules/platform/package/package.routes";
-import { LicenseRoutes } from "#app/modules/platform/license/license.routes";
-import { OrganizationRoutes } from "#app/modules/platform/organization/organization.routes";
-import { userRoutes } from "#app/modules/iam/user/user.routes";
-import { DepartmentRoutes } from "@manoxen/hrm/department/department.routes";
-import { AttendanceRoutes } from "@manoxen/hrm/attendance/attendance.routes";
-import { LeaveRoutes } from "@manoxen/hrm/leave/leave.routes";
-import { ShareholderRoutes } from "@manoxen/governance/shareholder/shareholder.routes";
-import { VotingRoutes } from "@manoxen/governance/voting/voting.routes";
-import { MeetingRoutes } from "@manoxen/governance/meeting/meeting.routes";
-import { ComplianceRoutes } from "@manoxen/governance/compliance/compliance.routes";
+import { adminGroupRoutes } from "./admin.routes";
+import { customerGroupRoutes } from "./customer.routes";
+import { publicGroupRoutes } from "./public.routes";
 
-import requireModule from "#core/middleware/license.middleware";
-import auth from "#core/middleware/auth";
+// System & Organization
+// Note: Package and License routes were missing - I'll mount them from @manoxen/system if available
+// For now, I'll keep the imports but update them to @manoxen/organization/src/... if they are found later
+// import { PackageRoutes } from "@manoxen/organization/interface/http/routes/package.routes";
+// import { LicenseRoutes } from "@manoxen/organization/interface/http/routes/license.routes";
 
-import { auditMiddleware } from "#core/middleware/audit.middleware";
-import contextMiddleware from "#core/middleware/context.middleware";
-import { contextGuard, queryContext } from "#app/modules/iam/index";
+import { userRoutes } from "@manoxen/iam";
+
+// Domain Routes
+import { DepartmentRoutes, AttendanceRoutes, LeaveRoutes } from "@manoxen/hrm";
+import { ShareholderRoutes } from "@manoxen/legal";
+import { VotingRoutes } from "@manoxen/corporate";
+import { MeetingRoutes } from "@manoxen/ops";
+import { ComplianceRoutes } from "@manoxen/governance";
+
+import { authMiddleware as auth } from "@manoxen/iam";
+import { USER_ROLE } from "@manoxen/iam-core";
+import { contextGuard } from "@manoxen/iam-core/src/middlewares/contextGuard";
+import { requireModule, contextMiddleware } from "@manoxen/infra-common";
+import { queryContext } from "@manoxen/iam-core/src/middlewares/queryContext";
+
+import { auditMiddleware } from "@manoxen/system";
+import { OrganizationRoutes } from "#domain/organization/index.js";
 
 const router = Router();
 
 // ========================================================================
-// ðŸ”“ PUBLIC ROUTES
+// 🔓 PUBLIC ROUTES
 // ========================================================================
 router.use("/auth", authGroupRoutes);
 router.use("/public", publicGroupRoutes);
 
 // ========================================================================
-// ðŸ›¡ï¸ GLOBAL OPERATIONAL SECURITY LAYER (Centralized)
+// 🛡️ GLOBAL OPERATIONAL SECURITY LAYER (Centralized)
 // ========================================================================
 // Initialize Context first, then Auth, then Audit.
 router.use(contextMiddleware); 
@@ -43,11 +49,12 @@ router.use(queryContext());
 router.use(auditMiddleware);   
 
 router.use("/super-admin", adminGroupRoutes);
+router.use("/platform", adminGroupRoutes); // Alias for frontend compatibility 
 router.use("/customer", customerGroupRoutes);
 router.use("/user", userRoutes); // Profile, Settings, etc.
-router.use("/platform/packages", PackageRoutes);
-router.use("/platform/licenses", LicenseRoutes);
-router.use("/platform/organizations", OrganizationRoutes);
+// router.use("/platform/packages", PackageRoutes);
+// router.use("/platform/licenses", LicenseRoutes);
+router.use("/enterprise/organizations", OrganizationRoutes);
 
 // HRM Module - Licensed & Context Guarded
 router.use("/hrm/departments", requireModule('hrm'), contextGuard(), DepartmentRoutes);
@@ -55,12 +62,15 @@ router.use("/hrm/attendance", requireModule('hrm'), contextGuard(), AttendanceRo
 router.use("/hrm/leave", requireModule('hrm'), contextGuard(), LeaveRoutes);
 
 // Governance Module - Licensed & Context Guarded
-router.use("/governance/shareholders", requireModule('governance'), contextGuard(), ShareholderRoutes);
-router.use("/governance/voting", requireModule('governance'), contextGuard(), VotingRoutes);
-router.use("/governance/meetings", requireModule('governance'), contextGuard(), MeetingRoutes);
+router.use("/enterprise/legal/shareholders", requireModule('governance'), contextGuard(), ShareholderRoutes);
+router.use("/enterprise/corporate/voting", requireModule('governance'), contextGuard(), VotingRoutes);
+router.use("/enterprise/operations/meetings", requireModule('governance'), contextGuard(), MeetingRoutes);
+router.use("/governance/compliance", requireModule('governance'), contextGuard(), ComplianceRoutes);
 router.use("/governance/compliance", requireModule('governance'), contextGuard(), ComplianceRoutes);
 
 export const v1Routes = router;
+
+
 
 
 

@@ -10,6 +10,15 @@ import type {
   ResourceType,
 } from "../constants/permission.constant";
 
+// 🔐 System Core Types
+export type SystemCoreModuleType = "iam" | "organization" | "governance";
+
+// 📦 Licensed Product Module Types
+export type LicensedModuleType = "commerce" | "pos" | "erp" | "hrm" | "crm" | "logistics" | "integrations";
+
+// ☁️ Platform Feature Types
+export type PlatformFeatureType = "saas" | "system";
+
 export interface ITargetScope {
   businessUnitId?: string | undefined;
   outletId?: string | undefined;

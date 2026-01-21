@@ -52,14 +52,14 @@ export const PAYMENT_METHOD_OPTIONS = [
 
 export const ORDER_SOURCE_MODULE = {
     POS: 'pos',
-    ECOMMERCE: 'ecommerce',
+    COMMERCE: 'commerce',
     CRM: 'crm',
     SYSTEM: 'system'
 } as const;
 
 export const ORDER_SOURCE_MODULE_OPTIONS = [
     { label: 'POS', value: ORDER_SOURCE_MODULE.POS },
-    { label: 'E-Commerce', value: ORDER_SOURCE_MODULE.ECOMMERCE },
+    { label: 'E-Commerce', value: ORDER_SOURCE_MODULE.COMMERCE },
     { label: 'CRM', value: ORDER_SOURCE_MODULE.CRM },
     { label: 'System', value: ORDER_SOURCE_MODULE.SYSTEM }
 ];
