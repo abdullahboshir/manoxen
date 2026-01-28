@@ -1,9 +1,1 @@
-'use client';
-
-import { RolePermissionManagement } from '@/features/iam/components/RolePermissionManagement';
-
-export default function PlatformRolesPage() {
-    return (
-        <RolePermissionManagement viewScope="platform" />
-    );
-}
+export { RolePermissionManagement as default } from "@/domains/core/iam/ui/components/RolePermissionManagement";

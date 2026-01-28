@@ -91,7 +91,7 @@ export const getRedirectPath = (token: string, user?: any): string => {
     }
 
     if (buSlug) {
-      // New structure: /[business-unit]/dashboard
+      // New structure: /[buId]/dashboard
       return `/${buSlug}/dashboard`;
     }
 

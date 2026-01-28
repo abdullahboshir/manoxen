@@ -201,8 +201,7 @@ export const APP_MODULES: Record<string, AppModule> = {
     title: "Catalog",
     path: "catalog",
     icon: Package,
-    resource: RESOURCE_KEYS.PRODUCT,
-    module: "erp",
+    module: "commerce",
     children: [
       {
         title: "Products",
@@ -232,8 +231,7 @@ export const APP_MODULES: Record<string, AppModule> = {
     title: "Sales",
     path: "sales",
     icon: ShoppingCart,
-    resource: RESOURCE_KEYS.ORDER,
-    module: "erp",
+    module: "commerce",
     children: [
       { title: "Orders", path: "sales/orders", resource: RESOURCE_KEYS.ORDER },
       {
@@ -277,7 +275,6 @@ export const APP_MODULES: Record<string, AppModule> = {
     resource: RESOURCE_KEYS.CUSTOMER,
     module: "crm",
   },
-
 
   STOREFRONT: {
     title: "Online Store",

@@ -34,7 +34,7 @@ axiosInstance.interceptors.request.use((config) => {
   }
 
   // Context-Aware Header Injection
-  const businessUnitId = localStorage.getItem("active-business-unit");
+  const buId = localStorage.getItem("active-business-unit");
   const outletId = localStorage.getItem("active-outlet-id");
   const organizationId = localStorage.getItem("active-organization-id");
 
@@ -45,7 +45,7 @@ axiosInstance.interceptors.request.use((config) => {
     config.url?.includes("/refresh-token");
 
   if (!isPublicAuthRoute) {
-    if (businessUnitId) config.headers["x-business-unit-id"] = businessUnitId;
+    if (buId) config.headers["x-business-unit-id"] = buId;
     if (outletId) config.headers["x-outlet-id"] = outletId;
     if (organizationId) config.headers["x-organization-id"] = organizationId;
   }

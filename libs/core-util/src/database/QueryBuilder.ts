@@ -1,81 +1,161 @@
-import type { FilterQuery, Query } from 'mongoose';
+import { FilterQuery, Model, Query } from "mongoose";
+
+type QueryParams = Record<string, any>;
 
 export class QueryBuilder<T> {
-    public modelQuery: Query<T[], T>;
-    public query: Record<string, unknown>;
+  public modelQuery: Query<T[], T>;
+  private params: QueryParams;
+  private filters: FilterQuery<T> = {};
 
-    constructor(modelQuery: Query<T[], T>, query: Record<string, unknown>) {
-        this.modelQuery = modelQuery;
-        this.query = query;
+  constructor(query: Query<T[], T>, params: QueryParams = {}) {
+    this.modelQuery = query;
+    this.params = params;
+  }
+
+  /* ============== SEARCH ============== */
+
+  search(fields: string[]) {
+    const term = this.params.searchTerm;
+
+    if (term && fields.length) {
+      this.filters.$or = fields.map((f) => ({
+        [f]: { $regex: term, $options: "i" },
+      })) as any;
     }
 
-    search(searchableFields: string[]) {
-        const searchTerm = this.query['searchTerm'] as string;
-        if (searchTerm) {
-            this.modelQuery = this.modelQuery.find({
-                $or: searchableFields.map(
-                    (field) =>
-                        ({
-                            [field]: { $regex: searchTerm, $options: 'i' },
-                        }) as FilterQuery<T>,
-                ),
-            });
-        }
+    return this;
+  }
 
-        return this;
+  /* ============== FILTER ============== */
+
+  filter() {
+    // IMPORTANT: Exclude ALL params that are NOT direct MongoDB field matches
+    // These include: pagination, sorting, search, context/scope params
+    const excluded = [
+      // Pagination & Search
+      "searchTerm",
+      "sort",
+      "page",
+      "limit",
+      "fields",
+      // Context/Scope params (handled by service or ContextScopePlugin)
+      "organization",
+      "organizationId",
+      "organization_id",
+      "businessUnit",
+      "businessUnitId",
+      "businessUnit_id",
+      "outlet",
+      "outletId",
+      "outlet_id",
+      // Common utility params
+      "all",
+      "populate",
+      "select",
+    ];
+
+    const obj = { ...this.params };
+
+    excluded.forEach((k) => delete obj[k]);
+
+    let str = JSON.stringify(obj);
+
+    str = str.replace(/"(gt|gte|lt|lte|in|ne)":/g, '"$$$1":');
+
+    const parsed = JSON.parse(str);
+
+    this.filters = {
+      ...this.filters,
+      ...parsed,
+    };
+
+    return this;
+  }
+
+  /* ============== SORT ============== */
+
+  sort(defaultSort = "-createdAt") {
+    const sort = this.params.sort?.split(",").join(" ") || defaultSort;
+
+    this.modelQuery = this.modelQuery.sort(sort);
+
+    return this;
+  }
+
+  /* ============== PAGINATION ============== */
+
+  paginate(defaultLimit = 10) {
+    const page = Number(this.params.page) || 1;
+    const limit = Number(this.params.limit) || defaultLimit;
+
+    const skip = (page - 1) * limit;
+
+    this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+
+    return this;
+  }
+
+  /* ============== FIELDS ============== */
+
+  fields(defaultSelect = "-__v") {
+    const fields = this.params.fields?.split(",").join(" ") || defaultSelect;
+
+    this.modelQuery = this.modelQuery.select(fields);
+
+    return this;
+  }
+
+  /* ============== BUILD ============== */
+
+  build() {
+    // Use .where() to merge filters onto the existing query
+    // DO NOT use .find() here - it triggers Mongoose hooks again!
+    if (Object.keys(this.filters).length) {
+      this.modelQuery = this.modelQuery.where(this.filters);
     }
 
-    filter() {
-        const queryObj = { ...this.query }; // copy
-        // Remove fields handled by other methods
-        const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields', 'sortBy', 'sortOrder'];
-        excludeFields.forEach((el) => delete queryObj[el]);
+    return this.modelQuery;
+  }
 
-        this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+  /* ============== COUNT ============== */
 
-        return this;
-    }
+  async count(model: Model<T>) {
+    const finalFilter = {
+      ...(this.modelQuery.getFilter() as any),
+      ...this.filters,
+    };
 
-    sort() {
-        const sort = (this.query['sort'] as string)?.split(',')?.join(' ') || '-createdAt';
-        this.modelQuery = this.modelQuery.sort(sort as string);
+    const total = await model.countDocuments(finalFilter);
 
-        return this;
-    }
+    const page = Number(this.params.page) || 1;
+    const limit = Number(this.params.limit) || 10;
 
-    paginate() {
-        const page = Number(this.query['page']) || 1;
-        let limit = Number(this.query['limit']);
-        if (isNaN(limit)) limit = 10;
+    return {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    };
+  }
 
-        const skip = (page - 1) * limit;
+  async countTotal() {
+    const finalFilter = {
+      ...(this.modelQuery.getFilter() as any),
+      ...this.filters,
+    };
 
-        this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+    const total = await (this.modelQuery as any).model.countDocuments(
+      finalFilter,
+    );
 
-        return this;
-    }
+    const page = Number(this.params.page) || 1;
+    const limit = Number(this.params.limit) || 10;
 
-    fields() {
-        const fields = (this.query['fields'] as string)?.split(',')?.join(' ') || '-__v';
-        this.modelQuery = this.modelQuery.select(fields);
-
-        return this;
-    }
-
-    async countTotal() {
-        const totalQueries = this.modelQuery.getFilter();
-        const total = await this.modelQuery.model.countDocuments(totalQueries);
-        const page = Number(this.query['page']) || 1;
-        let limit = Number(this.query['limit']);
-        if (isNaN(limit)) limit = 10;
-
-        const totalPage = limit > 0 ? Math.ceil(total / limit) : (total > 0 ? 1 : 0);
-
-        return {
-            page,
-            limit,
-            total,
-            totalPage,
-        };
-    }
+    return {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    };
+  }
 }

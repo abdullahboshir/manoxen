@@ -57,7 +57,7 @@ export const settingsApi = baseApi.injectEndpoints({
     // 3. Organization Settings
     getOrganizationSettings: build.query<IOrganizationSettings, string>({
       query: (organizationId: string) => ({
-        url: `/companies/${organizationId}/settings`,
+        url: `/organizations/${organizationId}/settings`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: tagTypes.settings, id }],
@@ -69,7 +69,7 @@ export const settingsApi = baseApi.injectEndpoints({
       { organizationId: string; data: Partial<IOrganizationSettings> }
     >({
       query: ({ organizationId, data }) => ({
-        url: `/companies/${organizationId}/settings`,
+        url: `/organizations/${organizationId}/settings`,
         method: "PATCH",
         data: data,
       }),
@@ -80,8 +80,8 @@ export const settingsApi = baseApi.injectEndpoints({
 
     // 4. Business Unit Settings
     getBusinessUnitSettings: build.query<IBusinessUnitSettings, string>({
-      query: (businessUnitId: string) => ({
-        url: `/business-units/${businessUnitId}/settings`,
+      query: (buId: string) => ({
+        url: `/business-units/${buId}/settings`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: tagTypes.settings, id }],
@@ -90,15 +90,15 @@ export const settingsApi = baseApi.injectEndpoints({
 
     updateBusinessUnitSettings: build.mutation<
       IBusinessUnitSettings,
-      { businessUnitId: string; data: Partial<IBusinessUnitSettings> }
+      { buId: string; data: Partial<IBusinessUnitSettings> }
     >({
-      query: ({ businessUnitId, data }) => ({
-        url: `/business-units/${businessUnitId}/settings`,
+      query: ({ buId, data }) => ({
+        url: `/business-units/${buId}/settings`,
         method: "PATCH",
         data: data,
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: tagTypes.settings, id: arg.businessUnitId },
+        { type: tagTypes.settings, id: arg.buId },
       ],
     }),
 

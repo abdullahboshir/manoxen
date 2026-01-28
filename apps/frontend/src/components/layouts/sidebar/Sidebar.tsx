@@ -41,7 +41,11 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
   const { data: systemSettings } = useGetSystemSettingsQuery(undefined);
 
   // 1. Resolve Business Unit Context
-  let businessUnit = (params["business-unit"] || params.businessUnit) as string;
+  let businessUnit = (params["business-unit"] ||
+    params.buId ||
+    params.businessUnit ||
+    params.buId ||
+    params.buId) as string;
 
   const RESERVED_PATHS = [
     "user-management",
@@ -57,8 +61,10 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     "dashboard",
   ];
 
-  // Detect if we're on organization route
-  const isOrganizationAdminRoute = pathname.startsWith("/organization");
+  // Detect if we're on organization route (orgId exists but NO buId)
+  const orgId = (params.orgId || params.organization) as string | undefined;
+  const buId = (params.buId || params["business-unit"]) as string | undefined;
+  const isOrganizationAdminRoute = !!orgId && !buId;
 
   if (!businessUnit) {
     const segments = pathname.split("/").filter(Boolean);
@@ -85,7 +91,8 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
 
   if (
     pathname.startsWith("/platform") ||
-    pathname.startsWith("/organization")
+    pathname.startsWith("/organization") ||
+    isOrganizationAdminRoute
   ) {
     businessUnit = "";
   }
@@ -117,19 +124,30 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     )
   );
 
-  // Determine Active Role
-  let role = currentRole as string;
-  if (!role) {
-    if (pathname.startsWith("/platform")) {
-      // Platform route is only for super-admin/platform users
-      role = USER_ROLES.SUPER_ADMIN;
-    } else if (pathname.startsWith("/organization")) {
-      // Organization route is for organization owners
-      role = USER_ROLES.ORGANIZATION_OWNER;
-    } else if (businessUnit) {
-      role = USER_ROLES.ADMIN;
-    }
+  // Determine CONTEXT-BASED Role for Sidebar Menu (God Mode Downward)
+  // Super Admin in Org context → shows Org menu, not Platform menu
+  // The user's actual role is for PERMISSION checks, this is for MENU DISPLAY
+  let contextRole: string;
+
+  if (pathname.startsWith("/platform")) {
+    // Platform context
+    contextRole = USER_ROLES.SUPER_ADMIN;
+  } else if (outletId) {
+    // Outlet context (most specific)
+    contextRole = "outlet-manager";
+  } else if (businessUnit) {
+    // Business Unit context
+    contextRole = "business-admin";
+  } else if (isOrganizationAdminRoute) {
+    // Organization context (detected via params: orgId exists, no buId)
+    contextRole = USER_ROLES.ORGANIZATION_OWNER;
+  } else {
+    // Fallback to platform for Super Admin or default
+    contextRole = (currentRole as string) || USER_ROLES.ADMIN;
   }
+
+  // Keep user's actual role for permission filtering
+  const userRole = currentRole as string;
 
   // Update refs when user data is available
   useEffect(() => {
@@ -203,14 +221,43 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     systemSettings?.enabledModules ||
     {};
 
-  // 5. Menu Generation
-  const isOwnerContext =
-    isOrganizationOwner ||
-    role === USER_ROLES.ORGANIZATION_OWNER ||
-    role === "owner";
-  let menuRole = isOwnerContext && businessUnit ? "business-admin" : role;
+  // 5. Menu Generation (using contextRole for God Mode Downward)
+  // menuRole directly uses contextRole - no override needed
+  const menuRole = contextRole;
 
-  const organization = params.organization as string;
+  const rawOrganization = (params.organization ||
+    params.orgId ||
+    params.orgId) as string;
+
+  // Robust Organization Resolution: If URL has literal 'organization', try to find real slug from user context
+  const organization = useMemo(() => {
+    if (
+      rawOrganization &&
+      rawOrganization !== "organization" &&
+      rawOrganization !== "(organization)"
+    )
+      return rawOrganization;
+
+    // Check user profile/context for a better slug
+    if ((user as any)?.organization) {
+      const org =
+        typeof (user as any).organization === "object"
+          ? (user as any).organization
+          : null;
+      if (org?.slug) return org.slug;
+    }
+
+    if (user?.businessAccess && user.businessAccess.length > 0) {
+      const access = user.businessAccess[0];
+      const org =
+        typeof access.organization === "object" ? access.organization : null;
+      if (org?.slug) return org.slug;
+    }
+
+    return (
+      rawOrganization || localStorage.getItem("active-organization-id") || ""
+    );
+  }, [rawOrganization, user]);
   const rawMenuItems = getSidebarMenu(
     menuRole,
     businessUnit || "",
@@ -248,8 +295,8 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     const isSuperAdminUser = isSuperAdmin;
     const isOrganizationOwnerUser =
       isOrganizationOwner ||
-      role === USER_ROLES.ORGANIZATION_OWNER ||
-      role === "owner";
+      userRole === USER_ROLES.ORGANIZATION_OWNER ||
+      userRole === "owner";
     const effectivePermissions = (user as any)?.effectivePermissions || [];
 
     const filterByPermission = (items: any[]): any[] => {
@@ -263,7 +310,8 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
           "manager",
         ];
         const isOperationalBypass =
-          bypassRoles.includes(role) && OPERATIONAL_MODULES.includes(moduleKey);
+          bypassRoles.includes(contextRole) &&
+          OPERATIONAL_MODULES.includes(moduleKey);
 
         if (
           isSuperAdminUser ||
@@ -311,7 +359,7 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
     isSuperAdmin,
     isOrganizationOwner,
     isUserLoading,
-    role,
+    contextRole,
   ]);
 
   // 8. Search Filtering
@@ -366,7 +414,7 @@ export function Sidebar({ className, onItemClick }: SidebarProps) {
           onItemClick={onItemClick}
           currentPath={pathname}
           businessUnit={businessUnit}
-          role={role}
+          role={contextRole}
         />
       </div>
       <div className="border-t p-3 flex justify-end">

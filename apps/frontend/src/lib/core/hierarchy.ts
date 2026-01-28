@@ -40,7 +40,7 @@ export interface BusinessUnit {
  */
 export interface Outlet {
   id: string;
-  businessUnitId: string;
+  buId: string;
   name: string;
   code: string;
   type: "retail" | "wholesale" | "kiosk" | "popup";
@@ -62,7 +62,7 @@ export interface Outlet {
  */
 export interface Warehouse {
   id: string;
-  businessUnitId: string;
+  buId: string;
   name: string;
   code: string;
   capacity?: number;
@@ -84,7 +84,7 @@ export interface Warehouse {
  */
 export interface Storefront {
   id: string;
-  businessUnitId: string;
+  buId: string;
   name: string;
   domain: string;
   themeId?: string;
@@ -112,9 +112,9 @@ export function validateBusinessUnitAccess(
  */
 export function validateOutletOwnership(
   outlet: Outlet,
-  businessUnitId: string
+  buId: string
 ): boolean {
-  return outlet.businessUnitId === businessUnitId;
+  return outlet.buId === buId;
 }
 
 /**
@@ -122,9 +122,9 @@ export function validateOutletOwnership(
  */
 export function validateWarehouseOwnership(
   warehouse: Warehouse,
-  businessUnitId: string
+  buId: string
 ): boolean {
-  return warehouse.businessUnitId === businessUnitId;
+  return warehouse.buId === buId;
 }
 
 /**
@@ -144,7 +144,7 @@ export enum HierarchyLevel {
  */
 export interface DataOwnershipContext {
   organizationId?: string;
-  businessUnitId?: string;
+  buId?: string;
   outletId?: string;
   warehouseId?: string;
   storefrontId?: string;

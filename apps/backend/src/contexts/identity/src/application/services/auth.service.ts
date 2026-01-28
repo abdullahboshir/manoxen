@@ -10,36 +10,37 @@ import { AppError } from "@manoxen/core-util";
 import status from "http-status";
 import { PermissionService } from "./permission.service";
 import { MailService } from "@manoxen/infra-common";
+import mongoose from "mongoose";
 
 const permissionService = new PermissionService();
 
 export const loginService = async (email: string, pass: string) => {
-
   const query = User.findOne({ email });
   (query as any)._bypassContext = true;
   query.setOptions({ strictPopulate: false });
 
   const isUserExists = await query
 
-    .select('+password email status isDeleted needsPasswordChange isSuperAdmin _id id globalRoles businessAccess')
+    .select(
+      "+password email status isDeleted needsPasswordChange isSuperAdmin _id id globalRoles businessAccess",
+    )
     .populate([
       {
-        path: 'globalRoles',
-        select: 'name title isSystemRole'
+        path: "globalRoles",
+        select: "name title isSystemRole",
       },
       {
-        path: 'businessAccess',
-        select: 'role scope businessUnit outlet organization status isPrimary',
+        path: "businessAccess",
+        select: "role scope businessUnit outlet organization status isPrimary",
         populate: [
-          { path: 'role', select: 'name title isSystemRole' },
-          { path: 'businessUnit', select: 'name id slug' },
-          { path: 'outlet', select: 'name _id' },
-          { path: 'organization', select: 'name id slug activeModules' }
-        ]
-      }
+          { path: "role", select: "name title isSystemRole" },
+          { path: "businessUnit", select: "name id slug" },
+          { path: "outlet", select: "name _id" },
+          { path: "organization", select: "name id slug activeModules" },
+        ],
+      },
     ])
     .lean();
-
 
   if (!isUserExists) {
     throw new AppError(status.NOT_FOUND, "User is not found");
@@ -57,69 +58,94 @@ export const loginService = async (email: string, pass: string) => {
     throw new AppError(status.FORBIDDEN, "this User is blocked");
   }
 
-  if (!(await User.isPasswordMatched(pass, isUserExists.password as unknown as string))) {
+  if (
+    !(await User.isPasswordMatched(
+      pass,
+      isUserExists.password as unknown as string,
+    ))
+  ) {
     throw new AppError(status.FORBIDDEN, "password deos not matched");
   }
 
-
-  const globalRoleNames = isUserExists.globalRoles?.map((r: any) => r.name) || [];
+  const globalRoleNames =
+    isUserExists.globalRoles?.map((r: any) => r.name) || [];
   // businessAccess is a virtual, populated in isUserExists
-  const businessRoleNames = isUserExists.businessAccess?.map((assign: any) => assign.role?.name).filter(Boolean) || [];
+  const businessRoleNames =
+    isUserExists.businessAccess
+      ?.map((assign: any) => assign.role?.name)
+      .filter(Boolean) || [];
   const allRoles = [...new Set([...globalRoleNames, ...businessRoleNames])];
-
-
-
-
 
   const buMap = new Map();
   if (isUserExists.businessAccess) {
     isUserExists.businessAccess.forEach((assign: any) => {
-      if (assign.businessUnit && typeof assign.businessUnit === 'object' && 'name' in assign.businessUnit) {
+      if (
+        assign.businessUnit &&
+        typeof assign.businessUnit === "object" &&
+        "name" in assign.businessUnit
+      ) {
         buMap.set(assign.businessUnit._id.toString(), {
           _id: assign.businessUnit._id,
           name: assign.businessUnit.name,
           id: assign.businessUnit.id,
-          slug: assign.businessUnit.slug
+          slug: assign.businessUnit.slug,
         });
       }
     });
   }
 
-
-
   const businessUnits = Array.from(buMap.values());
-  const companies = [...new Set((isUserExists.businessAccess || []).map((a: any) => a.organization?._id?.toString() || a.organization?.toString()).filter(Boolean))];
-
+  const organizations = [
+    ...new Set(
+      (isUserExists.businessAccess || [])
+        .map(
+          (a: any) =>
+            a.organization?._id?.toString() || a.organization?.toString(),
+        )
+        .filter(Boolean),
+    ),
+  ];
 
   // Calculate Context Information for Frontend Redirection
   let businessAccessInfo: any = {
     primary: null,
-    available: []
+    available: [],
   };
 
   if (isUserExists) {
     if (isUserExists.businessAccess && isUserExists.businessAccess.length > 0) {
       // 1. Identify Primary Context
-      const primaryAccess = isUserExists.businessAccess.find((a: any) => a.isPrimary) || isUserExists.businessAccess[0];
+      const primaryAccess =
+        isUserExists.businessAccess.find((a: any) => a.isPrimary) ||
+        isUserExists.businessAccess[0];
 
       if (primaryAccess) {
         businessAccessInfo.primary = {
-          businessUnit: primaryAccess.businessUnit ? {
-            _id: primaryAccess.businessUnit._id,
-            slug: primaryAccess.businessUnit.slug || primaryAccess.businessUnit.id || primaryAccess.businessUnit._id.toString(),
-            id: primaryAccess.businessUnit.id
-          } : null,
-          organization: primaryAccess.organization ? {
-            _id: primaryAccess.organization._id,
-            name: primaryAccess.organization.name,
-            slug: primaryAccess.organization.slug
-          } : null,
+          businessUnit: primaryAccess.businessUnit
+            ? {
+                _id: primaryAccess.businessUnit._id,
+                slug:
+                  primaryAccess.businessUnit.slug ||
+                  primaryAccess.businessUnit.id ||
+                  primaryAccess.businessUnit._id.toString(),
+                id: primaryAccess.businessUnit.id,
+              }
+            : null,
+          organization: primaryAccess.organization
+            ? {
+                _id: primaryAccess.organization._id,
+                name: primaryAccess.organization.name,
+                slug: primaryAccess.organization.slug,
+              }
+            : null,
           scope: primaryAccess.scope,
-          outlet: primaryAccess.outlet ? {
-            _id: primaryAccess.outlet._id,
-            name: primaryAccess.outlet.name
-          } : null,
-          role: primaryAccess.role?.name
+          outlet: primaryAccess.outlet
+            ? {
+                _id: primaryAccess.outlet._id,
+                name: primaryAccess.outlet.name,
+              }
+            : null,
+          role: primaryAccess.role?.name,
         };
       }
 
@@ -128,24 +154,34 @@ export const loginService = async (email: string, pass: string) => {
 
       isUserExists.businessAccess.forEach((access: any) => {
         // Business Context vs Organization Context handling
-        const buId = access.businessUnit?._id.toString() || access.organization?._id?.toString() || 'none';
+        const buId =
+          access.businessUnit?._id.toString() ||
+          access.organization?._id?.toString() ||
+          "none";
 
         if (!buMap.has(buId)) {
           buMap.set(buId, {
-            businessUnit: access.businessUnit ? {
-              _id: access.businessUnit._id,
-              slug: access.businessUnit.slug || access.businessUnit.id || access.businessUnit._id.toString(),
-              id: access.businessUnit.id,
-              name: access.businessUnit.name
-            } : null,
-            organization: access.organization ? {
-              _id: access.organization._id,
-              name: access.organization.name,
-              slug: access.organization.slug
-            } : null,
+            businessUnit: access.businessUnit
+              ? {
+                  _id: access.businessUnit._id,
+                  slug:
+                    access.businessUnit.slug ||
+                    access.businessUnit.id ||
+                    access.businessUnit._id.toString(),
+                  id: access.businessUnit.id,
+                  name: access.businessUnit.name,
+                }
+              : null,
+            organization: access.organization
+              ? {
+                  _id: access.organization._id,
+                  name: access.organization.name,
+                  slug: access.organization.slug,
+                }
+              : null,
             scope: access.scope,
             outlets: [],
-            outletCount: 0
+            outletCount: 0,
           });
         }
 
@@ -154,7 +190,7 @@ export const loginService = async (email: string, pass: string) => {
         if (access.outlet) {
           entry.outlets.push({
             _id: access.outlet._id,
-            name: access.outlet.name
+            name: access.outlet.name,
           });
           entry.outletCount++;
         }
@@ -164,11 +200,7 @@ export const loginService = async (email: string, pass: string) => {
     }
   }
 
-
-
-
   // jwtPayload moved below to include context info
-
 
   // const userInfo = {
   //   userId: isUserExists?._id,
@@ -190,114 +222,126 @@ export const loginService = async (email: string, pass: string) => {
   //   businessUnits: businessUnits // sending full object array
   // }
 
-
   // Inject Context Info into JWT Payload
   const jwtPayload: any = {
     userId: isUserExists?._id,
     id: isUserExists?.id,
     email: isUserExists?.email,
     businessUnits,
-    companies,
+    organizations,
     status: isUserExists?.status,
     role: allRoles, // Derived from businessAccess
     isSuperAdmin: isUserExists?.isSuperAdmin,
-    context: businessAccessInfo
+    context: businessAccessInfo,
   };
 
   const accessToken = createToken(
     jwtPayload,
     appConfig.jwt_access_secret as string,
-    appConfig.jwt_access_expired_in as string
+    appConfig.jwt_access_expired_in as string,
   );
 
   const refreshToken = createToken(
     jwtPayload,
     appConfig.jwt_refresh_secret as string,
-    appConfig.jwt_refresh_expired_in as string
+    appConfig.jwt_refresh_expired_in as string,
   );
 
   return {
     accessToken,
     refreshToken,
-    needsPasswordChange: isUserExists?.needsPasswordChange
+    needsPasswordChange: isUserExists?.needsPasswordChange,
   };
 };
 
 export const refreshTokenAuthService = async (token: string) => {
   if (!token) {
-    throw new AppError(status.UNAUTHORIZED, 'You are not authorized!')
+    throw new AppError(status.UNAUTHORIZED, "You are not authorized!");
   }
 
   let decoded;
   try {
-    decoded = verifyToken(token, appConfig.jwt_refresh_secret as string)
+    decoded = verifyToken(token, appConfig.jwt_refresh_secret as string);
   } catch (err: any) {
-    if (err.name === 'TokenExpiredError') {
-      throw new AppError(status.UNAUTHORIZED, 'Refresh token expired!')
+    if (err.name === "TokenExpiredError") {
+      throw new AppError(status.UNAUTHORIZED, "Refresh token expired!");
     }
-    throw new AppError(status.UNAUTHORIZED, 'Invalid refresh token!')
+    throw new AppError(status.UNAUTHORIZED, "Invalid refresh token!");
   }
 
-  const { userId, iat } = decoded
+  const { userId, iat } = decoded;
 
   // FIXED: find user by custom userId
   const query = User.findOne({ _id: userId });
   (query as any)._bypassContext = true;
 
-  const isUserExists = await query.populate([
-    {
-      path: 'globalRoles',
-      select: 'name title isSystemRole'
-    },
-    {
-      path: 'businessAccess',
-      select: 'role scope businessUnit outlet status isPrimary dataScopeOverride',
-      populate: [
-        {
-          path: 'role',
-          select: 'name title isSystemRole'
-        },
-        { path: 'businessUnit', select: 'name id slug' },
-        { path: 'outlet', select: 'name' },
-        { path: 'organization', select: 'name id slug activeModules' }
-      ]
-    }
-  ]).lean()
-
+  const isUserExists = await query
+    .populate([
+      {
+        path: "globalRoles",
+        select: "name title isSystemRole",
+      },
+      {
+        path: "businessAccess",
+        select:
+          "role scope businessUnit outlet status isPrimary dataScopeOverride",
+        populate: [
+          {
+            path: "role",
+            select: "name title isSystemRole",
+          },
+          { path: "businessUnit", select: "name id slug" },
+          { path: "outlet", select: "name" },
+          { path: "organization", select: "name id slug activeModules" },
+        ],
+      },
+    ])
+    .lean();
 
   if (!isUserExists) {
-    throw new AppError(status.NOT_FOUND, 'User is not found')
+    throw new AppError(status.NOT_FOUND, "User is not found");
   }
 
   if (isUserExists.isDeleted) {
-    throw new AppError(status.FORBIDDEN, 'This user is deleted')
+    throw new AppError(status.FORBIDDEN, "This user is deleted");
   }
 
-  if (isUserExists.status === 'blocked') {
-    throw new AppError(status.FORBIDDEN, 'This user is blocked')
+  if (isUserExists.status === "blocked") {
+    throw new AppError(status.FORBIDDEN, "This user is blocked");
   }
 
-  if (isUserExists.status === 'inactive') {
-    throw new AppError(status.FORBIDDEN, 'This user is inactive')
+  if (isUserExists.status === "inactive") {
+    throw new AppError(status.FORBIDDEN, "This user is inactive");
   }
 
   if (
     isUserExists.passwordChangedAt &&
     User.isJWTIssuedBeforePasswordChanged(
       isUserExists.passwordChangedAt,
-      iat as number
+      iat as number,
     )
   ) {
-    throw new AppError(status.UNAUTHORIZED, 'You are not authorized')
+    throw new AppError(status.UNAUTHORIZED, "You are not authorized");
   }
 
-
-  const globalRoleNames = (isUserExists as any).globalRoles?.map((r: any) => r.name) || [];
-  const businessRoleNames = (isUserExists as any).businessAccess?.map((acc: any) => acc.role?.name).filter(Boolean) || [];
+  const globalRoleNames =
+    (isUserExists as any).globalRoles?.map((r: any) => r.name) || [];
+  const businessRoleNames =
+    (isUserExists as any).businessAccess
+      ?.map((acc: any) => acc.role?.name)
+      .filter(Boolean) || [];
   const allRoles = [...new Set([...globalRoleNames, ...businessRoleNames])];
 
-
-  const companies = [...new Set(((isUserExists as any).businessAccess || []).map((a: any) => a.organization?._id?.toString() || a.organization?.toString()).filter(Boolean))];
+  const organizations = [
+    ...new Set(
+      ((isUserExists as any).businessAccess || [])
+        .map(
+          (a: any) =>
+            a.organization?._id?.toString() || a.organization?.toString(),
+        )
+        .filter(Boolean),
+    ),
+  ];
 
   const jwtPayload: any = {
     userId: isUserExists?._id,
@@ -306,72 +350,123 @@ export const refreshTokenAuthService = async (token: string) => {
     role: allRoles,
     status: isUserExists?.status,
     roleIds: allRoles,
-    companies,
-    isSuperAdmin: (isUserExists as any).isSuperAdmin
+    organizations,
+    isSuperAdmin: (isUserExists as any).isSuperAdmin,
   };
-
-
 
   const accessToken = createToken(
     jwtPayload,
     appConfig.jwt_access_secret as string,
-    appConfig.jwt_access_expired_in as string
-  )
+    appConfig.jwt_access_expired_in as string,
+  );
 
-  return { accessToken }
-}
-
+  return { accessToken };
+};
 
 export const authMeService = async (
   userInfo: any,
-  scope?: { businessUnitId?: string; outletId?: string }
+  scope?: { businessUnitId?: string; outletId?: string },
 ) => {
-
   const query = User.findOne({ _id: userInfo.userId });
   (query as any)._bypassContext = true;
 
-  const res = await query.populate([
-    {
-      path: 'globalRoles',
-      select: 'name title isSystemRole' // No nested permissions needed
-    },
-    {
-      path: 'businessAccess',
-      select: 'role scope businessUnit outlet organization status isPrimary dataScopeOverride',
-      populate: [
-        {
-          path: 'role',
-          select: 'name title isSystemRole' // No nested permissions needed 
-        },
-        { path: 'businessUnit', select: 'name id slug' },
-        { path: 'outlet', select: 'name' },
-        { path: 'organization', select: 'name id slug activeModules' }
-      ]
-    }
-  ]).lean();
+  const res = await query
+    .populate([
+      {
+        path: "globalRoles",
+        select: "name title isSystemRole", // No nested permissions needed
+      },
+      {
+        path: "businessAccess",
+        select:
+          "role scope businessUnit outlet organization status isPrimary dataScopeOverride",
+        populate: [
+          {
+            path: "role",
+            select: "name title isSystemRole", // No nested permissions needed
+          },
+          { path: "businessUnit", select: "name id slug" },
+          { path: "outlet", select: "name" },
+          { path: "organization", select: "name id slug activeModules" },
+        ],
+      },
+    ])
+    .lean();
 
   if (res) {
     // 1. Flatten Role Names for simplified UI display/logic check
-    const globalRoleNames = (res as any).globalRoles?.map((r: any) => r.name) || [];
-    const businessRoleNames = (res as any).businessAccess?.map((acc: any) => acc.role?.name).filter(Boolean) || [];
-    (res as any).role = [...new Set([...globalRoleNames, ...businessRoleNames])];
+    const globalRoleNames =
+      (res as any).globalRoles?.map((r: any) => r.name) || [];
+    const businessRoleNames =
+      (res as any).businessAccess
+        ?.map((acc: any) => acc.role?.name)
+        .filter(Boolean) || [];
+    (res as any).role = [
+      ...new Set([...globalRoleNames, ...businessRoleNames]),
+    ];
 
-    if ((res as any).role.includes('super-admin')) {
+    if ((res as any).role.includes("super-admin")) {
       res.isSuperAdmin = true;
+    }
+
+    // SELF-HEALING: Fix missing Organization in BusinessAccess (Lazy Migration)
+    if ((res as any).businessAccess && (res as any).businessAccess.length > 0) {
+      const accessUpdates = (res as any).businessAccess.map(
+        async (acc: any) => {
+          // If organization is missing (null) but we have a valid Business Unit
+          if (!acc.organization && acc.businessUnit && acc.businessUnit._id) {
+            const BusinessUnit =
+              mongoose.models.BusinessUnit || mongoose.model("BusinessUnit");
+            const UserBusinessAccess =
+              mongoose.models.UserBusinessAccess ||
+              mongoose.model("UserBusinessAccess");
+
+            // Fetch the full BU to get its organization
+            const fullBu = await BusinessUnit.findById(
+              acc.businessUnit._id,
+            ).select("organization");
+
+            if (fullBu && fullBu.organization) {
+              console.log(
+                `[Self-Healing] Fixing missing Organization for User Access ${acc._id}`,
+              );
+
+              // Update the DB Record
+              await UserBusinessAccess.findByIdAndUpdate(acc._id, {
+                organization: fullBu.organization,
+              });
+
+              // Update the in-memory response object for immediate UI fix
+              // We need to fetch the organization details to match populate structure
+              const Organization =
+                mongoose.models.Organization || mongoose.model("Organization");
+              const orgDetails = await Organization.findById(
+                fullBu.organization,
+              ).select("name id slug activeModules");
+              acc.organization = orgDetails;
+            }
+          }
+        },
+      );
+
+      // Wait for all fixes to apply (non-blocking for main flow ideally, but we want to return fixed data)
+      await Promise.all(accessUpdates);
     }
 
     try {
       // 2. Calculate Authorization Context (Using Cache if available)
-      const authContext = await permissionService.getAuthorizationContext(res as any, scope);
+      const authContext = await permissionService.getAuthorizationContext(
+        res as any,
+        scope,
+      );
 
       (res as any).maxDataAccess = authContext.maxDataAccess;
       (res as any).hierarchyLevel = authContext.hierarchyLevel;
       (res as any).dataScope = authContext.dataScope;
 
-
       const permMap = new Map<string, any[]>();
 
-      authContext.permissions.forEach(p => {
+      authContext.permissions.forEach((p) => {
         if (!p.resource || !p.action) return;
         const key = `${p.resource}:${p.action}`;
         if (!permMap.has(key)) permMap.set(key, []);
@@ -383,18 +478,22 @@ export const authMeService = async (
       // b. Resolve each group
       permMap.forEach((perms, key) => {
         // Sort by Priority (High to Low)
-        perms.sort((a, b) => (b.resolver?.priority ?? 0) - (a.resolver?.priority ?? 0));
+        perms.sort(
+          (a, b) => (b.resolver?.priority ?? 0) - (a.resolver?.priority ?? 0),
+        );
 
         // Take top priority permissions
         const maxPriority = perms[0]?.resolver?.priority ?? 0;
-        const topPerms = perms.filter(p => (p.resolver?.priority ?? 0) === maxPriority);
+        const topPerms = perms.filter(
+          (p) => (p.resolver?.priority ?? 0) === maxPriority,
+        );
 
         // Check effects
-        const hasDeny = topPerms.some(p => p.effect === 'deny');
-        const hasAllow = topPerms.some(p => p.effect === 'allow');
+        const hasDeny = topPerms.some((p) => p.effect === "deny");
+        const hasAllow = topPerms.some((p) => p.effect === "allow");
 
         // Allow if explicit allow exists AND no explicit deny at same specific level
-        // (Usually deny overrides allow at same level, or allow overrides if we are permissive. 
+        // (Usually deny overrides allow at same level, or allow overrides if we are permissive.
         // Standard Service logic: Deny wins at same priority level.)
         if (hasAllow && !hasDeny) {
           resolvedPermissions.push(key);
@@ -417,32 +516,43 @@ export const authMeService = async (
       // --- INJECT CONTEXT INFO (Same as Login) ---
       let businessAccessInfo: any = {
         primary: null,
-        available: []
+        available: [],
       };
 
       if (res.businessAccess && res.businessAccess.length > 0) {
         // 1. Identify Primary Context
-        const primaryAccess = res.businessAccess.find((a: any) => a.isPrimary) || res.businessAccess[0];
+        const primaryAccess =
+          res.businessAccess.find((a: any) => a.isPrimary) ||
+          res.businessAccess[0];
 
         if (primaryAccess) {
           businessAccessInfo.primary = {
-            businessUnit: primaryAccess.businessUnit ? {
-              _id: primaryAccess.businessUnit._id,
-              slug: primaryAccess.businessUnit.slug || primaryAccess.businessUnit.id || primaryAccess.businessUnit._id.toString(),
-              id: primaryAccess.businessUnit.id
-            } : null,
-            organization: primaryAccess.organization ? {
-              _id: primaryAccess.organization._id,
-              name: primaryAccess.organization.name,
-              slug: primaryAccess.organization.slug,
-              activeModules: primaryAccess.organization.activeModules
-            } : null,
+            businessUnit: primaryAccess.businessUnit
+              ? {
+                  _id: primaryAccess.businessUnit._id,
+                  slug:
+                    primaryAccess.businessUnit.slug ||
+                    primaryAccess.businessUnit.id ||
+                    primaryAccess.businessUnit._id.toString(),
+                  id: primaryAccess.businessUnit.id,
+                }
+              : null,
+            organization: primaryAccess.organization
+              ? {
+                  _id: primaryAccess.organization._id,
+                  name: primaryAccess.organization.name,
+                  slug: primaryAccess.organization.slug,
+                  activeModules: primaryAccess.organization.activeModules,
+                }
+              : null,
             scope: primaryAccess.scope,
-            outlet: primaryAccess.outlet ? {
-              _id: primaryAccess.outlet._id,
-              name: primaryAccess.outlet.name
-            } : null,
-            role: primaryAccess.role?.name
+            outlet: primaryAccess.outlet
+              ? {
+                  _id: primaryAccess.outlet._id,
+                  name: primaryAccess.outlet.name,
+                }
+              : null,
+            role: primaryAccess.role?.name,
           };
         }
 
@@ -450,25 +560,35 @@ export const authMeService = async (
         const buMap = new Map();
 
         res.businessAccess.forEach((access: any) => {
-          const buId = access.businessUnit?._id.toString() || access.organization?._id?.toString() || 'none';
+          const buId =
+            access.businessUnit?._id.toString() ||
+            access.organization?._id?.toString() ||
+            "none";
 
           if (!buMap.has(buId)) {
             buMap.set(buId, {
-              businessUnit: access.businessUnit ? {
-                _id: access.businessUnit._id,
-                slug: access.businessUnit.slug || access.businessUnit.id || access.businessUnit._id.toString(),
-                id: access.businessUnit.id,
-                name: access.businessUnit.name
-              } : null,
-              organization: access.organization ? {
-                _id: access.organization._id,
-                name: access.organization.name,
-                slug: access.organization.slug,
-                activeModules: access.organization.activeModules
-              } : null,
+              businessUnit: access.businessUnit
+                ? {
+                    _id: access.businessUnit._id,
+                    slug:
+                      access.businessUnit.slug ||
+                      access.businessUnit.id ||
+                      access.businessUnit._id.toString(),
+                    id: access.businessUnit.id,
+                    name: access.businessUnit.name,
+                  }
+                : null,
+              organization: access.organization
+                ? {
+                    _id: access.organization._id,
+                    name: access.organization.name,
+                    slug: access.organization.slug,
+                    activeModules: access.organization.activeModules,
+                  }
+                : null,
               scope: access.scope,
               outlets: [],
-              outletCount: 0
+              outletCount: 0,
             });
           }
 
@@ -477,7 +597,7 @@ export const authMeService = async (
           if (access.outlet) {
             entry.outlets.push({
               _id: access.outlet._id,
-              name: access.outlet.name
+              name: access.outlet.name,
             });
             entry.outletCount++;
           }
@@ -486,7 +606,18 @@ export const authMeService = async (
         businessAccessInfo.available = Array.from(buMap.values());
       }
       (res as any).context = businessAccessInfo;
-      (res as any).companies = [...new Set((res.businessAccess || []).map((a: any) => a.organization?._id?.toString() || a.organization?.toString() || a.organization).filter(Boolean))];
+      (res as any).organizations = [
+        ...new Set(
+          (res.businessAccess || [])
+            .map(
+              (a: any) =>
+                a.organization?._id?.toString() ||
+                a.organization?.toString() ||
+                a.organization,
+            )
+            .filter(Boolean),
+        ),
+      ];
       // -------------------------------------------
 
       // Attach primary organization modules at top level for easy frontend access
@@ -507,7 +638,7 @@ export const authMeService = async (
           businessUnit: acc.businessUnit, // Minimal BU (id, name, slug)
           outlet: acc.outlet,
           status: acc.status,
-          isPrimary: acc.isPrimary
+          isPrimary: acc.isPrimary,
         })) as any;
       }
 
@@ -517,20 +648,16 @@ export const authMeService = async (
           _id: r._id,
           name: r.name,
           title: r.title,
-          isSystemRole: r.isSystemRole
+          isSystemRole: r.isSystemRole,
         })) as any;
       }
-
-
     } catch (e) {
       console.error("Failed to calculate auth context", e);
     }
   }
 
   return res;
-}
-
-
+};
 
 export const logoutService = async () => {
   return true;
@@ -544,14 +671,17 @@ export const setupPasswordService = async (token: string, password: string) => {
   // 1. Find user by setup token
   const query = User.findOne({
     setupPasswordToken: token,
-    setupPasswordExpires: { $gt: new Date() }
+    setupPasswordExpires: { $gt: new Date() },
   });
   (query as any)._bypassContext = true;
 
-  const user = await query.select('+setupPasswordToken +setupPasswordExpires');
+  const user = await query.select("+setupPasswordToken +setupPasswordExpires");
 
   if (!user) {
-    throw new AppError(status.BAD_REQUEST, 'Invalid or expired setup token. Please contact support for a new invitation.');
+    throw new AppError(
+      status.BAD_REQUEST,
+      "Invalid or expired setup token. Please contact support for a new invitation.",
+    );
   }
 
   // 2. Set password and clear token
@@ -565,8 +695,8 @@ export const setupPasswordService = async (token: string, password: string) => {
   await user.save();
 
   return {
-    message: 'Password set successfully. You can now login.',
-    email: user.email
+    message: "Password set successfully. You can now login.",
+    email: user.email,
   };
 };
 
@@ -580,19 +710,24 @@ export const resendSetupInvitationService = async (email: string) => {
   const query = User.findOne({ email });
   (query as any)._bypassContext = true;
 
-  const user = await query.select('+setupPasswordToken +setupPasswordExpires status');
+  const user = await query.select(
+    "+setupPasswordToken +setupPasswordExpires status",
+  );
 
   if (!user) {
-    throw new AppError(status.NOT_FOUND, 'User not found.');
+    throw new AppError(status.NOT_FOUND, "User not found.");
   }
 
   // 2. Validate Status
   // If user is BLOCKED or DELETED, do not allow.
   if (user.status === USER_STATUS.BLOCKED || user.isDeleted) {
-    throw new AppError(status.FORBIDDEN, 'Account is blocked or deleted. Contact support.');
+    throw new AppError(
+      status.FORBIDDEN,
+      "Account is blocked or deleted. Contact support.",
+    );
   }
 
-  // NOTE: Previously we blocked ACTIVE users. 
+  // NOTE: Previously we blocked ACTIVE users.
   // However, users might get stuck in ACTIVE state if setup failed at the end or if they forgot the password immediately.
   // Allowing ACTIVE users to "Resend Setup" effectively acts as a "Password Reset" via the setup flow, which is acceptable/safe here.
 
@@ -603,10 +738,9 @@ export const resendSetupInvitationService = async (email: string) => {
   }
   */
 
-
   // 3. Generate New Token
   const crypto = await import("crypto");
-  const setupToken = crypto.default.randomBytes(32).toString('hex');
+  const setupToken = crypto.default.randomBytes(32).toString("hex");
   const setupExpires = new Date(Date.now() + 72 * 60 * 60 * 1000); // 72 hours
 
   user.setupPasswordToken = setupToken;
@@ -615,7 +749,6 @@ export const resendSetupInvitationService = async (email: string) => {
 
   // 4. Send Email
   try {
-   
     const setupUrl = `${appConfig.frontend_url}/auth/setup-password?token=${setupToken}`;
 
     await MailService.sendEmail(
@@ -634,38 +767,18 @@ export const resendSetupInvitationService = async (email: string) => {
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
         <p style="font-size: 12px; color: #94a3b8; text-align: center;">© 2026 Manoxen. All rights reserved.</p>
       </div>
-      `
+      `,
     );
   } catch (error) {
     console.error("Failed to resend invitation email:", error);
-    throw new AppError(status.INTERNAL_SERVER_ERROR, 'Failed to send email. Please try again later.');
+    throw new AppError(
+      status.INTERNAL_SERVER_ERROR,
+      "Failed to send email. Please try again later.",
+    );
   }
 
   return {
-    message: 'Invitation link sent successfully. Please check your email.',
-    email: user.email
+    message: "Invitation link sent successfully. Please check your email.",
+    email: user.email,
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

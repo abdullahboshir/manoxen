@@ -714,18 +714,23 @@ export const getSidebarMenu = (
   outletId?: string,
   organizationId?: string | null,
   isOrganizationAdminRoute?: boolean,
-  organizationSlug?: string
+  organizationSlug?: string,
 ) => {
   // Determine base URL based on role and route context
   let baseUrl = "/platform";
 
-  // Organization owners should use /organization path
+  // Organization owners should use /organization path or the dynamic orgId
   if (
     isOrganizationAdminRoute ||
     (matchesRole(role, USER_ROLES.ORGANIZATION_OWNER) &&
       !matchesRole(role, [USER_ROLES.SUPER_ADMIN, USER_ROLES.PLATFORM_ADMIN]))
   ) {
-    baseUrl = "/organization";
+    baseUrl =
+      organizationSlug &&
+      organizationSlug !== "organization" &&
+      organizationSlug !== "(organization)"
+        ? `/${organizationSlug}`
+        : "/organization";
   }
 
   if (businessUnit) {
@@ -751,7 +756,11 @@ export const getSidebarMenu = (
         }
 
         // 🔗 PERSIST ORGANIZATION CONTEXT: Ensure platform management links retain active organizationId
-        if (organizationId && newItem.path && newItem.path.startsWith("/platform")) {
+        if (
+          organizationId &&
+          newItem.path &&
+          newItem.path.startsWith("/platform")
+        ) {
           const hasParams = newItem.path.includes("?");
           newItem.path = `${newItem.path}${
             hasParams ? "&" : "?"
@@ -842,7 +851,7 @@ export const getSidebarMenu = (
       USER_ROLES.ADMIN,
     ]);
     const hasSettings = rawOutletMenu.some(
-      (m) => m.title === MENU_MODULES.OUTLET_SETTINGS.title
+      (m) => m.title === MENU_MODULES.OUTLET_SETTINGS.title,
     );
     if (shouldSeeSettings && !hasSettings) {
       rawOutletMenu.push(MENU_MODULES.OUTLET_SETTINGS);
@@ -887,13 +896,13 @@ export const getSidebarMenu = (
     if (businessUnit) {
       const businessAdminMenu = sidebarMenuConfig.menus["business-admin"];
       return appendOrganizationToMenu(
-        prefixMenuPaths([...businessAdminMenu, ...commonMenu])
+        prefixMenuPaths([...businessAdminMenu, ...commonMenu]),
       );
     } else if (organizationId) {
       const organizationOwnerMenu =
         sidebarMenuConfig.menus[USER_ROLES.ORGANIZATION_OWNER];
       return appendOrganizationToMenu(
-        prefixMenuPaths([...organizationOwnerMenu, ...commonMenu])
+        prefixMenuPaths([...organizationOwnerMenu, ...commonMenu]),
       );
     }
   }
@@ -901,7 +910,7 @@ export const getSidebarMenu = (
   if (matchesRole(role, USER_ROLES.ORGANIZATION_OWNER) && businessUnit) {
     const businessAdminMenu = sidebarMenuConfig.menus["business-admin"];
     return appendOrganizationToMenu(
-      prefixMenuPaths([...businessAdminMenu, ...commonMenu])
+      prefixMenuPaths([...businessAdminMenu, ...commonMenu]),
     );
   }
 
@@ -926,7 +935,9 @@ export const getSidebarMenu = (
 
   const uniqueMenu = roleMenu.filter(
     (item, index, self) =>
-      index === self.findIndex((t) => t.title === item.title)
+      index === self.findIndex((t) => t.title === item.title),
   );
-  return appendOrganizationToMenu(prefixMenuPaths([...uniqueMenu, ...commonMenu]));
+  return appendOrganizationToMenu(
+    prefixMenuPaths([...uniqueMenu, ...commonMenu]),
+  );
 };

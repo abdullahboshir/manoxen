@@ -24,7 +24,7 @@ export const useBusinessUnitSubmit = () => {
   const { data: businessUnits = [] } = useGetBusinessUnitsQuery({ limit: 0 });
 
   const isSuperAdmin = checkIsSuperAdmin(user);
-  const paramBusinessUnit = params["business-unit"] as string;
+  const paramBusinessUnit = (params["business-unit"] || params.buId) as string;
 
   /**
    * Resolves business unit from form data

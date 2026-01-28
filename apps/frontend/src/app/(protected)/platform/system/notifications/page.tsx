@@ -1,6 +1,7 @@
 "use client";
-import NotificationList from "@/components/modules/system/NotificationList";
+import NotificationList from "@/domains/core/system/ui/components/NotificationList";
 
 export default function NotificationsPage() {
     return <NotificationList />;
 }
+

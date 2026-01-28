@@ -2,13 +2,13 @@
 "use client";
 
 import { useState } from "react";
-import DasboardHeader from "./header/DasboardHeader";
+import DashboardHeader from "./header/DashboardHeader";
 import { Sidebar } from "./sidebar/Sidebar";
 import { SidebarFooter } from "./sidebar/SidebarFooter";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { ModuleRouteGuard } from "../modules/core/ModuleRouteGuard";
+import { ModuleRouteGuard } from "@/domains/core/core/ui/components/ModuleRouteGuard";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -43,12 +43,10 @@ export function AppLayout({ children, showFooter = true }: AppLayoutProps) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        <DasboardHeader onMenuClick={() => setMobileOpen(true)} />
+        <DashboardHeader onMenuClick={() => setMobileOpen(true)} />
 
         <main className="flex-1 overflow-auto px-5 pt-4">
-          <ModuleRouteGuard>
-            {children}
-          </ModuleRouteGuard>
+          <ModuleRouteGuard>{children}</ModuleRouteGuard>
         </main>
 
         {showFooter && <SidebarFooter />}

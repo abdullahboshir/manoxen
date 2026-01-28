@@ -368,9 +368,9 @@ export const PERMISSION_KEYS = Object.fromEntries(
       Object.entries(ACTION_KEYS).map(([actionKey, actionValue]) => [
         actionKey,
         `${resourceValue}:${actionValue.toLowerCase()}`,
-      ])
+      ]),
     ),
-  ])
+  ]),
 ) as Record<
   keyof typeof RESOURCE_KEYS,
   Record<keyof typeof ACTION_KEYS, string>
@@ -473,7 +473,7 @@ export const PLATFORM_PERMISSIONS = {
 } as const;
 
 // 2. BUSINESS PERMISSIONS (Tenant / Business Unit Level)
-// These define what distinct Business Units (Stores/Companies) can do.
+// These define what distinct Business Units (Stores/organizations) can do.
 export const BUSINESS_PERMISSIONS = {
   // Catalog
   MANAGE_PRODUCTS: PERMISSION_KEYS.PRODUCT.MANAGE,

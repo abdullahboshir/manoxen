@@ -125,8 +125,9 @@ export function OutletSwitcher({
       setActiveOutletId(outletId);
       localStorage.setItem("active-outlet-id", outletId);
       params.set("outlet", outletId);
+      // Route is (outlet)/[orgId]/[buId]/[outletId] = /orgSlug/buSlug/outletId
       router.push(
-        `${basePath}/outlets/${outletId}${params.toString() ? `?${params.toString()}` : ""}`,
+        `${basePath}/${outletId}${params.toString() ? `?${params.toString()}` : ""}`,
       );
     }
   };
@@ -144,12 +145,12 @@ export function OutletSwitcher({
           <div className="flex items-center gap-2 text-muted-foreground overflow-hidden w-full">
             <Store className="h-3 w-3 shrink-0" />
             <div className="truncate max-w-[150px]">
-              <SelectValue placeholder="Business Overview" />
+              <SelectValue placeholder="Select Outlet" />
             </div>
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Business Overview</SelectItem>
+          <SelectItem value="all">Select Outlet</SelectItem>
           <SelectSeparator />
           {outlets.map((outlet: any) => (
             <SelectItem

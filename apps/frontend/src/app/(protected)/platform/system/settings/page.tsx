@@ -1,7 +1,1 @@
-"use client";
-
-import { SystemSettingsInterface } from "@/components/modules/settings/SystemSettingsInterface";
-
-export default function SystemSettingsPage() {
-    return <SystemSettingsInterface />;
-}
+export { SystemSettingsInterface as default } from "@/domains/core/settings/ui/components/SystemSettingsInterface";

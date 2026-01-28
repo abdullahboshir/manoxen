@@ -6,24 +6,19 @@ import Providers from "@/lib/providers/Providers";
 import { GlobalLoadingOverlay } from "@/components/shared/GlobalLoadingOverlay";
 import { LoadingProvider } from "@/store/loadingStore";
 
-
-
 export const metadata: Metadata = {
-  title: "Manoxen POS",
-  description: "Manoxen Point of Sale System",
+  title: "Manoxen Enterprise",
+  description: "Manoxen Enterprise Solution",
   icons: {
     icon: "/favicon.ico",
   },
 };
-
-
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-sans">

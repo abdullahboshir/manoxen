@@ -1,8 +1,1 @@
-"use client";
-
-import { UserManagementTable } from "@/features/iam/components/UserManagementTable";
-
-
-export default function AllUsersPage() {
-    return <UserManagementTable viewScope="platform" />;
-}
+export { PlatformUsers as default } from "@/domains/core/iam/ui/components/PlatformUsers";

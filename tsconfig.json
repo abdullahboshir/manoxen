@@ -1,24 +1,19 @@
 {
   "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
+  },
   "files": [],
   "references": [
-    { "path": "./core/iam" },
-    { "path": "./core/organization" },
-    { "path": "./core/governance" },
-    { "path": "./domains/commerce/catalog" },
-    { "path": "./domains/commerce/pos" },
-    { "path": "./domains/commerce/sales" },
-    { "path": "./domains/commerce/pricing" },
-    { "path": "./domains/enterprise/supply" },
-    { "path": "./domains/enterprise/accounting" },
-    { "path": "./domains/enterprise/ops" },
-    { "path": "./domains/enterprise/analytics" },
-    { "path": "./domains/enterprise/hrm" },
-    { "path": "./domains/enterprise/legal" },
-    { "path": "./domains/enterprise/corporate" },
-    { "path": "./domains/enterprise/operations" },
-    { "path": "./domains/platform/contracts" },
+    { "path": "./apps/frontend" },
+    { "path": "./apps/backend" },
+    { "path": "./libs/auth-client" },
     { "path": "./libs/core-util" },
-    { "path": "./packages/shared-types" }
+    { "path": "./libs/infra-common" },
+    { "path": "./libs/ui-kit" },
+    { "path": "./packages/iam-core" },
+    { "path": "./packages/platform-core" },
+    { "path": "./packages/shared-types" },
+    { "path": "./packages/tenant-strategy" }
   ]
 }

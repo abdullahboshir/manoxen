@@ -1,4 +1,4 @@
-import PackageList from "@/components/modules/saas/PackageList";
+import PackageList from "@/domains/core/saas/ui/components/PackageList";
 
 export const metadata = {
     title: "SaaS Packages | Platform Admin",
@@ -8,3 +8,4 @@ export const metadata = {
 export default function PackagesPage() {
     return <PackageList />;
 }
+

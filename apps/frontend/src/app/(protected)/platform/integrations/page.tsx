@@ -1,4 +1,4 @@
-import IntegrationList from "@/components/modules/integrations/IntegrationList";
+import IntegrationList from "@/domains/core/integrations/ui/components/IntegrationList";
 
 export const metadata = {
     title: "Integrations | Platform",
@@ -8,3 +8,4 @@ export const metadata = {
 export default function IntegrationsPage() {
     return <IntegrationList />;
 }
+

@@ -1,5 +1,6 @@
-import BackupList from "@/components/modules/system/BackupList";
+import BackupList from "@/domains/core/system/ui/components/BackupList";
 
 export default function BackupsPage() {
     return <BackupList />;
 }
+

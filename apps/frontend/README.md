@@ -26,6 +26,36 @@ A comprehensive Point of Sale (POS) system built with Next.js 16, React 19, Type
 - **Icons**: Lucide React
 - **Authentication**: JWT-based auth with custom hooks
 
+## 🏗️ Architectural & Coding Standards (Critical)
+
+We follow a strict "Governance Layer" architecture. Please adhere to these rules to maintain enterprise scalability.
+
+### 1. UI Layer: Smart vs Dumb
+
+- **Pages (`src/app/**`)**: **Smart Gatekeepers**. They fetch params, resolve data, and inject `context`. They contain NO complex UI logic.
+- **Views (`src/domains/*/ui`)**: **Smart Orchestrators**. They receive context and manage domain-specific state.
+- **Components (`src/components/ui`)**: **Dumb & Reusable**. They receive props and render. No API calls allowed here.
+
+### 2. Domain Structure (The "Standard 4")
+
+Every domain in `src/domains/` must follow this 4-bucket structure:
+
+- `api/` (RTK Query definitions only)
+- `domain/` (Pure business logic & constants)
+- `types/` (TypeScript interfaces)
+- `ui/` (React Components & Views)
+
+### 3. State & Network
+
+- **API**: All network requests must go through `src/redux/api` or `src/lib/api`. No direct `axios`/`fetch` in components.
+- **State**: Use local state for UI, Redux for server-state. Avoid "God Stores".
+
+### 4. Security
+
+- **ACL**: Use `useCan('action', 'resource')` for permission checks. Do not check `user.roles.includes(...)` directly.
+
+---
+
 ## Project Structure
 
 ```

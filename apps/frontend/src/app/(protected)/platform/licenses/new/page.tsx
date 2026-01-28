@@ -1,5 +1,5 @@
 
-import LicenseForm from "@/components/modules/saas/LicenseForm";
+import LicenseForm from "@/domains/core/saas/ui/components/LicenseForm";
 
 export const metadata = {
     title: "Issue License | Platform Admin",
@@ -9,3 +9,4 @@ export const metadata = {
 export default function NewLicensePage() {
     return <LicenseForm />;
 }
+

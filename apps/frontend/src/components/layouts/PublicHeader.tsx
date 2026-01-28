@@ -5,7 +5,7 @@ import { ShoppingBag, User, Zap, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from '../mode-toggle';
-import LoginModal from "@/components/auth/LoginModal";
+import LoginModal from "@/domains/core/iam/ui/components/auth/LoginModal";
 
 interface PublicHeaderProps {
   onLoginClick?: () => void;

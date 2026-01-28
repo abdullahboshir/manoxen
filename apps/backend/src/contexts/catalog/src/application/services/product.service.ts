@@ -1,6 +1,12 @@
 import mongoose, { startSession, Types } from "mongoose";
 import status from "http-status";
-import { AppError, QueryBuilder, resolveBusinessUnitId, resolveBusinessUnitQuery, CacheManager } from "@manoxen/core-util";
+import {
+  AppError,
+  QueryBuilder,
+  resolveBusinessUnitId,
+  resolveBusinessUnitQuery,
+  CacheManager,
+} from "@manoxen/core-util";
 import { Product } from "../../infrastructure/persistence/mongoose/product.model";
 import { Category as CategoryModel } from "../../infrastructure/persistence/mongoose/category.model";
 import { ProductVariant } from "../../infrastructure/persistence/mongoose/features/product-variant/product-variant.model";
@@ -11,7 +17,11 @@ import { Stock } from "@manoxen/supply";
 import { ProductPricing } from "../../infrastructure/persistence/mongoose/features/product-pricing/product-pricing.model";
 import { generateProductCode } from "../utils/product.utils";
 
-const mapFrontendToBackendVariant = (frontendVariant: any, parentId: string, parentSku: string) => {
+const mapFrontendToBackendVariant = (
+  frontendVariant: any,
+  parentId: string,
+  parentSku: string,
+) => {
   const attributesMap: any = {};
   if (Array.isArray(frontendVariant.options)) {
     frontendVariant.options.forEach((opt: any) => {
@@ -24,19 +34,26 @@ const mapFrontendToBackendVariant = (frontendVariant: any, parentId: string, par
   return {
     variantId: frontendVariant.id || new Types.ObjectId().toString(),
     parentProduct: parentId,
-    sku: frontendVariant.sku || `${parentSku}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
+    sku:
+      frontendVariant.sku ||
+      `${parentSku}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
     attributes: attributesMap,
     pricing: {
       basePrice: frontendVariant.price || 0,
       salePrice: frontendVariant.price || 0,
       costPrice: 0,
-      currency: "BDT"
+      currency: "BDT",
     },
     inventory: {
       stock: frontendVariant.stock || 0,
-      allowBackorder: false
+      allowBackorder: false,
     },
-    images: frontendVariant.images && Array.isArray(frontendVariant.images) ? frontendVariant.images : (frontendVariant.image ? [frontendVariant.image] : []),
+    images:
+      frontendVariant.images && Array.isArray(frontendVariant.images)
+        ? frontendVariant.images
+        : frontendVariant.image
+          ? [frontendVariant.image]
+          : [],
     physicalProperties: frontendVariant.physicalProperties || {
       weight: frontendVariant.weight || 0,
       weightUnit: frontendVariant.weightUnit || "kg",
@@ -44,11 +61,11 @@ const mapFrontendToBackendVariant = (frontendVariant: any, parentId: string, par
         length: frontendVariant.length || 0,
         width: frontendVariant.width || 0,
         height: frontendVariant.height || 0,
-        unit: frontendVariant.dimensionUnit || frontendVariant.unit || "cm"
-      }
+        unit: frontendVariant.dimensionUnit || frontendVariant.unit || "cm",
+      },
     },
     isDefault: frontendVariant.isDefault || false,
-    status: "active"
+    status: "active",
   };
 };
 
@@ -58,40 +75,101 @@ export const createProductService = async (payload: any, user?: any) => {
 
   try {
     if (payload.businessUnit) {
-      payload.businessUnit = await resolveBusinessUnitId(payload.businessUnit, user);
+      payload.businessUnit = await resolveBusinessUnitId(
+        payload.businessUnit,
+        user,
+      );
     }
 
     if (!payload.organization) {
-        if (payload.businessUnit) {
-             const BusinessUnitModel = mongoose.models['BusinessUnit'] || mongoose.model('BusinessUnit');
-             const bu = await BusinessUnitModel.findById(payload.businessUnit).select('company');
-             if (bu && bu.company) {
-                 payload.organization = bu.company;
-             }
+      if (payload.businessUnit) {
+        const BusinessUnitModel =
+          mongoose.models["BusinessUnit"] || mongoose.model("BusinessUnit");
+        const bu = await BusinessUnitModel.findById(
+          payload.businessUnit,
+        ).select("organization");
+        if (bu && bu.organization) {
+          payload.organization = bu.organization;
         }
-        if (!payload.organization && user?.organization) {
-            payload.organization = user.organization._id || user.organization;
-        }
+      }
+      if (!payload.organization && user?.organization) {
+        payload.organization = user.organization._id || user.organization;
+      }
     }
 
-    const category = await CategoryModel.findById(payload?.primaryCategory || payload?.categories?.[0]);
+    const category = await CategoryModel.findById(
+      payload?.primaryCategory || payload?.categories?.[0],
+    );
     if (!category) {
-      throw new AppError(status.NOT_FOUND, 'Category not found!');
+      throw new AppError(status.NOT_FOUND, "Category not found!");
     }
 
-    const productSku = await generateProductCode(category?.name ? category?.name : 'others', payload?.origine);
+    const productSku = await generateProductCode(
+      category?.name ? category?.name : "others",
+      payload?.origine,
+    );
     const productId = new Types.ObjectId();
 
-    const pricing = await ProductPricing.create([{ ...payload.pricing, product: productId, organization: payload.organization, businessUnit: payload.businessUnit }], { session });
-    const inventory = await Stock.create([{ ...payload.inventory, product: productId, organization: payload.organization, businessUnit: payload.businessUnit }], { session });
-    const details = await ProductDetails.create([{ ...payload.details, product: productId, organization: payload.organization, businessUnit: payload.businessUnit }], { session });
-    const shipping = await ProductShipping.create([{ ...payload.shipping, product: productId, organization: payload.organization, businessUnit: payload.businessUnit }], { session });
-    const warranty = await ProductWarrantyReturn.create([{ ...payload.warranty, product: productId, organization: payload.organization, businessUnit: payload.businessUnit }], { session });
+    const pricing = await ProductPricing.create(
+      [
+        {
+          ...payload.pricing,
+          product: productId,
+          organization: payload.organization,
+          businessUnit: payload.businessUnit,
+        },
+      ],
+      { session },
+    );
+    const inventory = await Stock.create(
+      [
+        {
+          ...payload.inventory,
+          product: productId,
+          organization: payload.organization,
+          businessUnit: payload.businessUnit,
+        },
+      ],
+      { session },
+    );
+    const details = await ProductDetails.create(
+      [
+        {
+          ...payload.details,
+          product: productId,
+          organization: payload.organization,
+          businessUnit: payload.businessUnit,
+        },
+      ],
+      { session },
+    );
+    const shipping = await ProductShipping.create(
+      [
+        {
+          ...payload.shipping,
+          product: productId,
+          organization: payload.organization,
+          businessUnit: payload.businessUnit,
+        },
+      ],
+      { session },
+    );
+    const warranty = await ProductWarrantyReturn.create(
+      [
+        {
+          ...payload.warranty,
+          product: productId,
+          organization: payload.organization,
+          businessUnit: payload.businessUnit,
+        },
+      ],
+      { session },
+    );
 
     let variantTemplateId = undefined;
     if (payload.hasVariants) {
       const mappedVariants = (payload.variants || []).map((v: any) =>
-        mapFrontendToBackendVariant(v, productId.toString(), productSku)
+        mapFrontendToBackendVariant(v, productId.toString(), productSku),
       );
 
       const variantData = {
@@ -100,10 +178,12 @@ export const createProductService = async (payload: any, user?: any) => {
         variants: mappedVariants,
         variantAttributes: payload.variantAttributes || [],
         organization: payload.organization,
-        businessUnit: payload.businessUnit
+        businessUnit: payload.businessUnit,
       };
 
-      const productVariant = await ProductVariant.create([variantData], { session });
+      const productVariant = await ProductVariant.create([variantData], {
+        session,
+      });
       variantTemplateId = productVariant[0]?._id;
     }
 
@@ -116,7 +196,7 @@ export const createProductService = async (payload: any, user?: any) => {
       details: details[0]?._id,
       shipping: shipping[0]?._id,
       warranty: warranty[0]?._id,
-      variantTemplate: variantTemplateId
+      variantTemplate: variantTemplateId,
     };
 
     const product = await Product.create([productPayload], { session });
@@ -125,58 +205,69 @@ export const createProductService = async (payload: any, user?: any) => {
     session.endSession();
 
     return product[0];
-
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
     throw error;
   }
-}
+};
 
 export const getAllProductsService = async (query: any) => {
   const finalQuery = await resolveBusinessUnitQuery(query);
   const cacheKey = `product:list:${JSON.stringify(finalQuery)}`;
 
-  return await CacheManager.wrap(cacheKey, async () => {
-    const productQuery = new QueryBuilder(
-      Product.find()
-        .populate('primaryCategory')
-        .populate('brands')
-        .populate('pricing')
-        .populate('inventory'),
-      finalQuery
-    )
-      .search(['name', 'sku'])
-      .filter()
-      .sort()
-      .paginate()
-      .fields();
+  return await CacheManager.wrap(
+    cacheKey,
+    async () => {
+      const productQuery = new QueryBuilder(
+        Product.find()
+          .populate("primaryCategory")
+          .populate("brands")
+          .populate("pricing")
+          .populate("inventory"),
+        finalQuery,
+      )
+        .search(["name", "sku"])
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
 
-    const result = await productQuery.modelQuery;
-    const meta = await productQuery.countTotal();
+      const result = await productQuery.modelQuery;
+      const meta = await productQuery.countTotal();
 
-    return {
-      meta,
-      result
-    };
-  }, 60);
-}
+      return {
+        meta,
+        result,
+      };
+    },
+    60,
+  );
+};
 
 export const getProductByIdService = async (id: string) => {
-  return await CacheManager.wrap(`product:id:${id}`, async () => {
-    return await Product.findById(id)
-        .populate('primaryCategory')
-        .populate('brands')
-        .populate('pricing')
-        .populate('inventory')
-        .populate('details')
-        .populate('shipping')
-        .populate('warranty')
-        .populate('variantTemplate');
-  }, 300);
-}
+  return await CacheManager.wrap(
+    `product:id:${id}`,
+    async () => {
+      return await Product.findById(id)
+        .populate("primaryCategory")
+        .populate("brands")
+        .populate("pricing")
+        .populate("inventory")
+        .populate("details")
+        .populate("shipping")
+        .populate("warranty")
+        .populate("variantTemplate");
+    },
+    300,
+  );
+};
 
-export const updateProductService = async (id: string, payload: any, user?: any) => {
+export const updateProductService = async (
+  id: string,
+  payload: any,
+  user?: any,
+) => {
   const session = await startSession();
   session.startTransaction();
 
@@ -187,32 +278,49 @@ export const updateProductService = async (id: string, payload: any, user?: any)
     }
 
     if (payload.businessUnit) {
-      payload.businessUnit = await resolveBusinessUnitId(payload.businessUnit, user);
+      payload.businessUnit = await resolveBusinessUnitId(
+        payload.businessUnit,
+        user,
+      );
     }
 
     if (payload.pricing && product.pricing) {
-      await ProductPricing.findByIdAndUpdate(product.pricing, payload.pricing, { session });
+      await ProductPricing.findByIdAndUpdate(product.pricing, payload.pricing, {
+        session,
+      });
     }
 
     if (payload.inventory && product.inventory) {
-      await Stock.findByIdAndUpdate(product.inventory, payload.inventory, { session });
+      await Stock.findByIdAndUpdate(product.inventory, payload.inventory, {
+        session,
+      });
     }
 
     if (payload.details && product.details) {
-      await ProductDetails.findByIdAndUpdate(product.details, payload.details, { session });
+      await ProductDetails.findByIdAndUpdate(product.details, payload.details, {
+        session,
+      });
     }
 
     if (payload.shipping && product.shipping) {
-      await ProductShipping.findByIdAndUpdate(product.shipping, payload.shipping, { session });
+      await ProductShipping.findByIdAndUpdate(
+        product.shipping,
+        payload.shipping,
+        { session },
+      );
     }
 
     if (payload.warranty && product.warranty) {
-      await ProductWarrantyReturn.findByIdAndUpdate(product.warranty, payload.warranty, { session });
+      await ProductWarrantyReturn.findByIdAndUpdate(
+        product.warranty,
+        payload.warranty,
+        { session },
+      );
     }
 
     if (payload.hasVariants !== undefined || payload.variants) {
       const mappedVariants = (payload.variants || []).map((v: any) =>
-        mapFrontendToBackendVariant(v, id, product.sku)
+        mapFrontendToBackendVariant(v, id, product.sku),
       );
 
       if (product.variantTemplate) {
@@ -223,7 +331,11 @@ export const updateProductService = async (id: string, payload: any, user?: any)
         if (payload.variantAttributes) {
           variantUpdatePayload.variantAttributes = payload.variantAttributes;
         }
-        await ProductVariant.findByIdAndUpdate(product.variantTemplate, variantUpdatePayload, { session });
+        await ProductVariant.findByIdAndUpdate(
+          product.variantTemplate,
+          variantUpdatePayload,
+          { session },
+        );
       } else if (payload.hasVariants && payload.variants) {
         const variantData = {
           product: id,
@@ -231,35 +343,51 @@ export const updateProductService = async (id: string, payload: any, user?: any)
           variants: mappedVariants,
           variantAttributes: payload.variantAttributes || [],
           organization: product.organization,
-          businessUnit: product.businessUnit
+          businessUnit: product.businessUnit,
         };
-        const newVariant = await ProductVariant.create([variantData], { session });
+        const newVariant = await ProductVariant.create([variantData], {
+          session,
+        });
         payload.variantTemplate = newVariant[0]?._id;
       }
     }
 
-    const { pricing, inventory, details, shipping, warranty, variants, variantAttributes, ...productData } = payload;
-    const updatedProduct = await Product.findByIdAndUpdate(id, productData, { new: true, session });
+    const {
+      pricing,
+      inventory,
+      details,
+      shipping,
+      warranty,
+      variants,
+      variantAttributes,
+      ...productData
+    } = payload;
+    const updatedProduct = await Product.findByIdAndUpdate(id, productData, {
+      new: true,
+      session,
+    });
 
     await session.commitTransaction();
     session.endSession();
 
     await CacheManager.del(`product:id:${id}`);
     return updatedProduct;
-
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
     throw error;
   }
-}
+};
 
-export const deleteProductService = async (id: string, force: boolean = false) => {
+export const deleteProductService = async (
+  id: string,
+  force: boolean = false,
+) => {
   if (!force) {
     const product = await Product.findByIdAndUpdate(
       id,
       { isDeleted: true, deletedAt: new Date() },
-      { new: true }
+      { new: true },
     );
     if (!product) {
       throw new AppError(status.NOT_FOUND, "Product not found");
@@ -276,12 +404,22 @@ export const deleteProductService = async (id: string, force: boolean = false) =
       throw new AppError(status.NOT_FOUND, "Product not found");
     }
 
-    if (product.pricing) await ProductPricing.findByIdAndDelete(product.pricing, { session });
-    if (product.inventory) await Stock.findByIdAndDelete(product.inventory, { session });
-    if (product.details) await ProductDetails.findByIdAndDelete(product.details, { session });
-    if (product.shipping) await ProductShipping.findByIdAndDelete(product.shipping, { session });
-    if (product.warranty) await ProductWarrantyReturn.findByIdAndDelete(product.warranty, { session });
-    if (product.variantTemplate) await ProductVariant.findByIdAndDelete(product.variantTemplate, { session });
+    if (product.pricing)
+      await ProductPricing.findByIdAndDelete(product.pricing, { session });
+    if (product.inventory)
+      await Stock.findByIdAndDelete(product.inventory, { session });
+    if (product.details)
+      await ProductDetails.findByIdAndDelete(product.details, { session });
+    if (product.shipping)
+      await ProductShipping.findByIdAndDelete(product.shipping, { session });
+    if (product.warranty)
+      await ProductWarrantyReturn.findByIdAndDelete(product.warranty, {
+        session,
+      });
+    if (product.variantTemplate)
+      await ProductVariant.findByIdAndDelete(product.variantTemplate, {
+        session,
+      });
 
     await Product.findByIdAndDelete(id, { session });
 
@@ -295,11 +433,11 @@ export const deleteProductService = async (id: string, force: boolean = false) =
     session.endSession();
     throw error;
   }
-}
+};
 export const ProductService = {
-    createProduct: createProductService,
-    getAllProducts: getAllProductsService,
-    getProductById: getProductByIdService,
-    updateProduct: updateProductService,
-    deleteProduct: deleteProductService
+  createProduct: createProductService,
+  getAllProducts: getAllProductsService,
+  getProductById: getProductByIdService,
+  updateProduct: updateProductService,
+  deleteProduct: deleteProductService,
 };

@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation";
-import PackageForm from "@/components/modules/saas/PackageForm";
+import PackageForm from "@/domains/core/saas/ui/components/PackageForm";
 import { useGetPackagesQuery } from "@/redux/api/platform/packageApi";
 
 export default function EditPackagePage() {

@@ -1,6 +1,7 @@
 "use client";
-import LanguageList from "@/components/modules/system/LanguageList";
+import LanguageList from "@/domains/core/system/ui/components/LanguageList";
 
 export default function LanguagesPage() {
     return <LanguageList />;
 }
+

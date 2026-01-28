@@ -1,5 +1,5 @@
 
-import LicenseList from "@/components/modules/saas/LicenseList";
+import LicenseList from "@/domains/core/saas/ui/components/LicenseList";
 
 export const metadata = {
     title: "Active Licenses | Platform Admin",
@@ -9,3 +9,4 @@ export const metadata = {
 export default function LicensesPage() {
     return <LicenseList />;
 }
+

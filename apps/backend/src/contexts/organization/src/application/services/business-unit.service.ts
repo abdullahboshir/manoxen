@@ -5,50 +5,63 @@
 import { startSession, Types } from "mongoose";
 import httpStatus from "http-status";
 
-
 import { User, USER_ROLE, Role } from "@manoxen/iam";
 
-
 import { AppError, CacheManager, QueryBuilder } from "@manoxen/core-util";
-import { BusinessUnit, BusinessUnitSettings, Organization, type IBusinessUnitCore, type IBusinessUnitCoreDocument } from "#domain/organization/index.js";
+import {
+  BusinessUnit,
+  BusinessUnitSettings,
+  Organization,
+  type IBusinessUnitCore,
+  type IBusinessUnitCoreDocument,
+} from "#domain/organization/index.js";
 
 // Cross-context models are imported dynamically in methods to avoid circular dependencies
 // import { Order } from "@manoxen/sales";
 // import { Purchase } from "@manoxen/supply";
 // import { Expense } from "@manoxen/pos";
 
-import { generateIncreament, log, makeSlug, ULIDGenerator } from "@manoxen/core-util";
-
+import {
+  generateIncreament,
+  log,
+  makeSlug,
+  ULIDGenerator,
+} from "@manoxen/core-util";
 
 /**
  * Business Unit Service
  * Handles all business logic for business units
  */
 export class BusinessUnitService {
-
   static async createBusinessUnit(
     businessUnitData: IBusinessUnitCore,
   ): Promise<IBusinessUnitCoreDocument> {
-    console.log('businessUnitData', businessUnitData)
     const session = await startSession();
     try {
-
-     
-
       session.startTransaction();
 
       // 🛡️ Hierarchy Validation: Ensure BU modules are a subset of Organization modules
       if (businessUnitData.activeModules) {
-        const parentCompany = await Organization.findById(businessUnitData.organization).session(session);
-        if (!parentCompany) {
-          throw new AppError(404, "Parent organization not found", "BU_CREATE_004");
+        const parentOrganization = await Organization.findById(
+          businessUnitData.organization,
+        ).session(session);
+        if (!parentOrganization) {
+          throw new AppError(
+            404,
+            "Parent organization not found",
+            "BU_CREATE_004",
+          );
         }
-        await this._validateModules(businessUnitData?.activeModules, parentCompany.activeModules as any, "Organization");
+        await this._validateModules(
+          businessUnitData?.activeModules,
+          parentOrganization.activeModules as any,
+          "Organization",
+        );
       }
 
       const slug = await this.generateUniqueSlug(
         (businessUnitData as any)?.branding?.name,
-        session
+        session,
       );
 
       if (!businessUnitData.id) {
@@ -60,50 +73,54 @@ export class BusinessUnitService {
 
       const [createdBusinessUnit] = await BusinessUnit.create(
         [businessUnitData],
-        { session }
+        { session },
       );
 
       if (!createdBusinessUnit) {
         throw new AppError(
           500,
           "Failed to create business unit",
-          "BU_CREATE_001"
+          "BU_CREATE_001",
         );
       }
 
-      const superAdminRole = await Role.findOne({ name: USER_ROLE.SUPER_ADMIN }).session(session);
+      const superAdminRole = await Role.findOne({
+        name: USER_ROLE.SUPER_ADMIN,
+      }).session(session);
       if (!superAdminRole) {
         throw new AppError(
           500,
           "Failed to find super admin role",
-          "BU_CREATE_003"
+          "BU_CREATE_003",
         );
       }
-
 
       const addToAdmin = await User.findOneAndUpdate(
         {
           roles: { $in: [superAdminRole._id] },
-        }, { $addToSet: { businessUnits: createdBusinessUnit._id } }).session(session);
-
-
+        },
+        { $addToSet: { businessUnits: createdBusinessUnit._id } },
+      ).session(session);
 
       if (!addToAdmin) {
-        log.warn("⚠️ Could not link Business Unit to any Super Admin user", { businessUnitId: createdBusinessUnit._id });
+        log.warn("⚠️ Could not link Business Unit to any Super Admin user", {
+          businessUnitId: createdBusinessUnit._id,
+        });
         // We do not throw here, allowing creation to proceed even if linkage fails
       }
 
       // 4. Create Default Business Unit Settings (Atomic)
-      await BusinessUnitSettings.getSettings((createdBusinessUnit as any)._id as string, session);
+      await BusinessUnitSettings.getSettings(
+        (createdBusinessUnit as any)._id as string,
+        session,
+      );
 
       if (session.inTransaction()) {
         await session.commitTransaction();
       }
 
       return createdBusinessUnit;
-
     } catch (error: any) {
-
       if (session.inTransaction()) {
         await session.abortTransaction();
         log.warn("Transaction aborted due to error", { error: error.message });
@@ -121,18 +138,16 @@ export class BusinessUnitService {
       throw new AppError(
         500,
         `Failed to create business unit: ${error.message}`,
-        "BU_CREATE_002"
+        "BU_CREATE_002",
       );
-
     } finally {
       await session.endSession();
     }
   }
 
-
   private static async generateUniqueSlug(
     businessName: string,
-    session: any
+    session: any,
   ): Promise<string> {
     try {
       // Check if business unit with this name already exists
@@ -156,7 +171,6 @@ export class BusinessUnitService {
         return makeSlug(businessName);
       }
 
-
       // Extract increment from last slug (e.g., "business-name-2" -> "2")
       const lastSlug = relatedBusinessUnits[0]?.slug;
       const lastIncrement = lastSlug?.split("-").pop();
@@ -168,20 +182,15 @@ export class BusinessUnitService {
       log.debug("Generated unique slug", { businessName, newSlug });
 
       return newSlug;
-
     } catch (error: any) {
       log.error("Failed to generate unique slug", { error: error.message });
-      throw new AppError(
-        500,
-        "Failed to generate unique slug",
-        "BU_SLUG_001"
-      );
+      throw new AppError(500, "Failed to generate unique slug", "BU_SLUG_001");
     }
   }
 
   /**
    * Upload banner image to Cloudinary
-   * 
+   *
    * @param businessUnitData - Business unit data object
    * @param file - Multer file object
    * @param businessUnitId - ID of the business unit
@@ -215,48 +224,48 @@ export class BusinessUnitService {
 
   /**
    * Get business unit by ID
-   * 
+   *
    * @param businessUnitId - Business unit ID
    * @returns Business unit document or null
    */
   static async getBusinessUnitById(
-    idOrSlug: string
+    idOrSlug: string,
   ): Promise<IBusinessUnitCoreDocument | null> {
-    return await CacheManager.wrap(`businessUnit:${idOrSlug}`, async () => {
-      try {
-        // Check if it's a valid ObjectId (hex string of 24 chars)
-        const isObjectId = /^[0-9a-fA-F]{24}$/.test(idOrSlug);
+    return await CacheManager.wrap(
+      `businessUnit:${idOrSlug}`,
+      async () => {
+        try {
+          // Check if it's a valid ObjectId (hex string of 24 chars)
+          const isObjectId = /^[0-9a-fA-F]{24}$/.test(idOrSlug);
 
-        const query = isObjectId
-          ? { _id: idOrSlug }
-          : { $or: [{ slug: idOrSlug }, { id: idOrSlug }] };
+          const query = isObjectId
+            ? { _id: idOrSlug }
+            : { $or: [{ slug: idOrSlug }, { id: idOrSlug }] };
 
-        const businessUnit = await BusinessUnit.findOne(query)
-          .populate("attributeGroup")
-          .populate("attributeGroups");
+          const businessUnit = await BusinessUnit.findOne(query)
+            .populate("attributeGroup")
+            .populate("attributeGroups");
 
-        return businessUnit;
-
-      } catch (error: any) {
-        log.error("Failed to fetch business unit", { error: error.message });
-        throw new AppError(
-          500,
-          "Failed to fetch business unit",
-          "BU_FETCH_001"
-        );
-      }
-    }, 60); // 60s TTL
+          return businessUnit;
+        } catch (error: any) {
+          log.error("Failed to fetch business unit", { error: error.message });
+          throw new AppError(
+            500,
+            "Failed to fetch business unit",
+            "BU_FETCH_001",
+          );
+        }
+      },
+      60,
+    ); // 60s TTL
   }
-
 
   static async getBusinessUnitsByVendor(vendorId: any) {
     try {
-      const businessUnits = await BusinessUnit.findBusinessUnitsByVendor(
-        vendorId
-      );
+      const businessUnits =
+        await BusinessUnit.findBusinessUnitsByVendor(vendorId);
 
       return businessUnits;
-
     } catch (error: any) {
       log.error("Failed to fetch vendor business units", {
         error: error.message,
@@ -265,21 +274,24 @@ export class BusinessUnitService {
       throw new AppError(
         500,
         "Failed to fetch vendor business units",
-        "BU_FETCH_002"
+        "BU_FETCH_002",
       );
     }
   }
 
-
   static async updateBusinessUnit(
     businessUnitId: string,
-    updateData: Partial<IBusinessUnitCore>
+    updateData: Partial<IBusinessUnitCore>,
   ): Promise<IBusinessUnitCoreDocument | null> {
     try {
-      const flattenUpdateData = (data: any, prefix = '') => {
+      const flattenUpdateData = (data: any, prefix = "") => {
         return Object.keys(data).reduce((acc: any, key: string) => {
-          const pre = prefix.length ? prefix + '.' : '';
-          if (typeof data[key] === 'object' && data[key] !== null && !Array.isArray(data[key])) {
+          const pre = prefix.length ? prefix + "." : "";
+          if (
+            typeof data[key] === "object" &&
+            data[key] !== null &&
+            !Array.isArray(data[key])
+          ) {
             Object.assign(acc, flattenUpdateData(data[key], pre + key));
           } else {
             acc[pre + key] = data[key];
@@ -293,32 +305,34 @@ export class BusinessUnitService {
       // 🛡️ Hierarchy Validation on Update
       if (updateData.activeModules) {
         const existingBU = await BusinessUnit.findById(businessUnitId);
-        if (!existingBU) throw new AppError(404, "Business unit not found", "BU_UPDATE_001");
+        if (!existingBU)
+          throw new AppError(404, "Business unit not found", "BU_UPDATE_001");
 
-        const parentCompany = await Organization.findById(existingBU.organization);
-        if (parentCompany) {
-          await this._validateModules(updateData.activeModules as any, parentCompany.activeModules as any, "Organization");
+        const parentOrganization = await Organization.findById(
+          existingBU.organization,
+        );
+        if (parentOrganization) {
+          await this._validateModules(
+            updateData.activeModules as any,
+            parentOrganization.activeModules as any,
+            "Organization",
+          );
         }
       }
 
       const updatedBusinessUnit = await BusinessUnit.findByIdAndUpdate(
         businessUnitId,
         flattenedData,
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
 
       if (!updatedBusinessUnit) {
-        throw new AppError(
-          404,
-          "Business unit not found",
-          "BU_UPDATE_001"
-        );
+        throw new AppError(404, "Business unit not found", "BU_UPDATE_001");
       }
 
       log.info("✅ Business unit updated successfully", { businessUnitId });
 
       return updatedBusinessUnit;
-
     } catch (error: any) {
       log.error("Failed to update business unit", { error: error.message });
 
@@ -329,19 +343,19 @@ export class BusinessUnitService {
       throw new AppError(
         500,
         "Failed to update business unit",
-        "BU_UPDATE_002"
+        "BU_UPDATE_002",
       );
     }
   }
 
   /**
    * Publish business unit (make it public)
-   * 
+   *
    * @param businessUnitId - Business unit ID
    * @returns Updated business unit document
    */
   static async publishBusinessUnit(
-    businessUnitId: string
+    businessUnitId: string,
   ): Promise<IBusinessUnitCoreDocument | null> {
     try {
       const businessUnit = await BusinessUnit.findById(businessUnitId);
@@ -355,7 +369,6 @@ export class BusinessUnitService {
       log.info("✅ Business unit published", { businessUnitId });
 
       return businessUnit;
-
     } catch (error: any) {
       log.error("Failed to publish business unit", {
         error: error.message,
@@ -369,58 +382,88 @@ export class BusinessUnitService {
       throw new AppError(
         500,
         "Failed to publish business unit",
-        "BU_PUBLISH_002"
+        "BU_PUBLISH_002",
       );
     }
   }
 
-  static async getAllBusinessUnits(query: Record<string, unknown> = {}, user?: any): Promise<any> {
+  static async getAllBusinessUnits(
+    query: Record<string, unknown> = {},
+    user?: any,
+  ): Promise<any> {
     try {
-      // 1. Resolve Data Scoping (Now centrally handled by queryContext middleware)
-      const filter: Record<string, any> = {};
+      /* ========== SCOPING FILTER ========== */
 
-      const effectiveCompanyId = (query['organizationId'] || query['organization']) as string;
-      if (effectiveCompanyId) {
-        filter['organization'] = effectiveCompanyId;
-      }
+      const scopeFilter: Record<string, any> = {};
 
-      // 🛡️ ENFORCE SCOPING: Non-SuperAdmins only see authorized companies
-      if (user && !user.isSuperAdmin) {
-        const authorizedCompanies = user.companies || [];
-        if (filter['organization']) {
-          // If they provided a organizationId, verify access
-          if (!authorizedCompanies.includes(filter['organization'].toString())) {
-            filter['organization'] = { $in: [] }; // Access Denied
-          }
+      let orgId = (query["organizationId"] || query["organization"]) as string;
+
+      if (orgId && orgId !== "organization" && !Types.ObjectId.isValid(orgId)) {
+        const org = await Organization.findOne({ slug: orgId });
+        if (org) {
+          orgId = org._id.toString();
         } else {
-          // Default to all authorized companies
-          filter['organization'] = { $in: authorizedCompanies };
+          console.warn(`Organization slug not found (BU Fetch): ${orgId}`);
+          orgId = new Types.ObjectId().toString();
         }
       }
 
-      // 2. Build Query
-      const buQuery = new QueryBuilder(
-        BusinessUnit.find(filter)
-          .populate({ path: 'outlets', select: 'name branding code address phone email city' })
-          .populate({ path: 'organization', select: 'name slug' }),
-        query
-      )
-        .search(['branding.name', 'slug'])
+      if (orgId && orgId !== "organization") {
+        scopeFilter.organization = orgId;
+      }
+
+      if (user && !user.isSuperAdmin) {
+        const allowed = user.organizations || [];
+
+        if (scopeFilter.organization) {
+          if (!allowed.includes(scopeFilter.organization.toString())) {
+            scopeFilter.organization = { $in: [] };
+          }
+        } else {
+          scopeFilter.organization = { $in: allowed };
+        }
+      }
+
+      /* ========== BASE QUERY ========== */
+
+      const baseQuery = BusinessUnit.find(scopeFilter)
+        .populate({
+          path: "outlets",
+          select: "name branding code address phone email city",
+        })
+        .populate({
+          path: "organization",
+          select: "name slug",
+        });
+
+      /* ========== QUERY BUILDER ========== */
+
+      const qb = new QueryBuilder(baseQuery, query)
+        .search(["branding.name", "slug"])
         .filter()
         .sort()
         .paginate()
         .fields();
 
-      const result = await buQuery.modelQuery;
-      const meta = await buQuery.countTotal();
+      /* ========== EXECUTE ========== */
+
+      const result = await qb.build();
+      const meta = await qb.count(BusinessUnit as any);
 
       return {
         meta,
-        result
+        result,
       };
     } catch (error: any) {
-      log.error("Failed to fetch all business units", { error: error.message });
-      throw new AppError(500, "Failed to fetch all business units", "BU_FETCH_ALL_001");
+      log.error("Failed to fetch all business units", {
+        error: error.message,
+      });
+
+      throw new AppError(
+        500,
+        "Failed to fetch all business units",
+        "BU_FETCH_ALL_001",
+      );
     }
   }
 
@@ -433,7 +476,6 @@ export class BusinessUnitService {
       }
 
       log.info("✅ Business unit deleted", { businessUnitId });
-
     } catch (error: any) {
       log.error("Failed to delete business unit", {
         error: error.message,
@@ -447,7 +489,7 @@ export class BusinessUnitService {
       throw new AppError(
         500,
         "Failed to delete business unit",
-        "BU_DELETE_002"
+        "BU_DELETE_002",
       );
     }
   }
@@ -462,22 +504,33 @@ export class BusinessUnitService {
       // Resolve Business Unit ID if slug is provided
       let effectiveBUId = businessUnitId;
       const isBUObjectId = mongoose.Types.ObjectId.isValid(businessUnitId);
-      
+
       if (!isBUObjectId) {
         const BusinessUnit = mongoose.model("BusinessUnit");
-        const bu = await BusinessUnit.findOne({ 
-            $or: [{ slug: businessUnitId }, { id: businessUnitId }] 
+        const bu = await BusinessUnit.findOne({
+          $or: [{ slug: businessUnitId }, { id: businessUnitId }],
         }).select("_id");
-        
+
         if (bu) {
-            effectiveBUId = bu._id.toString();
+          effectiveBUId = bu._id.toString();
         } else {
-            throw new AppError(404, `Business Unit not found: ${businessUnitId}`, "BU_STATS_002");
+          throw new AppError(
+            404,
+            `Business Unit not found: ${businessUnitId}`,
+            "BU_STATS_002",
+          );
         }
       }
 
-      const matchStage: any = { businessUnit: new mongoose.Types.ObjectId(effectiveBUId) };
-      if (outletId && outletId !== "all" && outletId !== "undefined" && outletId !== "null") {
+      const matchStage: any = {
+        businessUnit: new mongoose.Types.ObjectId(effectiveBUId),
+      };
+      if (
+        outletId &&
+        outletId !== "all" &&
+        outletId !== "undefined" &&
+        outletId !== "null"
+      ) {
         let effectiveOutletId = outletId;
         if (!mongoose.Types.ObjectId.isValid(outletId)) {
           const Outlet = mongoose.model("Outlet");
@@ -486,13 +539,13 @@ export class BusinessUnitService {
             businessUnit: new mongoose.Types.ObjectId(effectiveBUId),
           }).select("_id");
           if (outlet) {
-              effectiveOutletId = outlet._id.toString();
+            effectiveOutletId = outlet._id.toString();
           } else {
-              // If outlet slug not found, we don't necessarily throw, just don't filter by it or filter by a dummy
-              matchStage.outlet = new mongoose.Types.ObjectId(); 
+            // If outlet slug not found, we don't necessarily throw, just don't filter by it or filter by a dummy
+            matchStage.outlet = new mongoose.Types.ObjectId();
           }
         } else {
-            matchStage.outlet = new mongoose.Types.ObjectId(effectiveOutletId);
+          matchStage.outlet = new mongoose.Types.ObjectId(effectiveOutletId);
         }
       }
 
@@ -509,10 +562,12 @@ export class BusinessUnitService {
             paidAmount: { $sum: "$paidAmount" },
             dueAmount: { $sum: "$dueAmount" },
             totalReturns: {
-              $sum: { $cond: [{ $eq: ["$status", "returned"] }, "$totalAmount", 0] }
-            }
-          }
-        }
+              $sum: {
+                $cond: [{ $eq: ["$status", "returned"] }, "$totalAmount", 0],
+              },
+            },
+          },
+        },
       ]);
 
       const purchaseStats = await Purchase.aggregate([
@@ -524,10 +579,12 @@ export class BusinessUnitService {
             paidAmount: { $sum: "$paidAmount" },
             dueAmount: { $sum: "$dueAmount" },
             totalReturns: {
-              $sum: { $cond: [{ $eq: ["$status", "returned"] }, "$grandTotal", 0] }
-            }
-          }
-        }
+              $sum: {
+                $cond: [{ $eq: ["$status", "returned"] }, "$grandTotal", 0],
+              },
+            },
+          },
+        },
       ]);
 
       const expenseStats = await Expense.aggregate([
@@ -535,14 +592,14 @@ export class BusinessUnitService {
         {
           $group: {
             _id: null,
-            totalExpense: { $sum: "$amount" }
-          }
-        }
+            totalExpense: { $sum: "$amount" },
+          },
+        },
       ]);
 
       const activeUsers = await User.countDocuments({
         businessUnits: businessUnitId,
-        status: 'active'
+        status: "active",
       });
 
       return {
@@ -554,7 +611,8 @@ export class BusinessUnitService {
         },
         // Commerce Metrics (8 Cards)
         totalSales: salesStats[0]?.totalSales || 0,
-        net: (salesStats[0]?.totalSales || 0) - (salesStats[0]?.totalReturns || 0),
+        net:
+          (salesStats[0]?.totalSales || 0) - (salesStats[0]?.totalReturns || 0),
         invoiceDue: salesStats[0]?.dueAmount || 0,
         totalSellReturn: salesStats[0]?.totalReturns || 0,
 
@@ -564,7 +622,6 @@ export class BusinessUnitService {
 
         expense: expenseStats[0]?.totalExpense || 0,
       };
-
     } catch (error: any) {
       log.error("Failed to get dashboard stats", { error: error.message });
       // Don't throw 500 immediately to avoid crashing dashboard on partial failure?
@@ -576,22 +633,24 @@ export class BusinessUnitService {
   private static async _validateModules(
     activeModules: Record<string, any>,
     parentModules: Record<string, any>,
-    parentType: string
+    parentType: string,
   ): Promise<void> {
     for (const moduleKey in activeModules) {
-      const isEnabled = typeof activeModules[moduleKey] === 'boolean'
-        ? activeModules[moduleKey]
-        : activeModules[moduleKey]?.enabled;
+      const isEnabled =
+        typeof activeModules[moduleKey] === "boolean"
+          ? activeModules[moduleKey]
+          : activeModules[moduleKey]?.enabled;
 
-      const isParentEnabled = typeof parentModules[moduleKey] === 'boolean'
-        ? parentModules[moduleKey]
-        : parentModules[moduleKey]?.enabled;
+      const isParentEnabled =
+        typeof parentModules[moduleKey] === "boolean"
+          ? parentModules[moduleKey]
+          : parentModules[moduleKey]?.enabled;
 
       if (isEnabled === true && isParentEnabled !== true) {
         throw new AppError(
           httpStatus.FORBIDDEN,
           `Module '${moduleKey}' is not enabled in the parent ${parentType}.`,
-          "HIERARCHY_VAL_001"
+          "HIERARCHY_VAL_001",
         );
       }
     }

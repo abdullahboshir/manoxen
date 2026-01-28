@@ -75,10 +75,6 @@ export const ROLE_SCOPE = {
 export type RoleScopeType = keyof typeof ROLE_SCOPE;
 
 /**
- * @section HELPERS & NORMALIZATION
- */
-
-/**
  * Normalizes any role, status, or slug string to a consistent format.
  * (lowercase, trimmed, underscores/spaces replaced with hyphens)
  */
@@ -96,7 +92,7 @@ export const normalizeAuthString = (val: string | null | undefined): string => {
  */
 export const matchesRole = (
   source: string | string[] | null | undefined,
-  target: string | string[]
+  target: string | string[],
 ): boolean => {
   if (Array.isArray(source)) {
     return source.some((s) => matchesRole(s, target));
@@ -112,19 +108,19 @@ export const matchesRole = (
  * Specific Role Checkers
  */
 export const isSuperAdmin = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean => matchesRole(role, USER_ROLES.SUPER_ADMIN);
 
 export const isOrganizationOwner = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean => matchesRole(role, USER_ROLES.ORGANIZATION_OWNER);
 
 export const isBusinessAdmin = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean => matchesRole(role, [USER_ROLES.ADMIN, "business-admin"]);
 
 export const isManager = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean =>
   matchesRole(role, [USER_ROLES.MANAGER, USER_ROLES.OUTLET_MANAGER]);
 
@@ -132,7 +128,7 @@ export const isManager = (
  * Common Role Groupings
  */
 export const isPlatformLevel = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean =>
   matchesRole(role, [
     USER_ROLES.SUPER_ADMIN,
@@ -148,7 +144,7 @@ export const isPlatformLevel = (
   ]);
 
 export const isOperationalRole = (
-  role: string | string[] | null | undefined
+  role: string | string[] | null | undefined,
 ): boolean =>
   matchesRole(role, [
     USER_ROLES.CASHIER,

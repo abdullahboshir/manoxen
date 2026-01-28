@@ -13,7 +13,7 @@ import {
   useLoginMutation,
   useLogoutMutation,
   useGetMeQuery,
-} from "@/features/iam/api/authApi";
+} from "@/domains/core/iam/api/authApi";
 import { jwtDecode } from "jwt-decode";
 import { authKey } from "@/constant/authKey";
 import {
@@ -32,7 +32,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   >(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname;
-      // If we land on a global or organization-admin path, ignore persisted context on boot
       if (
         path.startsWith("/platform") ||
         path.startsWith("/super-admin") ||
@@ -46,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
 
   const queryParams = activeBusinessUnit
-    ? { businessUnitId: activeBusinessUnit }
+    ? { buId: activeBusinessUnit }
     : undefined;
 
   const pathname = usePathname();
@@ -68,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refetchOnMountOrArgChange: true,
     skip: shouldSkip,
   });
+  console.log("USER RETRIEVED FROM AUTHPROVIDER:", user);
 
   const [loginMutation] = useLoginMutation();
   const [logoutMutation] = useLogoutMutation();
@@ -107,8 +107,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const res: any = await loginMutation(formData).unwrap();
 
-      // console.log("LOGIN RESPONSE DEBUG:", res);
-
       const data = res.data || res;
       const accessToken = data?.accessToken;
 
@@ -119,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Set cookie
       setAuthSession(accessToken);
       const decoded = jwtDecode(accessToken) as any;
-      console.log("JWT DECODED INFO:", decoded);
+      console.log("JWT DECODED INFO FROM AUTHPROVIDER:", decoded);
 
       let redirect = "/platform/dashboard";
       const context = decoded?.context;
@@ -138,19 +136,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         "director",
         "business-admin",
       ]);
+      console.log("ROLES FROM AUTHPROVIDER:", isManagementRole);
+
+      const orgSlug =
+        context?.primary?.organization?.slug ||
+        context?.available?.[0]?.organization?.slug ||
+        context?.primary?.organization?._id ||
+        "organization";
 
       if (checkIsSuperAdmin(roles) || decoded?.isSuperAdmin) {
         redirect = "/platform/dashboard";
-        // Super Admins should always start at Platform Global without context
         setActiveBusinessUnit(null);
         localStorage.removeItem("active-business-unit");
+      } else if (checkIsOrganizationOwner(roles)) {
+        redirect =
+          orgSlug && orgSlug !== "organization"
+            ? `/${orgSlug}/dashboard`
+            : "/organization/dashboard";
+        setActiveBusinessUnit(null);
       } else if (context?.primary) {
         const { businessUnit, outlet, scope } = context.primary;
 
         // LOGIC: Redirection based on Scope
         if (scope === "ORGANIZATION") {
-          // Organization Owner/Manager -> Go to Organization Admin View (not global)
-          redirect = "/organization/dashboard";
+          redirect =
+            orgSlug && orgSlug !== "organization"
+              ? `/${orgSlug}/dashboard`
+              : "/organization/dashboard";
         } else {
           const slug =
             businessUnit?.slug ||
@@ -175,11 +187,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             availableEntry?.outlets?.length > 0
           ) {
             const singleOutletId = availableEntry.outlets[0]._id;
-            redirect = `/${slug}/outlets/${singleOutletId}`;
+            redirect = `/${orgSlug}/${slug}/outlets/${singleOutletId}`;
           } else if (!isManagementRole && outlet) {
-            redirect = `/${slug}/outlets/${outlet._id}`;
+            redirect = `/${orgSlug}/${slug}/outlets/${outlet._id}`;
           } else {
-            redirect = `/${slug}/dashboard`;
+            redirect = `/${orgSlug}/${slug}/dashboard`;
           }
         }
 
@@ -196,9 +208,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // Same Logic for Non-Primary Context
         if (!isManagementRole && first.outletCount === 1) {
-          redirect = `/${slug}/outlets/${first.outlets[0]._id}`;
+          redirect = `/${orgSlug}/${slug}/outlets/${first.outlets[0]._id}`;
         } else {
-          redirect = `/${slug}/dashboard`;
+          redirect = `/${orgSlug}/${slug}/dashboard`;
         }
 
         if (first.businessUnit._id) {

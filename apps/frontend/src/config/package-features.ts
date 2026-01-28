@@ -68,7 +68,7 @@ export const PACKAGE_LIMITS = [
     key: "maxBusinessUnits",
     label: "Max Business Units",
     type: "number",
-    description: "Maximum business units/companies",
+    description: "Maximum business units/organizations",
   },
   {
     key: "maxStorage",
@@ -119,7 +119,7 @@ export type PackageLimitKey = (typeof PACKAGE_LIMITS)[number]["key"];
  * Always enables ERP Core as it is mandatory.
  */
 export function resolveModules(
-  modules: Record<string, boolean>
+  modules: Record<string, boolean>,
 ): Record<string, boolean> {
   const resolved = { ...modules };
 
@@ -136,7 +136,7 @@ export function resolveModules(
 export function validateModuleToggle(
   modules: Record<string, boolean>,
   key: string,
-  checked: boolean
+  checked: boolean,
 ): { valid: boolean; message?: string } {
   // If trying to disable ERP Core
   if (key === "erp" && !checked) {

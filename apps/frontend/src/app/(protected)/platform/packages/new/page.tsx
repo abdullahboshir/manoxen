@@ -1,5 +1,5 @@
 
-import PackageForm from "@/components/modules/saas/PackageForm";
+import PackageForm from "@/domains/core/saas/ui/components/PackageForm";
 
 export const metadata = {
     title: "Create Package | Platform Admin",
@@ -9,3 +9,4 @@ export const metadata = {
 export default function NewPackagePage() {
     return <PackageForm />;
 }
+

@@ -29,7 +29,9 @@ export default function GlobalLayout({ children }: GlobalLayoutProps) {
 
     // Check globalRoles array
     if (user.globalRoles) {
-      const globalRoles = Array.isArray(user.globalRoles) ? user.globalRoles : [user.globalRoles];
+      const globalRoles = Array.isArray(user.globalRoles)
+        ? user.globalRoles
+        : [user.globalRoles];
       globalRoles.forEach((r: any) => {
         if (typeof r === "string") allRoles.push(r);
         else if (r?.name) allRoles.push(r.name);
@@ -39,7 +41,9 @@ export default function GlobalLayout({ children }: GlobalLayoutProps) {
 
     // Check businessAccess roles
     if (user.businessAccess) {
-      const businessAccess = Array.isArray(user.businessAccess) ? user.businessAccess : [user.businessAccess];
+      const businessAccess = Array.isArray(user.businessAccess)
+        ? user.businessAccess
+        : [user.businessAccess];
       businessAccess.forEach((acc: any) => {
         if (acc?.role) {
           if (typeof acc.role === "string") allRoles.push(acc.role);
@@ -47,7 +51,8 @@ export default function GlobalLayout({ children }: GlobalLayoutProps) {
           else if (acc.role?.slug) allRoles.push(acc.role.slug);
         }
         // Also check scope for organization-level access
-        if (acc?.scope === 'ORGANIZATION' || acc?.scope === 'organization') allRoles.push('organization-owner');
+        if (acc?.scope === "ORGANIZATION" || acc?.scope === "organization")
+          allRoles.push("organization-owner");
       });
     }
 
@@ -77,21 +82,56 @@ export default function GlobalLayout({ children }: GlobalLayoutProps) {
   // Redirect organization owners to /organization
   useEffect(() => {
     if (!isLoading && user && isOrganizationOwnerUser && !isRedirecting) {
-      console.log("Global Layout - Redirecting organization owner to /organization. Roles:", userRoles);
+      console.log(
+        "Global Layout - Redirecting organization owner to /organization. Roles:",
+        userRoles,
+      );
       setIsRedirecting(true);
       toast.info("Redirecting to Organization Admin dashboard...");
-      router.replace("/organization/dashboard");
+
+      const orgSlug =
+        (user as any)?.organization?.slug ||
+        (user as any)?.organization?.id ||
+        (user as any)?.organization?._id ||
+        "organization";
+      if (orgSlug && orgSlug !== "organization") {
+        router.replace(`/${orgSlug}/dashboard`);
+      } else {
+        router.replace("/organization/dashboard");
+      }
     }
-  }, [isLoading, user, isOrganizationOwnerUser, userRoles, router, isRedirecting]);
+  }, [
+    isLoading,
+    user,
+    isOrganizationOwnerUser,
+    userRoles,
+    router,
+    isRedirecting,
+  ]);
 
   // Logout unauthorized users (not platform level and not organization owner)
   useEffect(() => {
-    if (!isLoading && user && !isPlatformUser && !isOrganizationOwnerUser && !isRedirecting) {
+    if (
+      !isLoading &&
+      user &&
+      !isPlatformUser &&
+      !isOrganizationOwnerUser &&
+      !isRedirecting
+    ) {
       setIsRedirecting(true);
-      toast.error("Access Denied: Unauthorized access attempt detected. You have been logged out.");
+      toast.error(
+        "Access Denied: Unauthorized access attempt detected. You have been logged out.",
+      );
       logout();
     }
-  }, [isLoading, user, isPlatformUser, isOrganizationOwnerUser, logout, isRedirecting]);
+  }, [
+    isLoading,
+    user,
+    isPlatformUser,
+    isOrganizationOwnerUser,
+    logout,
+    isRedirecting,
+  ]);
 
   if (isLoading || isRedirecting) {
     return (

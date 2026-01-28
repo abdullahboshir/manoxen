@@ -1,6 +1,6 @@
 "use client"
 
-import LicenseForm from "@/components/modules/saas/LicenseForm"
+import LicenseForm from "@/domains/core/saas/ui/components/LicenseForm"
 import { useGetLicenseByIdQuery } from "@/redux/api/platform/licenseApi"
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react"

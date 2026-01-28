@@ -10,9 +10,9 @@ export const manifest: IDomainManifest = {
   optional: ["@manoxen/identity"],
   version: "1.0.0",
   roadmap: {
-    "phase1": "Company and hierarchy setup",
-    "phase2": "Business unit and Outlet management",
-    "phase3": "Context-aware routing and permissions",
-    "phase4": "Platform global administration"
-  }
+    phase1: "Organization and hierarchy setup",
+    phase2: "Business unit and Outlet management",
+    phase3: "Context-aware routing and permissions",
+    phase4: "Platform global administration",
+  },
 };

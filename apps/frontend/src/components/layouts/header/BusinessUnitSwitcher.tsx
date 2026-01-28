@@ -33,6 +33,7 @@ export function BusinessUnitSwitcher({
 }: BusinessUnitSwitcherProps) {
   const router = useRouter();
   const { setActiveBusinessUnit } = useAuth();
+
   const activeUnit = availableUnits.find(
     (u: any) =>
       u.id === currentBusinessUnit ||
@@ -145,21 +146,18 @@ export function BusinessUnitSwitcher({
           <SelectValue placeholder="Select Business Unit" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Organization Overview</SelectItem>
+          <SelectItem value="all">Select Business Unit</SelectItem>
           <SelectSeparator />
-          {availableUnits.map((unit: any) => (
-            <SelectItem
-              key={unit._id?.toString() || unit.id?.toString() || unit.id}
-              value={
-                unit._id?.toString() ||
-                unit.id?.toString() ||
-                unit.slug ||
-                unit.id
-              }
-            >
-              {unit.name}
-            </SelectItem>
-          ))}
+          {availableUnits.map((unit: any) => {
+            const unitValue =
+              unit._id?.toString() || unit.id?.toString() || unit.slug;
+            if (!unitValue || !unit.name) return null;
+            return (
+              <SelectItem key={unitValue} value={unitValue}>
+                {unit.name}
+              </SelectItem>
+            );
+          })}
           <SelectSeparator />
           <SelectItem
             value="add-new"

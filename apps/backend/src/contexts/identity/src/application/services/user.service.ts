@@ -11,49 +11,73 @@ import { PermissionService } from "./permission.service";
 
 const permissionService = new PermissionService();
 
-
 import { sendImageToCloudinary } from "@manoxen/infra-common";
 
 import { AppError, QueryBuilder } from "@manoxen/core-util";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
-
 import { MailService } from "@manoxen/infra-common";
 import { Permission } from "../../infrastructure/persistence/mongoose/permission.model";
 import type { ICustomer } from "@manoxen/backend/src/contexts/contacts";
 import type { IStaff } from "#domain/organization/index.js";
 
-
 // ...
 
-export const getUsersService = async (query: Record<string, unknown>, user: any) => {
+export const getUsersService = async (
+  query: Record<string, unknown>,
+  user: any,
+) => {
   const { searchTerm, businessUnit, organizationId, ...filterParams } = query;
   const filterData = { ...filterParams };
-  const isSuperAdmin = user?.['roleName']?.includes("super-admin");
+  const isSuperAdmin = user?.["roleName"]?.includes("super-admin");
 
   // 1. Handle Context Scoping (Organization or Business Unit)
   let userIds: mongoose.Types.ObjectId[] | null = null;
 
   if (businessUnit) {
     let buId = businessUnit as string;
-    if (!mongoose.Types.ObjectId.isValid(buId) && !/^[0-9a-fA-F]{24}$/.test(buId)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(buId) &&
+      !/^[0-9a-fA-F]{24}$/.test(buId)
+    ) {
       const BusinessUnit = mongoose.model("BusinessUnit");
       const bu = await BusinessUnit.findOne({ slug: buId });
       if (bu) buId = bu._id.toString();
     }
 
-    userIds = await UserBusinessAccess.distinct('user', {
-      $or: [{ businessUnit: buId }, { scope: 'GLOBAL' }]
+    userIds = await UserBusinessAccess.distinct("user", {
+      $or: [{ businessUnit: buId }, { scope: "GLOBAL" }],
     });
   } else if (organizationId) {
-    userIds = await UserBusinessAccess.distinct('user', { organization: organizationId });
+    let orgId = organizationId as string;
+    if (
+      !mongoose.Types.ObjectId.isValid(orgId) &&
+      !/^[0-9a-fA-F]{24}$/.test(orgId)
+    ) {
+      const Organization = mongoose.model("Organization");
+      const org = await Organization.findOne({ slug: orgId });
+      if (org) {
+        orgId = org._id.toString();
+      } else {
+        console.warn(`Organization slug not found (User Service): ${orgId}`);
+        orgId = new mongoose.Types.ObjectId().toString();
+      }
+    }
+
+    userIds = await UserBusinessAccess.distinct("user", {
+      organization: orgId,
+    });
   } else if (!isSuperAdmin) {
     // Implicit scoping for Organization Owners
-    const authorizedOrganizationIds = user?.companies || [];
+    const authorizedOrganizationIds = user?.organizations || [];
     if (authorizedOrganizationIds.length > 0) {
-      userIds = await UserBusinessAccess.distinct('user', {
-        organization: { $in: authorizedOrganizationIds.map((id: string) => new mongoose.Types.ObjectId(id)) }
+      userIds = await UserBusinessAccess.distinct("user", {
+        organization: {
+          $in: authorizedOrganizationIds.map(
+            (id: string) => new mongoose.Types.ObjectId(id),
+          ),
+        },
       });
     } else {
       userIds = [];
@@ -68,23 +92,24 @@ export const getUsersService = async (query: Record<string, unknown>, user: any)
     User.find()
       .populate({
         path: "globalRoles",
-        select: "name title isSystemRole"
+        select: "name title isSystemRole",
       })
       // Assuming we add a virtual 'businessAccess' to User model to link to UserBusinessAccess collection
       // This preserves API structure for frontend (array of access objects)
       .populate({
         path: "businessAccess", // Virtual
-        select: "role businessUnit outlet scope status isPrimary dataScopeOverride",
+        select:
+          "role businessUnit outlet scope status isPrimary dataScopeOverride",
         populate: [
           { path: "role", select: "name title" },
           { path: "businessUnit", select: "name slug" },
-          { path: "outlet", select: "name" }
-        ]
+          { path: "outlet", select: "name" },
+        ],
       })
       .select("-password"), // safe
-    filterData
+    filterData,
   )
-    .search(['email', 'phone', 'name.firstName', 'name.lastName']) // Searchable fields
+    .search(["email", "phone", "name.firstName", "name.lastName"]) // Searchable fields
     .filter()
     .sort()
     .paginate()
@@ -95,7 +120,7 @@ export const getUsersService = async (query: Record<string, unknown>, user: any)
 
   return {
     meta,
-    result
+    result,
   };
 };
 
@@ -105,7 +130,7 @@ export const getUsersService = async (query: Record<string, unknown>, user: any)
 export const createCustomerService = async (
   customerData: ICustomer,
   password: string,
-  file: any | undefined
+  file: any | undefined,
 ) => {
   const session = await startSession();
   try {
@@ -144,7 +169,7 @@ export const createCustomerService = async (
     // Generate customer ID
     const id = await genereteCustomerId(
       customerData?.email,
-      role._id.toString()
+      role._id.toString(),
     );
 
     // Handle file upload
@@ -154,7 +179,7 @@ export const createCustomerService = async (
         const imgPath = file?.path;
         const { secure_url } = (await sendImageToCloudinary(
           imgName,
-          imgPath
+          imgPath,
         )) as any;
         customerData.avatar = secure_url;
       } catch (uploadError: any) {
@@ -194,7 +219,7 @@ export const createCustomerService = async (
       email: customerData.email,
       // Ensure businessUnit is passed. If missing, it will fail at model validation.
       businessUnit: customerData.businessUnit,
-      outlet: customerData.outlet || undefined
+      outlet: customerData.outlet || undefined,
     };
 
     // Create Customer (Dynamic resolution to avoid circular dependency/tight coupling)
@@ -243,7 +268,7 @@ export const createCustomerService = async (
 export const createStaffService = async (
   staffData: IStaff & { directPermissions?: any[] },
   password: string,
-  file: any | undefined
+  file: any | undefined,
 ) => {
   const session = await startSession();
   try {
@@ -258,16 +283,18 @@ export const createStaffService = async (
 
     if (email) {
       const isUserExists = await User.findOne({ email }).session(session);
-      if (isUserExists) throw new AppError(400, "User with this email already exists!");
+      if (isUserExists)
+        throw new AppError(400, "User with this email already exists!");
     }
 
     if (phone) {
       const isPhoneExists = await User.findOne({ phone }).session(session);
-      if (isPhoneExists) throw new AppError(400, "User with this phone already exists!");
+      if (isPhoneExists)
+        throw new AppError(400, "User with this phone already exists!");
     }
 
     // 2. Resolve Role
-    // The controller passes the Role ID (usually) or Name. 
+    // The controller passes the Role ID (usually) or Name.
     let roleId = (staffData as any).role;
 
     // Default to STAFF role from constant (lowercase 'staff')
@@ -275,15 +302,20 @@ export const createStaffService = async (
 
     // If no roleId provided, try to find one by designation/default
     if (!roleId) {
-      // Try finding role by Name (Designation) - assuming designation matches role slug loosely? 
+      // Try finding role by Name (Designation) - assuming designation matches role slug loosely?
       // Or just fallback to default STAFF if designation doesn't map to a role.
       // Usually designation is just a title (e.g. "Senior Dev"). It shouldn't strictly imply a system Role.
       // Safest is to default to 'staff' unless specific role provided.
 
-      const defaultRole = await Role.findOne({ name: defaultRoleName }).session(session);
-      if (!defaultRole) throw new AppError(404, `Role not found for staff creation (Default '${defaultRoleName}' role missing)`);
+      const defaultRole = await Role.findOne({ name: defaultRoleName }).session(
+        session,
+      );
+      if (!defaultRole)
+        throw new AppError(
+          404,
+          `Role not found for staff creation (Default '${defaultRoleName}' role missing)`,
+        );
       roleId = defaultRole._id;
-
     } else {
       // Role ID IS provided.
       // Check if it's a valid ObjectId (DB ID) or a Name String (e.g. "manager")
@@ -291,11 +323,19 @@ export const createStaffService = async (
 
       if (!isValidId) {
         // It's a Name string
-        const roleByName = await Role.findOne({ name: roleId }).session(session);
+        const roleByName = await Role.findOne({ name: roleId }).session(
+          session,
+        );
         if (!roleByName) {
           // Fallback to default
-          const defaultRole = await Role.findOne({ name: defaultRoleName }).session(session);
-          if (!defaultRole) throw new AppError(404, `Role '${roleId}' not found and default '${defaultRoleName}' role missing`);
+          const defaultRole = await Role.findOne({
+            name: defaultRoleName,
+          }).session(session);
+          if (!defaultRole)
+            throw new AppError(
+              404,
+              `Role '${roleId}' not found and default '${defaultRoleName}' role missing`,
+            );
           roleId = defaultRole._id;
         } else {
           roleId = roleByName._id;
@@ -306,19 +346,56 @@ export const createStaffService = async (
     // 3. Resolve Business Unit ID
     // Check if businessUnit is provided and resolve it
     let businessUnitId = (staffData as any).businessUnit;
+    const BusinessUnit =
+      mongoose.models.BusinessUnit || mongoose.model("BusinessUnit");
+    let bu: any = null;
+
     if (businessUnitId) {
-      const BusinessUnit = mongoose.model("BusinessUnit");
-      const bu = await BusinessUnit.findOne({
+      bu = await BusinessUnit.findOne({
         $or: [
           { id: businessUnitId }, // Custom ID (BU-xxxx)
-          { _id: mongoose.isValidObjectId(businessUnitId) ? businessUnitId : null }
-        ]
+          { slug: businessUnitId }, // Handle slug
+          {
+            _id: mongoose.isValidObjectId(businessUnitId)
+              ? businessUnitId
+              : null,
+          },
+        ],
       }).session(session);
 
       if (!bu) {
         throw new AppError(404, `Business Unit '${businessUnitId}' not found`);
       }
       businessUnitId = bu._id;
+    }
+
+    // 3.1 Resolve Organization
+    let organizationId = (staffData as any).organization || bu?.organization;
+    if (organizationId) {
+      const Organization = mongoose.model("Organization");
+      const org = await Organization.findOne({
+        $or: [
+          { slug: organizationId },
+          {
+            _id: mongoose.isValidObjectId(organizationId)
+              ? organizationId
+              : null,
+          },
+        ],
+      }).session(session);
+
+      if (org) {
+        organizationId = org._id;
+      } else {
+        // If still not found and it's not a valid ObjectId, we will have a cast error later.
+        // If it WAS a valid ObjectId but not found, we might still want to error now.
+        if (!mongoose.isValidObjectId(organizationId)) {
+          throw new AppError(
+            404,
+            `Organization '${organizationId}' not found or invalid`,
+          );
+        }
+      }
     }
 
     // 4. Generate ID
@@ -329,7 +406,10 @@ export const createStaffService = async (
     if (file) {
       try {
         const imgName = `${staffData.firstName}-${userId}`;
-        const { secure_url } = (await sendImageToCloudinary(imgName, file.path)) as any;
+        const { secure_url } = (await sendImageToCloudinary(
+          imgName,
+          file.path,
+        )) as any;
         avatarUrl = secure_url;
       } catch (e) {
         console.error("Avatar upload failed", e);
@@ -337,26 +417,32 @@ export const createStaffService = async (
     }
 
     // 5.1 Validate Direct Permissions (Security Step 3)
-    // Staff are usually created by Business Admins or Managers. 
+    // Staff are usually created by Business Admins or Managers.
     // They should NOT have GLOBAL permissions.
     if (staffData.directPermissions && staffData.directPermissions.length > 0) {
-      
-      const permissionIds = staffData.directPermissions.map((p: any) => p.permissionId);
-      const permissions = await Permission.find({ _id: { $in: permissionIds } });
+      const permissionIds = staffData.directPermissions.map(
+        (p: any) => p.permissionId,
+      );
+      const permissions = await Permission.find({
+        _id: { $in: permissionIds },
+      });
 
       // Max Scope for Staff Creation:
       // If creating for a Business Unit -> Max Scope = BUSINESS
       // If Global -> Max Scope = GLOBAL (but createsStaffService usually implies BU context?)
       // Let's assume implied max scope:
-      const maxScopeVal = (!businessUnitId) ? 3 : 2; // If no BU, maybe Global admin? Safest is 2 if strictly staff.
+      const maxScopeVal = !businessUnitId ? 3 : 2; // If no BU, maybe Global admin? Safest is 2 if strictly staff.
       // Actually, strictly enforce: Created Staff cannot exceed creator's scope?
       // For now, hard rule: Staff = BUSINESS Max.
 
-      const scopeRank = { 'OUTLET': 1, 'BUSINESS': 2, 'GLOBAL': 3 };
+      const scopeRank = { OUTLET: 1, BUSINESS: 2, GLOBAL: 3 };
       for (const p of permissions) {
         const pScopeVal = scopeRank[p.scope as keyof typeof scopeRank] || 0;
         if (pScopeVal > maxScopeVal) {
-          throw new AppError(403, `Security Violation: Cannot assign ${p.scope} permission to new staff.`);
+          throw new AppError(
+            403,
+            `Security Violation: Cannot assign ${p.scope} permission to new staff.`,
+          );
         }
       }
     }
@@ -376,45 +462,50 @@ export const createStaffService = async (
       avatar: avatarUrl,
       name: {
         firstName: staffData.firstName,
-        lastName: staffData.lastName
+        lastName: staffData.lastName,
       },
-      directPermissions: staffData.directPermissions || []
+      directPermissions: staffData.directPermissions || [],
     };
 
+    // 6. Create User
     const newUser = await User.create([userData], { session });
-    if (!newUser || !newUser.length || !newUser[0]) throw new AppError(500, "Failed to create user account");
+    if (!newUser || !newUser.length || !newUser[0])
+      throw new AppError(500, "Failed to create user account");
 
     // 7. Create User Business Access (If Business Unit is provided)
-    const BusinessUnit = mongoose.model("BusinessUnit");
-    const bu = await BusinessUnit.findById(businessUnitId).session(session);
     if (businessUnitId) {
+      if (!bu) {
+        bu = await BusinessUnit.findById(businessUnitId).session(session);
+      }
       console.log("businessUnitId", businessUnitId, bu);
       const accessPayload = {
         user: newUser[0]._id,
         role: roleId,
-        scope: 'BUSINESS',
-        organization: bu?.organization || (staffData as any).organization,
+        scope: "BUSINESS",
+        organization: organizationId,
         businessUnit: businessUnitId,
         outlet: null,
-        status: 'ACTIVE'
+        status: "ACTIVE",
       };
       await UserBusinessAccess.create([accessPayload], { session });
     }
 
     // 8. Create Staff Profile
+    const Staff = mongoose.models.Staff || mongoose.model("Staff");
     const staffPayload: Partial<IStaff> = {
       ...staffData,
       user: newUser[0]!._id,
-      organization: bu?.organization || (staffData as any).organization,
-      businessUnit: (businessUnitId as any)?._id || businessUnitId,
+      organization: organizationId,
+      businessUnit: businessUnitId,
+      designation: staffData.designation || "Staff Member", // Fallback to prevent validation error
       isActive: true,
-      isDeleted: false
+      isDeleted: false,
     };
 
     // Create Staff Profile
-    const Staff = mongoose.model("Staff");
     const newStaff = await Staff.create([staffPayload], { session });
-    if (!newStaff || !newStaff.length) throw new AppError(500, "Failed to create staff profile");
+    if (!newStaff || !newStaff.length)
+      throw new AppError(500, "Failed to create staff profile");
 
     // 400. Staff Created
     // const newStaff = ... (already created above)
@@ -422,17 +513,16 @@ export const createStaffService = async (
     // 9. Send Invitation Email
     // Generate Token
     const crypto = await import("crypto");
-    const setupToken = crypto.default.randomBytes(32).toString('hex');
+    const setupToken = crypto.default.randomBytes(32).toString("hex");
     const setupExpires = new Date(Date.now() + 72 * 60 * 60 * 1000); // 72 hours
 
     // Update User with Token
     await User.findByIdAndUpdate(newUser[0]._id, {
       setupPasswordToken: setupToken,
-      setupPasswordExpires: setupExpires
+      setupPasswordExpires: setupExpires,
     }).session(session);
 
     try {
-   
       const setupUrl = `${appConfig.frontend_url}/auth/setup-password?token=${setupToken}`;
 
       await MailService.sendEmail(
@@ -452,7 +542,7 @@ export const createStaffService = async (
                 <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
                 <p style="font-size: 12px; color: #94a3b8; text-align: center;">© 2026 Manoxen. All rights reserved.</p>
             </div>
-            `
+            `,
       );
     } catch (msgError) {
       console.error("Failed to send staff invitation email", msgError);
@@ -462,9 +552,9 @@ export const createStaffService = async (
     console.log(`✅ Staff created: ${email} (${newStaff[0]?._id})`);
 
     // Return with simplified population (UserBusinessAccess not populated here, purely Staff view)
-    return await Staff.findById(newStaff[0]?._id).populate('user').populate('businessUnit');
-
-
+    return await Staff.findById(newStaff[0]?._id)
+      .populate("user")
+      .populate("businessUnit");
   } catch (error: any) {
     if (session.inTransaction()) await session.abortTransaction();
     throw new AppError(500, error.message);
@@ -473,11 +563,10 @@ export const createStaffService = async (
   }
 };
 
-
 export const updateUserService = async (
   userId: string,
   payload: Partial<IUser>,
-  file: any
+  file: any,
 ) => {
   const isUserExists = await User.findById(userId);
 
@@ -485,11 +574,11 @@ export const updateUserService = async (
     throw new AppError(404, "User not found!");
   }
 
-
   // Validate Direct Permissions Scope if being updated
   if (payload.directPermissions && payload.directPermissions.length > 0) {
- 
-    const permissionIds = payload.directPermissions.map((p: any) => p.permissionId);
+    const permissionIds = payload.directPermissions.map(
+      (p: any) => p.permissionId,
+    );
 
     // Fetch permissions to check their scope
     const permissions = await Permission.find({ _id: { $in: permissionIds } });
@@ -504,7 +593,10 @@ export const updateUserService = async (
     // Check if user has explicit global roles or super admin status (PRE-UPDATE state)
     // Note: If payload changes roles, we should check payload. Assume role changes handled separately?
     // Using current state for safety.
-    if (isUserExists.isSuperAdmin || (isUserExists.globalRoles && isUserExists.globalRoles.length > 0)) {
+    if (
+      isUserExists.isSuperAdmin ||
+      (isUserExists.globalRoles && isUserExists.globalRoles.length > 0)
+    ) {
       userMaxScopeVal = 3; // Global
     } else {
       // Check business access
@@ -514,21 +606,27 @@ export const updateUserService = async (
       userMaxScopeVal = 2;
     }
 
-    const scopeRank = { 'OUTLET': 1, 'BUSINESS': 2, 'GLOBAL': 3 };
+    const scopeRank = { OUTLET: 1, BUSINESS: 2, GLOBAL: 3 };
 
     for (const p of permissions) {
       const pScopeVal = scopeRank[p.scope as keyof typeof scopeRank] || 0;
 
       if (pScopeVal > userMaxScopeVal) {
-        throw new AppError(403, `Security Violation: Cannot assign ${p.scope} permission '${p.action}:${p.resource}' to a user with lower scope.`);
+        throw new AppError(
+          403,
+          `Security Violation: Cannot assign ${p.scope} permission '${p.action}:${p.resource}' to a user with lower scope.`,
+        );
       }
     }
   }
 
   // Handle Image Upload
   if (file) {
-    const imgName = `${payload.name?.firstName || isUserExists.name?.firstName || 'user'}-${Date.now()}`;
-    const { secure_url } = (await sendImageToCloudinary(imgName, file.path)) as any;
+    const imgName = `${payload.name?.firstName || isUserExists.name?.firstName || "user"}-${Date.now()}`;
+    const { secure_url } = (await sendImageToCloudinary(
+      imgName,
+      file.path,
+    )) as any;
     payload.avatar = secure_url;
   }
 
@@ -536,26 +634,83 @@ export const updateUserService = async (
   if (payload.businessAccess && Array.isArray(payload.businessAccess)) {
     const existingAccess = await UserBusinessAccess.find({ user: userId });
 
-    const payloadIds = (payload.businessAccess as any[]).map((a: any) => a._id || a.id).filter(Boolean);
+    const payloadIds = (payload.businessAccess as any[])
+      .map((a: any) => a._id || a.id)
+      .filter(Boolean);
     const existingIds = existingAccess.map((a: any) => a._id.toString());
 
     // Delete removed assignments
-    const toDelete = existingIds.filter(id => !payloadIds.includes(id));
+    const toDelete = existingIds.filter((id) => !payloadIds.includes(id));
     if (toDelete.length > 0) {
       await UserBusinessAccess.deleteMany({ _id: { $in: toDelete } });
     }
 
     // Upsert assignments
-    for (const item of (payload.businessAccess as any[])) {
+    for (const item of payload.businessAccess as any[]) {
       // If setting as primary, unset others to ensure single primary context
       if (item.isPrimary) {
-        await UserBusinessAccess.updateMany({ user: userId }, { isPrimary: false });
+        await UserBusinessAccess.updateMany(
+          { user: userId },
+          { isPrimary: false },
+        );
       }
 
+      // Resolve slugs to ObjectIds if needed
+      let resolvedOrgId = item.organization;
+      let resolvedBuId = item.businessUnit;
+
+      if (resolvedOrgId && !mongoose.Types.ObjectId.isValid(resolvedOrgId)) {
+        const Organization =
+          mongoose.models.Organization || mongoose.model("Organization");
+        const orgDoc = await Organization.findOne({
+          slug: resolvedOrgId,
+        }).select("_id");
+        resolvedOrgId = orgDoc?._id || null;
+      }
+
+      if (resolvedBuId && !mongoose.Types.ObjectId.isValid(resolvedBuId)) {
+        const BusinessUnit =
+          mongoose.models.BusinessUnit || mongoose.model("BusinessUnit");
+        const buDoc = await BusinessUnit.findOne({ slug: resolvedBuId }).select(
+          "_id organization",
+        );
+        if (buDoc) {
+          resolvedBuId = buDoc._id;
+          if (!resolvedOrgId && buDoc.organization) {
+            resolvedOrgId = buDoc.organization;
+          }
+        }
+      }
+
+      // Fallback: Derive organization from BU if still missing
+      if (!resolvedOrgId && resolvedBuId) {
+        const BusinessUnit =
+          mongoose.models.BusinessUnit || mongoose.model("BusinessUnit");
+        const buDoc =
+          await BusinessUnit.findById(resolvedBuId).select("organization");
+        if (buDoc?.organization) {
+          resolvedOrgId = buDoc.organization;
+        }
+      }
+
+      const resolvedItem = {
+        ...item,
+        organization: resolvedOrgId,
+        businessUnit: resolvedBuId,
+        scope:
+          item.scope ||
+          (item.outlet ? "OUTLET" : resolvedBuId ? "BUSINESS" : "GLOBAL"),
+        user: userId,
+      };
+
       if (item._id || item.id) {
-        await UserBusinessAccess.findByIdAndUpdate(item._id || item.id, { ...item, user: userId }, { new: true });
+        await UserBusinessAccess.findByIdAndUpdate(
+          item._id || item.id,
+          resolvedItem,
+          { new: true },
+        );
       } else {
-        await UserBusinessAccess.create({ ...item, user: userId });
+        await UserBusinessAccess.create(resolvedItem);
       }
     }
 
@@ -565,7 +720,9 @@ export const updateUserService = async (
 
   // Security: Prevent updating password through this route to avoid hashing issues/accidental overwrites
   if (payload.password) {
-    console.warn("⚠️ Attempted to update password via updateUserService. Removing password from payload.");
+    console.warn(
+      "⚠️ Attempted to update password via updateUserService. Removing password from payload.",
+    );
     delete payload.password;
   }
 
@@ -575,11 +732,11 @@ export const updateUserService = async (
     new: true,
   }).populate({
     path: "businessAccess",
-    select: 'role businessUnit outlet scope status isPrimary dataScopeOverride',
+    select: "role businessUnit outlet scope status isPrimary dataScopeOverride",
     populate: [
       { path: "role", select: "name title isSystemRole" },
-      { path: "businessUnit", select: "name slug" }
-    ]
+      { path: "businessUnit", select: "name slug" },
+    ],
   });
 
   // Invalidate Permission Cache for this user
@@ -593,23 +750,23 @@ export const getSingleUserService = async (id: string) => {
   const result = await User.findById(id)
     .populate({
       path: "globalRoles",
-      select: "name title isSystemRole"
+      select: "name title isSystemRole",
     })
     .populate({
       path: "businessAccess",
       populate: [
         { path: "role", select: "name title" },
-        { path: "businessUnit", select: "name slug" }
-      ]
+        { path: "businessUnit", select: "name slug" },
+      ],
     })
-    .select('+directPermissions');
+    .select("+directPermissions");
   return result;
 };
 
 export const updateProfileService = async (
   userId: string,
   payload: Partial<IUser>,
-  file: any
+  file: any,
 ) => {
   const isUserExists = await User.findById(userId);
 
@@ -619,8 +776,11 @@ export const updateProfileService = async (
 
   // Handle Image Upload
   if (file) {
-    const imgName = `${payload.name?.firstName || isUserExists.name?.firstName || 'user'}-${Date.now()}`;
-    const { secure_url } = (await sendImageToCloudinary(imgName, file.path)) as any;
+    const imgName = `${payload.name?.firstName || isUserExists.name?.firstName || "user"}-${Date.now()}`;
+    const { secure_url } = (await sendImageToCloudinary(
+      imgName,
+      file.path,
+    )) as any;
     payload.avatar = secure_url;
   }
 
@@ -635,11 +795,11 @@ export const updateProfileService = async (
     runValidators: true,
   }).populate({
     path: "businessAccess",
-    select: 'role businessUnit outlet scope status isPrimary dataScopeOverride',
+    select: "role businessUnit outlet scope status isPrimary dataScopeOverride",
     populate: [
       { path: "role", select: "name title isSystemRole" },
-      { path: "businessUnit", select: "name slug" }
-    ]
+      { path: "businessUnit", select: "name slug" },
+    ],
   });
 
   // Invalidate Cache
@@ -655,12 +815,12 @@ export const getUserSettingsService = async (userId: string) => {
 
 export const updateUserSettingsService = async (
   userId: string,
-  settings: { theme?: string; tableHeight?: string }
+  settings: { theme?: string; tableHeight?: string },
 ) => {
   const user = await User.findByIdAndUpdate(
     userId,
     { $set: { settings } },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   ).select("settings");
 
   if (!user) {
@@ -695,20 +855,22 @@ export const createOrganizationOwnerService = async (
       contactPhone?: string;
       email?: string;
       nationalId?: string;
-    }
+    };
   },
   organizationId: string,
-  session: any
+  session: any,
 ) => {
   // 1. Check if user already exists
-  const isUserExists = await User.findOne({ email: organizationData.contactEmail }).session(session);
+  const isUserExists = await User.findOne({
+    email: organizationData.contactEmail,
+  }).session(session);
 
   if (isUserExists) {
     // 1.1 Handle PENDING User (User exists but never set password)
     if (isUserExists.status === USER_STATUS.PENDING) {
       // Check/Regenerate Token
       const crypto = await import("crypto");
-      const setupToken = crypto.default.randomBytes(32).toString('hex');
+      const setupToken = crypto.default.randomBytes(32).toString("hex");
       const setupExpires = new Date(Date.now() + 72 * 60 * 60 * 1000); // 72 hours
 
       isUserExists.setupPasswordToken = setupToken;
@@ -720,32 +882,56 @@ export const createOrganizationOwnerService = async (
       // For now, let's keep it inline but ensure we send the CORRECT email.
 
       // Ensure Merchant/Access exists (Copying logic from below)
-      const ownerRole = await Role.findOne({ name: USER_ROLE.ORGANIZATION_OWNER }).session(session);
-      if (!ownerRole) throw new AppError(500, "FATAL: ORGANIZATION_OWNER role missing in system");
+      const ownerRole = await Role.findOne({
+        name: USER_ROLE.ORGANIZATION_OWNER,
+      }).session(session);
+      if (!ownerRole)
+        throw new AppError(
+          500,
+          "FATAL: ORGANIZATION_OWNER role missing in system",
+        );
 
       const Merchant = mongoose.model("Merchant");
-      const existingMerchant = await Merchant.findOne({ user: isUserExists._id }).session(session);
+      const existingMerchant = await Merchant.findOne({
+        user: isUserExists._id,
+      }).session(session);
       if (!existingMerchant) {
-        await Merchant.create([{
-          user: isUserExists._id,
-          firstName: organizationData.legalRepresentative?.name || organizationData.name,
-          lastName: organizationData.legalRepresentative?.name ? "" : "Owner",
-          phone: organizationData.legalRepresentative?.contactPhone || organizationData.contactPhone,
-          nidNumber: organizationData.legalRepresentative?.nationalId,
-          isEmailVerified: true,
-          isActive: true
-        }], { session });
+        await Merchant.create(
+          [
+            {
+              user: isUserExists._id,
+              firstName:
+                organizationData.legalRepresentative?.name ||
+                organizationData.name,
+              lastName: organizationData.legalRepresentative?.name
+                ? ""
+                : "Owner",
+              phone:
+                organizationData.legalRepresentative?.contactPhone ||
+                organizationData.contactPhone,
+              nidNumber: organizationData.legalRepresentative?.nationalId,
+              isEmailVerified: true,
+              isActive: true,
+            },
+          ],
+          { session },
+        );
       }
 
       // Create Access
-      await UserBusinessAccess.create([{
-        user: isUserExists._id,
-        role: ownerRole._id,
-        scope: 'ORGANIZATION',
-        organization: organizationId,
-        status: 'ACTIVE',
-        isPrimary: true
-      }], { session });
+      await UserBusinessAccess.create(
+        [
+          {
+            user: isUserExists._id,
+            role: ownerRole._id,
+            scope: "ORGANIZATION",
+            organization: organizationId,
+            status: "ACTIVE",
+            isPrimary: true,
+          },
+        ],
+        { session },
+      );
 
       // Send SETUP Email
       try {
@@ -756,7 +942,7 @@ export const createOrganizationOwnerService = async (
           `
             <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px;">
               <h2 style="color: #0F172A; text-align: center;">Welcome to Manoxen</h2>
-              <p>Hello <strong>${organizationData.legalRepresentative?.name || 'Partner'}</strong>,</p>
+              <p>Hello <strong>${organizationData.legalRepresentative?.name || "Partner"}</strong>,</p>
               <p>Your new organization <strong>${organizationData.name}</strong> has been provisioned.</p>
               <p>We noticed your account was pending setup. Please set your password now.</p>
               <div style="margin: 30px 0; text-align: center;">
@@ -765,42 +951,66 @@ export const createOrganizationOwnerService = async (
               <p style="font-size: 14px; color: #666;">Or copy this link: <br/> <a href="${setupUrl}">${setupUrl}</a></p>
               <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
             </div>
-            `
+            `,
         );
-      } catch (e) { console.error("Failed to send setup email", e); }
+      } catch (e) {
+        console.error("Failed to send setup email", e);
+      }
 
       return isUserExists;
     }
 
     // 1.2 Handle ACTIVE User (Existing logic)
     // Find ORGANIZATION_OWNER role
-    const ownerRole = await Role.findOne({ name: USER_ROLE.ORGANIZATION_OWNER }).session(session);
-    if (!ownerRole) throw new AppError(500, "FATAL: ORGANIZATION_OWNER role missing in system");
+    const ownerRole = await Role.findOne({
+      name: USER_ROLE.ORGANIZATION_OWNER,
+    }).session(session);
+    if (!ownerRole)
+      throw new AppError(
+        500,
+        "FATAL: ORGANIZATION_OWNER role missing in system",
+      );
 
     // Check & Create Merchant Profile if missing
     const Merchant = mongoose.model("Merchant");
-    const existingMerchant = await Merchant.findOne({ user: isUserExists._id }).session(session);
+    const existingMerchant = await Merchant.findOne({
+      user: isUserExists._id,
+    }).session(session);
     if (!existingMerchant) {
-      await Merchant.create([{
-        user: isUserExists._id,
-        firstName: organizationData.legalRepresentative?.name || organizationData.name,
-        lastName: organizationData.legalRepresentative?.name ? "" : "Owner",
-        phone: organizationData.legalRepresentative?.contactPhone || organizationData.contactPhone,
-        nidNumber: organizationData.legalRepresentative?.nationalId,
-        isEmailVerified: true,
-        isActive: true
-      }], { session });
+      await Merchant.create(
+        [
+          {
+            user: isUserExists._id,
+            firstName:
+              organizationData.legalRepresentative?.name ||
+              organizationData.name,
+            lastName: organizationData.legalRepresentative?.name ? "" : "Owner",
+            phone:
+              organizationData.legalRepresentative?.contactPhone ||
+              organizationData.contactPhone,
+            nidNumber: organizationData.legalRepresentative?.nationalId,
+            isEmailVerified: true,
+            isActive: true,
+          },
+        ],
+        { session },
+      );
     }
 
     // Create Access
-    await UserBusinessAccess.create([{
-      user: isUserExists._id,
-      role: ownerRole._id,
-      scope: 'ORGANIZATION',
-      organization: organizationId,
-      status: 'ACTIVE',
-      isPrimary: true
-    }], { session });
+    await UserBusinessAccess.create(
+      [
+        {
+          user: isUserExists._id,
+          role: ownerRole._id,
+          scope: "ORGANIZATION",
+          organization: organizationId,
+          status: "ACTIVE",
+          isPrimary: true,
+        },
+      ],
+      { session },
+    );
 
     try {
       await MailService.sendEmail(
@@ -809,7 +1019,7 @@ export const createOrganizationOwnerService = async (
         `
         <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px;">
           <h2 style="color: #0F172A; text-align: center;">New Organization Added</h2>
-          <p>Hello <strong>${isUserExists.name?.firstName || 'Partner'}</strong>,</p>
+          <p>Hello <strong>${isUserExists.name?.firstName || "Partner"}</strong>,</p>
           <p>A new organization <strong>${organizationData.name}</strong> has been successfully added to your Manoxen account.</p>
           <p>You can now switch to this organization from your dashboard.</p>
           <div style="margin: 30px 0; text-align: center;">
@@ -818,7 +1028,7 @@ export const createOrganizationOwnerService = async (
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
           <p style="font-size: 12px; color: #94a3b8; text-align: center;">© 2026 Manoxen. All rights reserved.</p>
         </div>
-        `
+        `,
       );
     } catch (e) {
       console.error("Failed to send association email", e);
@@ -827,15 +1037,20 @@ export const createOrganizationOwnerService = async (
     return isUserExists;
   }
 
-
   // 2. Create New User
-  const ownerRole = await Role.findOne({ name: USER_ROLE.ORGANIZATION_OWNER }).session(session);
-  if (!ownerRole) throw new AppError(500, "FATAL: ORGANIZATION_OWNER role missing in system");
+  const ownerRole = await Role.findOne({
+    name: USER_ROLE.ORGANIZATION_OWNER,
+  }).session(session);
+  if (!ownerRole)
+    throw new AppError(500, "FATAL: ORGANIZATION_OWNER role missing in system");
 
-  const userId = await genereteCustomerId(organizationData.contactEmail, ownerRole._id.toString());
+  const userId = await genereteCustomerId(
+    organizationData.contactEmail,
+    ownerRole._id.toString(),
+  );
 
   // 2.1 Generate Setup Token (Industrial Standard)
-  const setupToken = crypto.randomBytes(32).toString('hex');
+  const setupToken = crypto.randomBytes(32).toString("hex");
   const setupExpires = new Date(Date.now() + 72 * 60 * 60 * 1000); // 72 hours expiry
 
   const userData: Partial<IUser> = {
@@ -843,45 +1058,60 @@ export const createOrganizationOwnerService = async (
     email: organizationData.contactEmail,
     phone: organizationData.contactPhone,
     // Provide a random password to satisfy model requirement (will be reset by user via token)
-    password: crypto.randomBytes(24).toString('hex'),
+    password: crypto.randomBytes(24).toString("hex"),
     status: "pending", // Pending until password setup
     needsPasswordChange: true,
     setupPasswordToken: setupToken,
     setupPasswordExpires: setupExpires,
     name: {
-      firstName: organizationData.legalRepresentative?.name?.split(" ")[0] || "Organization",
-      lastName: organizationData.legalRepresentative?.name?.split(" ").slice(1).join(" ") || "Admin"
+      firstName:
+        organizationData.legalRepresentative?.name?.split(" ")[0] ||
+        "Organization",
+      lastName:
+        organizationData.legalRepresentative?.name
+          ?.split(" ")
+          .slice(1)
+          .join(" ") || "Admin",
     },
     globalRoles: [],
-    isEmailVerified: true
+    isEmailVerified: true,
   };
 
   const newUser = await User.create([userData], { session });
-  if (!newUser || !newUser[0]) throw new AppError(500, "Failed to create Organization Owner user");
+  if (!newUser || !newUser[0])
+    throw new AppError(500, "Failed to create Organization Owner user");
 
   // 2.2 Create Merchant Profile (Industrial Standard Consistency)
   const Merchant = mongoose.model("Merchant");
   const merchantData: any = {
     user: newUser[0]._id,
-    firstName: organizationData.legalRepresentative?.name || organizationData.name,
+    firstName:
+      organizationData.legalRepresentative?.name || organizationData.name,
     lastName: organizationData.legalRepresentative?.name ? "" : "Owner",
-    phone: organizationData.legalRepresentative?.contactPhone || organizationData.contactPhone,
+    phone:
+      organizationData.legalRepresentative?.contactPhone ||
+      organizationData.contactPhone,
     nidNumber: organizationData.legalRepresentative?.nationalId,
     isEmailVerified: true,
-    isActive: true
+    isActive: true,
   };
 
   await Merchant.create([merchantData], { session });
 
   // 3. Create Access
-  await UserBusinessAccess.create([{
-    user: newUser[0]._id,
-    role: ownerRole._id,
-    scope: 'ORGANIZATION',
-    organization: organizationId,
-    status: 'ACTIVE',
-    isPrimary: true
-  }], { session });
+  await UserBusinessAccess.create(
+    [
+      {
+        user: newUser[0]._id,
+        role: ownerRole._id,
+        scope: "ORGANIZATION",
+        organization: organizationId,
+        status: "ACTIVE",
+        isPrimary: true,
+      },
+    ],
+    { session },
+  );
 
   try {
     // 4. Send Invitation Email (Industrial Standard)
@@ -893,7 +1123,7 @@ export const createOrganizationOwnerService = async (
       `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px;">
         <h2 style="color: #0F172A; text-align: center;">Welcome to Manoxen</h2>
-        <p>Hello <strong>${organizationData.legalRepresentative?.name || 'Partner'}</strong>,</p>
+        <p>Hello <strong>${organizationData.legalRepresentative?.name || "Partner"}</strong>,</p>
         <p>Your organization <strong>${organizationData.name}</strong> has been successfully provisioned in our system.</p>
         <p>Please utilize the link below to establish a secure password for your administrative account.</p>
         <div style="margin: 30px 0; text-align: center;">
@@ -904,7 +1134,7 @@ export const createOrganizationOwnerService = async (
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
         <p style="font-size: 12px; color: #94a3b8; text-align: center;">© 2026 Manoxen. All rights reserved.</p>
       </div>
-      `
+      `,
     );
   } catch (emailError) {
     console.error("Failed to send welcome email:", emailError);
@@ -913,28 +1143,3 @@ export const createOrganizationOwnerService = async (
 
   return newUser[0];
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -11,7 +11,7 @@ import {
 import {
   useGetSettingsQuery,
   useUpdateSettingsMutation,
-} from "@/features/iam/api/userApi";
+} from "@/domains/core/iam/api/userApi";
 
 import { authKey } from "@/constant/authKey";
 

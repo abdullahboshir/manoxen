@@ -19,12 +19,12 @@ import { useCurrentRole } from "@manoxen/auth-client";
 
 interface OrganizationSwitcherProps {
   currentOrganizationId: string | null;
-  companies: any[];
+  organizations: any[];
 }
 
 export function OrganizationSwitcher({
   currentOrganizationId,
-  companies,
+  organizations,
 }: OrganizationSwitcherProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,25 +56,24 @@ export function OrganizationSwitcher({
     }
 
     if (organizationId === "all") {
-      // Explicitly clear BU context when returning to Platform Global
       setActiveBusinessUnit(null);
       localStorage.removeItem("active-business-unit");
 
       params.delete("organization");
       router.push(`${basePath}/dashboard`);
     } else {
-      // Set organization context
-      const organization = companies.find(
+      const organization = organizations.find(
         (c: any) => c._id === organizationId || c.id === organizationId,
       );
       const orgSlug = organization?.slug || organizationId;
+      console.log("vbbbbbbbbbbbbbbbbbb", orgSlug, organization);
 
-      params.set("organization", organizationId);
-      router.push(`/${orgSlug}/dashboard?${params.toString()}`);
+      params.delete("organization"); // Clean up query param as slug handles it
+      router.push(`/${orgSlug}/dashboard`);
     }
   };
 
-  if (!companies || companies.length === 0) return null;
+  if (!organizations || organizations.length === 0) return null;
 
   return (
     <div className="flex items-center gap-2">
@@ -89,9 +88,9 @@ export function OrganizationSwitcher({
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Platform Global</SelectItem>
+          <SelectItem value="all">Select Organization</SelectItem>
           <SelectSeparator />
-          {companies.map((organization: any) => (
+          {organizations.map((organization: any) => (
             <SelectItem key={organization._id} value={organization._id}>
               {organization.name}
             </SelectItem>

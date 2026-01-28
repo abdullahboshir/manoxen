@@ -1,5 +1,5 @@
-import AuditLogList from "@/components/modules/system/AuditLogList";
-import PermissionHealthWidget from "@/components/modules/system/PermissionHealthWidget";
+import AuditLogList from "@/domains/core/system/ui/components/AuditLogList";
+import PermissionHealthWidget from "@/domains/core/system/ui/components/PermissionHealthWidget";
 
 export default function AuditLogsPage() {
     return (
@@ -9,3 +9,4 @@ export default function AuditLogsPage() {
         </div>
     );
 }
+

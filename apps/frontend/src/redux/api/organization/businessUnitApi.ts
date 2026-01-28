@@ -57,12 +57,12 @@ export const businessUnitApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.businessUnit, tagTypes.auth],
     }),
     getBusinessUnitDashboardStats: build.query({
-      query: ({ businessUnitId, outletId }: { businessUnitId: string; outletId?: string }) => ({
-        url: `/super-admin/business-unit/${businessUnitId}/dashboard`,
+      query: ({ buId, outletId }: { buId: string; outletId?: string }) => ({
+        url: `/super-admin/business-unit/${buId}/dashboard`,
         method: "GET",
         params: { outletId },
       }),
-      providesTags: (result, error, arg) => [{ type: tagTypes.businessUnit, id: arg.businessUnitId }],
+      providesTags: (result, error, arg) => [{ type: tagTypes.businessUnit, id: arg.buId }],
       transformResponse: (response: any) => response.data,
     }),
   }),
